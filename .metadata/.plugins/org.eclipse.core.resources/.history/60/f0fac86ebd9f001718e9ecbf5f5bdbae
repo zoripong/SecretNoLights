@@ -1,0 +1,98 @@
+package gui;
+
+import java.awt.Container;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+public class FrameManager extends JFrame{
+
+	Container contain;
+	public FrameManager() {
+		init();
+
+	}
+	public FrameManager(boolean isInnerInstace) {
+		contain = getContentPane();
+
+	}
+	public void init() {
+		contain = getContentPane();
+
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setTitle("SNL");
+		setSize(SNL.SCREEN_WIDTH, SNL.SCREEN_HEIGHT);
+		setResizable(false);
+		setLocationRelativeTo(null);
+		
+//		GamePanel p = new GamePanel();
+		MainPanel p = new MainPanel(this);
+		p.setBounds(100, 100, 100, 100);
+		contain.add(p);
+		
+		setVisible(true);
+	}
+	
+	public void changePanel(String panelName) {
+		//ÇÙ½É ÄÚµå
+		contain.removeAll();
+
+//		JPanel p = null;
+//		switch(panelName) {
+//		case "MainPanel":
+//			p = new GamePanel();
+//			break;
+//
+//		case "CharacterPanel":
+//			break;
+//		case "ExplainPanel":
+//			break;
+//		case "GamePanel":
+//			break;
+//			
+//		case "HallPanel"
+//		break;
+//		}
+		
+		GamePanel p = new GamePanel();
+//		p.removeAll();
+//		setContentPane(p);
+		contain.add(p);
+		System.out.println(p.isFocusOwner());
+		p.requestFocus();
+		p.setFocusable(true);
+		System.out.println(p.isFocusOwner());
+//		JPanel p = null;
+//		switch(panelName){
+//			case "MainPanel" :
+//				System.out.println("change method");
+//				p = new MainPanel();
+//				contain.add(p);
+//				break;
+////			case "ExplainPanel":
+////				break;
+////			case "CharacterPanel":
+////				break;
+//			case "GamePanel" :
+//				System.out.println("change method");
+//				p = new GamePanel();
+//				contain.add(p);
+//				break;
+////			case "HallPanel" :
+////				break;
+//			default:
+////				MainPanel p3 = new MainPanel();
+//				break;
+//				
+//		}
+
+		
+		revalidate();
+		repaint();		
+		
+		
+	}
+}
+

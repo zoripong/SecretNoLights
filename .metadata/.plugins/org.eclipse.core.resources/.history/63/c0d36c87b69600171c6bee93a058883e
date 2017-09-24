@@ -1,0 +1,41 @@
+package gui;
+
+import java.awt.Container;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JFrame;
+
+public class FrameManager extends JFrame implements ActionListener{
+
+	MainPanel mainPanel;
+	
+	Container container;
+	public FrameManager() {
+		init();
+		container.add(mainPanel);
+		
+		setUndecorated(false); // 게임시작시 true로 .. 밍밍
+		
+		setTitle("SNL");
+		setSize(SNL.SCREEN_WIDTH, SNL.SCREEN_HEIGHT);
+		setResizable(false);
+		setLocationRelativeTo(null);
+//		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		setVisible(true);
+		
+	}
+	
+	private void init() {
+		container = getContentPane();
+		mainPanel = new MainPanel();
+	}
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+
+}

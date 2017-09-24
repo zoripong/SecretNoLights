@@ -1,0 +1,10 @@
+package customInterface;
+
+public interface JumpListener {
+	
+	int 
+	public void jumpTimeArrived(int jumpIdx, int jumpy);
+	
+	public void jumpTimeEnded();
+	
+}

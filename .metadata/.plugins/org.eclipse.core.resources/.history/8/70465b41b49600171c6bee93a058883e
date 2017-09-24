@@ -1,0 +1,78 @@
+package gui;
+
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Image;
+
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JPanel;
+
+import adpater.Music;
+
+public class MainPanel extends JPanel{
+	private Image screenImage;
+	private Graphics screenGraphic;
+	private Image background;
+
+	private ImageIcon startButtonBasicImage;
+	private ImageIcon startButtonEnteredImage;
+	private ImageIcon explainButtonBasicImage;
+	private ImageIcon explainButtonEnteredImage;
+	
+	private JButton startButton;
+	private JButton explainButton;
+	
+	public MainPanel() {
+		init();
+		//		setBackground(new Color(0, 0, 0, 0));
+		setLayout(null);
+		Music introMusic = new Music("mainMusic.mp3", true);
+		introMusic.start();
+	
+	}
+
+	private void init() {
+		background = new ImageIcon(SNL.class.getResource("../images/background.png")).getImage();
+
+		startButtonBasicImage = new ImageIcon(SNL.class.getResource("../images/start.png"));
+		startButtonEnteredImage = new ImageIcon(SNL.class.getResource("../images/start.png"));
+		explainButtonBasicImage = new ImageIcon(SNL.class.getResource("../images/explain.png"));
+		explainButtonEnteredImage = new ImageIcon(SNL.class.getResource("../images/explain.png"));
+		
+		startButton = new JButton(startButtonBasicImage);
+		explainButton = new JButton(explainButtonBasicImage);
+
+		startButton.setBounds(SNL.SCREEN_WIDTH/2 - 150, 350, 300, 120);
+//		startButton.setLocation(SNL.SCREEN_WIDTH/2 , 250);
+		startButton.setBorderPainted(false);
+		startButton.setContentAreaFilled(false);
+		startButton.setFocusPainted(false);
+
+		explainButton.setBounds(SNL.SCREEN_WIDTH/2 - 150, 450, 300, 120);
+		explainButton.setBorderPainted(false);
+		explainButton.setContentAreaFilled(false);
+		explainButton.setFocusPainted(false);
+
+		add(startButton);
+		add(explainButton);
+		
+	}
+	
+	public void paint(Graphics g) {
+		screenImage = createImage(SNL.SCREEN_WIDTH, SNL.SCREEN_HEIGHT);
+		screenGraphic = screenImage.getGraphics();
+		screenDraw(screenGraphic);
+		g.drawImage(screenImage, 0, 0, null);
+		
+	}
+	
+	public void screenDraw(Graphics g) {
+		g.drawImage(background, 0, 0, null);
+		paintComponents(g);
+
+		this.repaint();
+	}
+	
+	
+}

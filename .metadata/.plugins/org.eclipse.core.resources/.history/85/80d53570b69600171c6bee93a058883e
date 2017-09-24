@@ -1,0 +1,130 @@
+package gui;
+
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+import adpater.Music;
+
+public class MainPanel extends JPanel{
+	private Image screenImage;
+	private Graphics screenGraphic;
+	private Image background;
+
+	private ImageIcon startButtonBasicImage;
+	private ImageIcon startButtonEnteredImage;
+	private ImageIcon explainButtonBasicImage;
+	private ImageIcon explainButtonEnteredImage;
+	
+	private JButton startButton;
+	private JButton explainButton;
+	
+	JLabel test2;
+	public MainPanel() {
+		init();
+		//		setBackground(new Color(0, 0, 0, 0));
+		setLayout(null);
+		Music introMusic = new Music("mainMusic.mp3", true);
+		introMusic.start();
+	
+	}
+
+	private void init() {
+		addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+				// TODO Auto-generated method stub
+				  int keycode = e.getKeyCode();
+			        switch(keycode){
+			                   case KeyEvent.VK_UP:
+			                	   System.out.println("VKUP");
+			                	   break;
+			                   case KeyEvent.VK_DOWN:
+			                	   System.out.println("VKDOWN");
+			                	   break;
+			                   case KeyEvent.VK_LEFT:
+			                	   	System.out.println("VKLEFT");
+			                	   break;
+			                   case KeyEvent.VK_RIGHT:
+			                	   System.out.println("VKRIGHT");
+			                	   break;
+			        }
+			}
+		});
+		
+		background = new ImageIcon(SNL.class.getResource("../images/background.png")).getImage();
+
+		startButtonBasicImage = new ImageIcon(SNL.class.getResource("../images/start.png"));
+		startButtonEnteredImage = new ImageIcon(SNL.class.getResource("../images/dino_front.png"));
+		explainButtonBasicImage = new ImageIcon(SNL.class.getResource("../images/explain.png"));
+		explainButtonEnteredImage = new ImageIcon(SNL.class.getResource("../images/explain.png"));
+		
+		startButton = new JButton(startButtonBasicImage);
+		explainButton = new JButton(explainButtonBasicImage);
+
+		JButton test = new JButton(startButtonEnteredImage);
+		test.setBounds(SNL.SCREEN_WIDTH/2 - 150, 300, 100, 80);
+//		startButton.setLocation(SNL.SCREEN_WIDTH/2 , 250);
+		test.setBorderPainted(false);
+		test.setContentAreaFilled(false);
+		test.setFocusPainted(false);
+		test2 = new JLabel();
+	
+		
+		startButton.setBounds(SNL.SCREEN_WIDTH/2 - 150, 350, 300, 120);
+//		startButton.setLocation(SNL.SCREEN_WIDTH/2 , 250);
+		startButton.setBorderPainted(false);
+		startButton.setContentAreaFilled(false);
+		startButton.setFocusPainted(false);
+
+		explainButton.setBounds(SNL.SCREEN_WIDTH/2 - 150, 450, 300, 120);
+		explainButton.setBorderPainted(false);
+		explainButton.setContentAreaFilled(false);
+		explainButton.setFocusPainted(false);
+
+		add(startButton);
+		add(explainButton);
+		
+		add(test);
+		
+		
+	}
+	
+	public void paint(Graphics g) {
+		screenImage = createImage(SNL.SCREEN_WIDTH, SNL.SCREEN_HEIGHT);
+		screenGraphic = screenImage.getGraphics();
+		screenDraw(screenGraphic);
+		g.drawImage(screenImage, 0, 0, null);
+		
+	}
+	
+	public void screenDraw(Graphics g) {
+		g.drawImage(background, 0, 0, null);
+		paintComponents(g);
+
+		this.repaint();
+	}
+	
+	
+	
+}

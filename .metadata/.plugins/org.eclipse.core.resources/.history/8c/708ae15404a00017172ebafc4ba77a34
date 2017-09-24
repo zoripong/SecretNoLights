@@ -1,0 +1,18 @@
+package gui;
+
+import javax.swing.JPanel;
+
+public class ExplainPanel extends JPanel{
+	FrameManager fm;
+	
+	public ExplainPanel(FrameManager fm) {
+		this.fm = fm;
+		
+		init();
+		
+	}
+	private void init() {
+		
+	}
+
+}

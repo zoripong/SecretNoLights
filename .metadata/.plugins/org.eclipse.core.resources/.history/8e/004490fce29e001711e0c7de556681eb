@@ -1,0 +1,12 @@
+/**
+ * 캐릭터가 점프를 하면서 발생하는 이벤트를 받는 인터페이스 
+ * @author 까만손오공 <a href="http://blog.naver.com/kkson50">http://blog.naver.com/kkson50</a>
+ *
+ */
+public interface JumpListener {
+	
+	public void jumpTimeArrived(int jumpIdx, int jumpy);
+	
+	public void jumpTimeEnded();
+	
+}

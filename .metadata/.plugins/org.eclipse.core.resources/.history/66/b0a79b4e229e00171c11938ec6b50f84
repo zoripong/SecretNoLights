@@ -1,0 +1,9 @@
+package model;
+
+public interface Direction {
+
+	int HORIZONTAL = 1;
+	int VERTICAL = 2;
+	int UP = 3;
+	int DOWN = 4;
+}

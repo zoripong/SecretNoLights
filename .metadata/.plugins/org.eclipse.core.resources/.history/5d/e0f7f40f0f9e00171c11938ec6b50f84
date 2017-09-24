@@ -1,0 +1,15 @@
+
+/**
+ * 디버가 가능한 프로그램이냐
+ * @author 까만손오공 <a href="http://blog.naver.com/kkson50">http://blog.naver.com/kkson50</a>
+ *
+ */
+public interface Debuggable {
+	
+	public static int MODE_DEBUG=0;
+	
+	public static int MODE_RELEASE=1;
+	
+		
+	public void debug(String s);
+}

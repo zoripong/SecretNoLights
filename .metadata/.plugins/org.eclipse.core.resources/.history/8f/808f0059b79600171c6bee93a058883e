@@ -1,0 +1,75 @@
+package gui;
+
+import java.awt.Container;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
+import javax.swing.JFrame;
+
+public class FrameManager extends JFrame implements ActionListener, KeyListener{
+
+	MainPanel mainPanel;
+	
+	Container container;
+	public FrameManager() {
+		init();
+		container.add(mainPanel);
+		
+		setUndecorated(false); // 게임시작시 true로 .. 밍밍
+		
+		setTitle("SNL");
+		setSize(SNL.SCREEN_WIDTH, SNL.SCREEN_HEIGHT);
+		setResizable(false);
+		setLocationRelativeTo(null);
+//		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		setVisible(true);
+		
+	}
+	
+	private void init() {
+		container = getContentPane();
+		mainPanel = new MainPanel();
+	}
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		// TODO Auto-generated method stub
+		 int keycode = e.getKeyCode();
+	        switch(keycode){
+                case KeyEvent.VK_UP:
+             	   System.out.println("VKUP");
+             	   break;
+                case KeyEvent.VK_DOWN:
+             	   System.out.println("VKDOWN");
+             	   break;
+                case KeyEvent.VK_LEFT:
+             	   	System.out.println("VKLEFT");
+             	   break;
+                case KeyEvent.VK_RIGHT:
+             	   System.out.println("VKRIGHT");
+             	   break;
+	        }
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+
+}

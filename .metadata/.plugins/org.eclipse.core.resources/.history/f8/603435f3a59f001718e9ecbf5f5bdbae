@@ -1,0 +1,30 @@
+package gui;
+
+import javax.swing.JFrame;
+
+public class FrameManager extends JFrame{
+	
+	public FrameManager() {
+		init();
+		
+		
+	}
+	public void init() {
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setTitle("SNL");
+		setSize(SNL.SCREEN_WIDTH, SNL.SCREEN_HEIGHT);
+		setResizable(false);
+		setLocationRelativeTo(null);
+
+//		setLayout(null);
+
+//		GamePanel p = new GamePanel();
+		MainPanel p = new MainPanel();
+		p.setBounds(100, 100, 100, 100);
+		add(p);
+		
+		setVisible(true);
+		
+	}
+
+}

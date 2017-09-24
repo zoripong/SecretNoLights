@@ -1,0 +1,11 @@
+import java.awt.Frame;
+
+import gui.FrameManager;
+
+public class SNL {
+
+	public static void main(String[] args) {
+		new FrameManager();
+	}
+
+}

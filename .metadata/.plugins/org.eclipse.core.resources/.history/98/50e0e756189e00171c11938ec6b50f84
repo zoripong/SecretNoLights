@@ -1,0 +1,11 @@
+package model;
+
+import customInterface.Debuggable;
+
+public class GameObj {
+	int posX;
+	int posY;
+
+	Debuggable debuggable;
+	
+}

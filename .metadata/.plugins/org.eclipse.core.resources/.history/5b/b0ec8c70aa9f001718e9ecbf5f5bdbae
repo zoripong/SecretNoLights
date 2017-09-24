@@ -1,0 +1,66 @@
+package gui;
+
+import java.awt.Container;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+public class FrameManager extends JFrame{
+
+	Container contain;
+	public FrameManager() {
+		init();
+
+	}
+	public void init() {
+		contain = getContentPane();
+
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setTitle("SNL");
+		setSize(SNL.SCREEN_WIDTH, SNL.SCREEN_HEIGHT);
+		setResizable(false);
+		setLocationRelativeTo(null);
+		
+//		GamePanel p = new GamePanel();
+		MainPanel p = new MainPanel();
+		p.setBounds(100, 100, 100, 100);
+		contain.add(p);
+		
+		setVisible(true);
+	}
+	
+	public void changePanel(String panelName) {
+		//ÇÙ½É ÄÚµå
+		contain.removeAll();
+		
+		JPanel p = null;
+		switch(panelName){
+			case "MainPanel" :
+				p = new MainPanel();
+				break;
+			case "ExplainPanel":
+				break;
+			case "CharacterPanel":
+				break;
+			case "GamePanel" :
+				p = new GamePanel();
+				break;
+			case "HallPanel" :
+				break;
+			default:
+				p = new MainPanel();
+				break;
+				
+		}
+
+		contain.add(p);
+		
+		revalidate();
+		repaint();		
+		
+		
+	}
+}
+

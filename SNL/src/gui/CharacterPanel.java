@@ -86,6 +86,7 @@ public class CharacterPanel extends JPanel implements ActionListener, KeyListene
 			break;
 		case KeyEvent.VK_SPACE:
 		case KeyEvent.VK_ENTER:
+			gameMusic.close();
 			fm.gameStart(charType);
 		}
 	}

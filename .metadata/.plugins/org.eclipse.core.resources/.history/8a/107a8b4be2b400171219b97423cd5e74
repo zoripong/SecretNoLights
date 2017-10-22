@@ -1,0 +1,74 @@
+package model;
+
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+
+import javax.swing.ImageIcon;
+
+import gui.SNL;
+
+public class Monster extends GameObj {
+	private int dx, dy;
+	private int width;
+
+	private int jumpIdx = 0;
+
+
+	public Monster(int x, int y, Image image) {
+		super(x, y, image);
+		int num = (int) (Math.random() * 10) ;
+		System.out.println(num);
+		dy = 0;
+		if (num%2== 0) {
+			dx = 5;
+		} else {
+			dx = -5;
+		}
+		width = new ImageIcon(SNL.class.getResource("../images/front_3.png")).getIconWidth();
+	}
+
+	public void update() {
+		if(getPosX() > 900 - width)
+			dx = -5;
+		else if(getPosX() < 0)
+			dx = 5;
+		setPosX(getPosX() + dx);
+	}
+
+	public void draw(Graphics g) {
+		Graphics2D g2d = (Graphics2D) g;
+		g2d.drawImage(getImage(), getPosX(), getPosY(), null);
+		// System.out.println("(" + getPosX() + "," + getPosY() + ")");
+	}
+	
+	public void changeDirection() {
+		dx *= -1;
+	}
+	
+	public void setDx(int dx) {
+		this.dx = dx;
+	}
+
+	public void setDy(int dy) {
+		this.dy = dy;
+	}
+
+	public int getJumpIdx() {
+		return this.jumpIdx;
+	}
+
+	public void setJumpIdx(int jumpIdx) {
+		this.jumpIdx = jumpIdx;
+	}
+
+	public boolean isRight() {
+		return isRight;
+	}
+
+	public boolean isJumping() {
+		if (this.jumpIdx == 0)
+			return false;
+		return true;
+	}
+}

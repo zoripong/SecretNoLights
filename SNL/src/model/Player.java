@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.ImageObserver;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 
@@ -19,14 +20,14 @@ public class Player extends GameObj implements Direction, Attackable {
 	private int dx, dy;
 	private double imageIdx;
 	private boolean isRight;
-
+	private boolean isAttacking;
 	// private ImageIcon jumpRight[];
 	int jumpIdx = 0;
 	private int charType;
 
 	private JumpListener jumpListener;
 
-	public Player(int x, int y, Image image, int charType) {
+	public Player(int x, int y, ImageIcon image, int charType) {
 		super(x, y, image);
 		this.charType = charType;
 		isSelecter = false;
@@ -34,6 +35,7 @@ public class Player extends GameObj implements Direction, Attackable {
 		dy = 0;
 		isRight = true;
 		imageIdx = 1; // 谅快 捞悼
+		isAttacking=false;
 		// jumpRight = new ImageIcon[5];
 		// for (int i = 0; i < jumpRight.length; ++i) {
 		// String path = "../images/dino_jump_right.png";
@@ -43,7 +45,7 @@ public class Player extends GameObj implements Direction, Attackable {
 
 	}
 
-	public Player(int x, int y, Image image, int charType, int dx, int dy, boolean isSelecter) {
+	public Player(int x, int y, ImageIcon image, int charType, int dx, int dy, boolean isSelecter) {
 		this(x, y, image, charType);
 		this.dx = dx;
 		this.dy = dy;
@@ -57,7 +59,7 @@ public class Player extends GameObj implements Direction, Attackable {
 			isRight = false;
 			imageFile = "../images/left_" + String.valueOf(charType) + "_" + String.valueOf((int) imageIdx % 3 + 1)
 					+ ".png";
-			setImage(new ImageIcon(SNL.class.getResource(imageFile)).getImage());
+			setImage(new ImageIcon(SNL.class.getResource(imageFile)));
 			imageIdx += 0.3;
 			setPosX(getPosX() - dx);
 			if (getPosX() < 0)
@@ -68,7 +70,7 @@ public class Player extends GameObj implements Direction, Attackable {
 			imageFile = "../images/right_" + String.valueOf(charType) + "_" + String.valueOf((int) imageIdx % 3 + 1)
 					+ ".png";
 			ImageIcon icon = new ImageIcon(SNL.class.getResource(imageFile));
-			setImage(icon.getImage());
+			setImage(icon);
 			imageIdx += 0.3;
 			setPosX(getPosX() + dx);
 			if (getPosX() > (SNL.SCREEN_WIDTH - icon.getIconWidth()))
@@ -124,8 +126,9 @@ public class Player extends GameObj implements Direction, Attackable {
 	}
 
 	public boolean isAttack() {
-		//TODO : attack 吝汗贸府  and Thread
-		return false;
+		// TODO : attack 吝汗贸府 and Thread
+		
+		return isAttacking;
 	}
 
 	public void addX(int add) {
@@ -139,22 +142,63 @@ public class Player extends GameObj implements Direction, Attackable {
 	@Override
 	public void attack() {
 		// TODO 面倒贸府
+		isAttacking=true;
 		System.out.println("attack");
 		if (isRight)
-			setImage(new ImageIcon(SNL.class.getResource("../images/attack_right_" + String.valueOf(charType) + ".png"))
-					.getImage());
+			setImage(new ImageIcon(
+					SNL.class.getResource("../images/attack_right_" + String.valueOf(charType) + ".png")));
 		else {
 			// TODO LEFT ATTACK
 			setPosX(getPosX() - 60);
-			setImage(new ImageIcon(SNL.class.getResource("../images/attack_left_" + String.valueOf(charType) + ".png"))
-					.getImage());
+			setImage(
+					new ImageIcon(SNL.class.getResource("../images/attack_left_" + String.valueOf(charType) + ".png")));
 		}
 	}
 
 	public void attackEnd() {
-		if (!isRight)
-			setPosX(getPosX() + 60);
+		isAttacking=false;
+//		if (!isRight)
+//			setPosX(getPosX() + 60);
 
+	}
+
+	public int isCrush(GameObj obj) {
+		int startX = getA()[0];
+		int endX = getD()[0];
+
+		int startY = getA()[1];
+		int endY = getB()[1];
+
+		System.out.println("startX : " + startX + "~ endX : " + endX);
+		System.out.println("startY : " + startY + "~ endY : " + endY);
+		System.out.println("objX : " + obj.getA()[0] + "~ " + obj.getD()[0]);
+
+		System.out.println("objY : " + obj.getA()[1] + "~ " + obj.getC()[1]);
+		if(isAttacking) {
+			return -1;
+		}
+		if (startX <= obj.getA()[0] && obj.getA()[0] <= endX && startY <= obj.getA()[1] && obj.getA()[1] <= endY) {
+			System.out.println("1");
+			return 1;
+		}
+		
+		if (startX <= obj.getB()[0] && obj.getB()[0] <= endX && startY <= obj.getB()[1] && obj.getB()[1] <= endY) {
+			System.out.println("2");
+			return 1;
+		}
+		
+		if (startX <= obj.getC()[0] && obj.getC()[0] <= endX && startY <= obj.getC()[1] && obj.getC()[1] <= endY) {
+			System.out.println("3");
+			return 1;
+		}
+		if (startX <= obj.getD()[0] && obj.getD()[0] <= endX && startY <= obj.getD()[1] && obj.getD()[1] <= endY) {
+			System.out.println("4");
+			return 1;
+		}
+
+		
+		
+		return 0;
 	}
 
 }

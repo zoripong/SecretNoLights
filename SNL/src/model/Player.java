@@ -36,12 +36,6 @@ public class Player extends GameObj implements Direction, Attackable {
 		isRight = true;
 		imageIdx = 1; // 좌우 이동
 		isAttacking=false;
-		// jumpRight = new ImageIcon[5];
-		// for (int i = 0; i < jumpRight.length; ++i) {
-		// String path = "../images/dino_jump_right.png";
-		// //// this.debuggable.debug(path);
-		// this.jumpRight[i] = new ImageIcon(path);
-		// } // 배열에 이동하는 이미지 추가
 
 	}
 
@@ -59,6 +53,7 @@ public class Player extends GameObj implements Direction, Attackable {
 			isRight = false;
 			imageFile = "../images/left_" + String.valueOf(charType) + "_" + String.valueOf((int) imageIdx % 3 + 1)
 					+ ".png";
+			System.out.println(imageFile);
 			setImage(new ImageIcon(SNL.class.getResource(imageFile)));
 			imageIdx += 0.3;
 			setPosX(getPosX() - dx);
@@ -84,10 +79,10 @@ public class Player extends GameObj implements Direction, Attackable {
 		case DOWN:
 			if (isSelecter)
 				setPosY(getPosY() + dy);
-			// else{
-			// TODO : ENTER THE DOOR
-			//
-			// }
+			 else{
+//			 TODO : ENTER THE DOOR
+			
+			 }
 			break;
 		}
 

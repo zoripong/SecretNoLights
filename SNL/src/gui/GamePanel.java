@@ -55,21 +55,22 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 	}
 
 	public void init() {
-		ImageIcon character = new ImageIcon(
-				SNL.class.getResource("../images/front_" + String.valueOf(charType) + ".png"));
-		p = new Player(50, 680, character, charType);
-
+		
 		background = new ImageIcon(SNL.class.getResource("../images/game_background.png")).getImage();
 
 		gameMusic = new Music("gameMusic.mp3", true);
 		gameMusic.start();
-
+		
+		// Map read
+		mMapReader = new MapReader(1);
+ 		isMapDraw = true;
+ 		
 		// Monster
 		ImageIcon monster = new ImageIcon(SNL.class.getResource("../images/front_3.png"));
 		monsters = new ArrayList<Monster>();
 		monsterThreads = new ArrayList<MonsterThread>();
 
-		monsters.add(new Monster(200, 680, monster));
+		monsters.add(new Monster(200, SNL.SCREEN_HEIGHT-40, monster));
 
 		for (int i = 0; i < monsters.size(); i++) {
 			monsterThreads.add(new MonsterThread(monsters.get(i), new AutoMovingListener() {
@@ -81,9 +82,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 			monsterThreads.get(i).start();
 		}
 		
-		// Map read
-		mMapReader = new MapReader(1);
- 		isMapDraw = true;
+		ImageIcon character = new ImageIcon(
+				SNL.class.getResource("../images/front_" + String.valueOf(charType) + ".png"));
+		p = new Player(50, SNL.SCREEN_HEIGHT-80, character, charType);
+
 	}
 
 	public void actionPerformed(ActionEvent ae) {
@@ -149,7 +151,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 
 	@Override
 	public void jumpTimeArrived(int jumpIdx, int jumpy) {
-		// TODO Auto-generated method stub
+		// TODO
+		// 벽돌과 부딪혔을 때 처리하는 부분
 		if (p.isRight())
 			p.addX(5);
 		else
@@ -168,7 +171,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 			p.setPosX(SNL.SCREEN_WIDTH - icon.getIconWidth());
 
 		p.setJumpIdx(jumpIdx);
-
+		
 	}
 
 	@Override

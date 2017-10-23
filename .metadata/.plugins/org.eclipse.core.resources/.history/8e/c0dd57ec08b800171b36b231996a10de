@@ -1,0 +1,89 @@
+package adapter;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+
+public class MapReader {
+
+	private int mStage;
+	private int mMapInfo[][];
+
+	public MapReader(int stage) {
+		mMapInfo = new int[18][20];
+		mStage = stage;
+	}
+
+	public void setStage() {
+		readFile();
+		int x = 0, y = 0;
+		
+		
+		for(int i = 0; i<mMapInfo.length; i++) {
+			for(int j = 0; j<mMapInfo[0].length; j++) {
+				if(mMapInfo[i][j] == 1) {
+					// 블록 설치
+				}
+				
+			}
+		}
+	}
+
+	private void readFile() {
+		String fileName = "./src/map/stage_" + mStage + ".txt";
+
+		String line = "";
+		StringBuffer buff = new StringBuffer();
+
+		try {
+			BufferedReader br = new BufferedReader(new FileReader(new File(fileName)));
+
+			while ((line = br.readLine()) != null) {
+				buff.append(line);
+			}
+			// System.out.println(buff);
+			br.close();
+
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		char[] mapData = buff.toString().toCharArray();
+
+		int cnt = 0;
+		for(int i = 0; i<mMapInfo.length; i++) {
+			for(int j = 0; j<mMapInfo[0].length; j++) {
+				switch(mapData[cnt++]) {
+				case 49:
+					mMapInfo[i][j] = 1;					
+					break;
+				case 48:
+					mMapInfo[i][j] = 0;					
+					break;
+				}
+
+			}
+		}
+		
+		
+		// TEST
+//		for(int i = 0; i<mMapInfo.length; i++) {
+//			for(int j = 0; j<mMapInfo[0].length; j++) {
+//				System.out.print(mMapInfo[i][j]+"  ");
+//			}
+//			System.out.println();
+//		}
+		// end of TEST
+		
+	}
+
+	public void nextStage() {
+		mStage += 1;
+		setStage();
+	}
+
+}

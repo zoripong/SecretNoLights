@@ -13,8 +13,6 @@ public class GameObj {
 		posX = x;
 		posY = y;
 		this.image = image;
-		System.out.println("이미지 가로는 ? "+image.getIconWidth());
-		System.out.println("이미지 세로는 ? "+image.getIconHeight());
 	}
 
 	public int getPosX() {

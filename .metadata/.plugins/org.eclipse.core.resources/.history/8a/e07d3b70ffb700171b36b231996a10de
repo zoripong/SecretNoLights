@@ -1,0 +1,36 @@
+package adapter;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+
+public class MapReader {
+	
+	private int mStage;
+	private int mMapInfo[][];
+	
+	public MapReader(int stage) {
+		mMapInfo = new int[18][20];
+		mStage = stage;
+	}
+	
+	public void setStage() {
+		readFile();
+	}
+	
+	private void readFile() {
+		String fileName = "../map/stage_"+mStage+".txt";
+		File file = new File(fileName);
+		
+		FileReader fr;
+		// sample.txt 파일을 읽을 FileReader 객체를 생성한다.
+		try {
+			
+			fr = new FileReader(file);
+		}catch(FileNotFoundException e) {
+			e.printStackTrace();
+		}
+
+
+	}
+}

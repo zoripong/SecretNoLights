@@ -28,7 +28,7 @@ public class Player extends GameObj implements Direction, Attackable {
 	private JumpListener jumpListener;
 
 	public Player(int x, int y, ImageIcon image, int charType) {
-		super(x, y, image);
+		super(x, y-image.getIconHeight(), image);
 		this.charType = charType;
 		isSelecter = false;
 		dx = 5;
@@ -46,7 +46,7 @@ public class Player extends GameObj implements Direction, Attackable {
 	}
 
 	public Player(int x, int y, ImageIcon image, int charType, int dx, int dy, boolean isSelecter) {
-		this(x, y, image, charType);
+		this(x, y+image.getIconHeight(), image, charType);
 		this.dx = dx;
 		this.dy = dy;
 		this.isSelecter = isSelecter;
@@ -169,11 +169,6 @@ public class Player extends GameObj implements Direction, Attackable {
 		int startY = getA()[1];
 		int endY = getB()[1];
 
-		System.out.println("startX : " + startX + "~ endX : " + endX);
-		System.out.println("startY : " + startY + "~ endY : " + endY);
-		System.out.println("objX : " + obj.getA()[0] + "~ " + obj.getD()[0]);
-
-		System.out.println("objY : " + obj.getA()[1] + "~ " + obj.getC()[1]);
 		if(isAttacking) {
 			return -1;
 		}

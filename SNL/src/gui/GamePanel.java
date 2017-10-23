@@ -15,6 +15,7 @@ import javax.swing.Timer;
 
 import org.omg.CosNaming.IstringHelper;
 
+import adapter.MapReader;
 import adapter.Music;
 import customInterface.AutoMovingListener;
 import customInterface.Direction;
@@ -35,8 +36,11 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 	Player p;
 	ArrayList<Monster> monsters;
 	ArrayList<MonsterThread> monsterThreads;
+	
 	private Music gameMusic;
-
+	private MapReader mMapReader;
+	private boolean isMapDraw;
+	
 	public GamePanel(FrameManager fm, int charType) {
 		this.fm = fm;
 		this.charType = charType;
@@ -53,7 +57,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 	public void init() {
 		ImageIcon character = new ImageIcon(
 				SNL.class.getResource("../images/front_" + String.valueOf(charType) + ".png"));
-		p = new Player(50, 550, character, charType);
+		p = new Player(50, 680, character, charType);
 
 		background = new ImageIcon(SNL.class.getResource("../images/game_background.png")).getImage();
 
@@ -65,7 +69,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 		monsters = new ArrayList<Monster>();
 		monsterThreads = new ArrayList<MonsterThread>();
 
-		monsters.add(new Monster(200, 550, monster));
+		monsters.add(new Monster(200, 680, monster));
 
 		for (int i = 0; i < monsters.size(); i++) {
 			monsterThreads.add(new MonsterThread(monsters.get(i), new AutoMovingListener() {
@@ -76,6 +80,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 			}));
 			monsterThreads.get(i).start();
 		}
+		
+		// Map read
+		mMapReader = new MapReader(1);
+ 		isMapDraw = true;
 	}
 
 	public void actionPerformed(ActionEvent ae) {
@@ -85,11 +93,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 		repaint();
 	}
 
-	// @Override
-	// public void updateUI() {
-	// // TODO Auto-generated method stub
-	// super.updateUI();
-	// }
 
 	public void paint(Graphics g) {
 		super.paint(g);
@@ -99,7 +102,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 			case -1:
 				// 몬스터 사망
 				//TODO : 시간 지속 시 사망으로,,
-				System.out.println("몬스터 사망");
+//				System.out.println("몬스터 사망");
 				monsterThreads.get(i).onStop();
 				monsterThreads.remove(i);
 				monsters.remove(i);
@@ -114,15 +117,23 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 				return;
 			}
 		}
+		// set the background
 		screenImage = createImage(SNL.SCREEN_WIDTH, SNL.SCREEN_HEIGHT);
 		Graphics screenGraphic = screenImage.getGraphics();
 		screenDraw(screenGraphic);
+		
 		g.drawImage(screenImage, 0, 0, null);
 
 		for (int i = 0; i < monsters.size(); i++)
 			monsters.get(i).draw(g);
 
 		p.draw(g);
+		
+		// set the Map
+		if(isMapDraw) {
+			mMapReader.setStage(g);
+//			isMapDraw = false;
+		}
 
 	}
 
@@ -183,33 +194,27 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		System.out.println(e.getKeyCode());
+//		System.out.println(e.getKeyCode());
 		switch (e.getKeyCode()) {
 		case KeyEvent.VK_LEFT:
 			p.move(LEFT);
-			System.out.println("left");
+//			System.out.println("left");
 			break;
 		case KeyEvent.VK_RIGHT:
 			p.move(RIGHT);
-			System.out.println("right");
+//			System.out.println("right");
 			break;
 		case KeyEvent.VK_UP:
 			if (p.isJumping())
 				return;
-
-			// p.move(UP);
 			jump();
-			// repaint();
-			System.out.println("jump");
 			break;
 		case KeyEvent.VK_DOWN:
 			p.move(DOWN);
-			System.out.println("down");
 			break;
 		case KeyEvent.VK_SPACE:
 			if (p.isAttack())
 				return;
-			System.out.println("space" + p.getPosX());
 			p.attack();
 			break;
 		}

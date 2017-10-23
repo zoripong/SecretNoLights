@@ -1,0 +1,20 @@
+package adapter;
+
+public class MapReader {
+	
+	private int mStage;
+	private int mMapInfo[][];
+	
+	public MapReader(int stage) {
+		mMapInfo = new int[18][20];
+		mStage = stage;
+	}
+	
+	public void setStage() {
+		
+	}
+	
+	private void readFile() {
+		
+	}
+}

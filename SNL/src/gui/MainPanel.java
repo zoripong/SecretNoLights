@@ -51,6 +51,7 @@ public class MainPanel extends JPanel implements ActionListener, KeyListener, Di
 		// selecter = new Player(SNL.SCREEN_WIDTH/2 + 200, 490, selectImage, 0, 5,
 		// true);
 		selecter = new Player(SNL.SCREEN_WIDTH / 2 + 220, GAME_START, selectImage, -1, 0, 80, true);
+		
 		background = new ImageIcon(SNL.class.getResource("../images/background.png")).getImage();
 
 		startImage = new ImageIcon(SNL.class.getResource("../images/start.png"));

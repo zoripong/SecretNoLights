@@ -18,7 +18,7 @@ public class Monster extends GameObj {
 
 	//TODO
 	public Monster(int x, int y, ImageIcon image) {
-		super(x, y, image);
+		super(x, y-image.getIconHeight(), image);
 		int num = (int) (Math.random() * 10);
 		dy = 0;
 		if (num % 2 == 0) {

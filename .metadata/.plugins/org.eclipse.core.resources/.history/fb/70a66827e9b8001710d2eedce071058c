@@ -31,7 +31,7 @@ public class JumpThread extends Thread {
 	public void run() {
 		while (this.jumpIdx < this.jumpingy.length) { // index < array length
 
-			this.jumpListener.jumpTimeArrived(this.jumpIdx, this.jumpingy[this.jumpIdx]); // TODO : isDownJumping 도 파라미터로 넘겨줌
+			this.jumpListener.jumpTimeArrived(this.jumpIdx, this.jumpingy[this.jumpIdx]);
 			// System.out.println(jumpIdx+" / "+jumpingy[this.jumpIdx]);
 			
 			if(jumpingy[this.jumpIdx] > 0)

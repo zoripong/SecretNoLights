@@ -128,7 +128,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 				} else {
 					p.minusLife();
 				}
-//				System.out.println("巢篮 格见 : " + p.getLife());
+				System.out.println("巢篮 格见 : " + p.getLife());
 
 				return;
 			}
@@ -212,9 +212,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 	@Override
 	public void keyReleased(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-//			System.out.println("AttackBefore" + p.getPosX());
+			System.out.println("AttackBefore" + p.getPosX());
 			p.attackEnd();
-//			System.out.println("AttackAfter" + p.getPosX());
+			System.out.println("AttackAfter" + p.getPosX());
 		}
 		p.setImage(new ImageIcon(SNL.class.getResource("../images/front_" + String.valueOf(charType) + ".png")));
 		isJumpingMove = false;

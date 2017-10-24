@@ -29,27 +29,41 @@ public class JumpThread extends Thread {
 	}
 
 	public void run() {
-		while (this.jumpIdx < this.jumpingy.length) { // index < array length
+		// for (jumpIdx = 1; jumpIdx < jumpingy.length; jumpIdx++) {
+		// this.jumpListener.jumpTimeArrived(jumpIdx, jumpingy[jumpIdx]);
+		// // System.out.println(jumpIdx+" / "+jumpingy[this.jumpIdx]);
+		// try {
+		// Thread.sleep(50);
+		// } catch (InterruptedException e) {
+		// e.printStackTrace();
+		// }
+		//
+		// }
 
-			this.jumpListener.jumpTimeArrived(this.jumpIdx, this.jumpingy[this.jumpIdx]); // TODO : isDownJumping 도 파라미터로 넘겨줌
-			// System.out.println(jumpIdx+" / "+jumpingy[this.jumpIdx]);
-			
-			if(jumpingy[this.jumpIdx] > 0)
-				isDownJumping = true;
-			else isDownJumping = false;
-			
-//			System.out.println(isDownJumping);
-			
+		jumpIdx = 1;
+		isDownJumping = false;
+		for (jumpIdx = 1; jumpIdx < jumpingUp.length; jumpIdx++) {
+			this.jumpListener.jumpTimeArrived(jumpIdx, jumpingUp[jumpIdx]);
+			  System.out.println(jumpIdx+" / "+jumpingUp[jumpIdx]);
+				
 			try {
 				Thread.sleep(50);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-
-			this.jumpIdx++;
+		}
+		
+		isDownJumping = true;
+		for (jumpIdx = 1; jumpIdx < jumpingDown.length; jumpIdx++) {
+			this.jumpListener.jumpTimeArrived(jumpIdx, jumpingDown[jumpIdx]);
+			System.out.println(jumpIdx+" / "+jumpingDown[jumpIdx]);
+			try {
+				Thread.sleep(50);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
 
-	
 		jumpListener.jumpTimeEnded();
 	}
 }

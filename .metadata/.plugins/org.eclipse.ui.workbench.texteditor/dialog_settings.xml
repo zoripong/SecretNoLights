@@ -6,29 +6,35 @@
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="Player" key="selection"/>
+		<item value="Arri" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
-			<item value="Player"/>
-			<item value="p"/>
-			<item value="door"/>
-			<item value="문"/>
-			<item value="jumpListener"/>
-			<item value="JumpT"/>
-			<item value="jumbTh"/>
-			<item value="draw"/>
-			<item value="680"/>
+			<item value="Arri"/>
+			<item value="arii"/>
+			<item value="Arr"/>
 			<item value="System."/>
-			<item value="syso"/>
-			<item value="몬스터"/>
-			<item value="몬스터사망"/>
-			<item value="change"/>
-			<item value="new Monster"/>
+			<item value="isBlock"/>
+			<item value="isRight()"/>
+			<item value="arri"/>
+			<item value="arr"/>
+			<item value="is"/>
+			<item value="isBlick"/>
+			<item value="setDx"/>
+			<item value="getD()"/>
+			<item value="getC()"/>
+			<item value="getB()"/>
+			<item value="getA()"/>
 		</list>
 		<list key="replacehistory">
+			<item value="getLocation(&apos;D&apos;)"/>
+			<item value="getLocation(&apos;C&apos;)"/>
+			<item value="getLocation(&apos;B&apos;)"/>
+			<item value="getLocation(&apos;A&apos;)"/>
+			<item value=".getY()"/>
+			<item value=".getX()"/>
 			<item value="mMainPanel"/>
 			<item value="Game_Frame"/>
 		</list>
@@ -37,7 +43,7 @@
 		<item value="309" key="DIALOG_WIDTH"/>
 		<item value="1|맑은 고딕|9.0|0|WINDOWS|1|-15|0|0|0|400|0|0|0|1|0|0|0|0|맑은 고딕" key="DIALOG_FONT_NAME"/>
 		<item value="444" key="DIALOG_HEIGHT"/>
-		<item value="815" key="DIALOG_X_ORIGIN"/>
-		<item value="228" key="DIALOG_Y_ORIGIN"/>
+		<item value="835" key="DIALOG_X_ORIGIN"/>
+		<item value="207" key="DIALOG_Y_ORIGIN"/>
 	</section>
 </section>

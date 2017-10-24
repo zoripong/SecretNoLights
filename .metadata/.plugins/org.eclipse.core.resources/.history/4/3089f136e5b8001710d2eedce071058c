@@ -57,7 +57,7 @@ public class Player extends GameObj implements Direction, Attackable {
 		case LEFT:
 			imageFile = "../images/left_" + String.valueOf(charType) + "_" + String.valueOf((int) imageIdx % 3 + 1)
 					+ ".png";
-//			System.out.println(imageFile);
+			System.out.println(imageFile);
 			setImage(new ImageIcon(SNL.class.getResource(imageFile)));
 			imageIdx += 0.3;
 
@@ -153,7 +153,7 @@ public class Player extends GameObj implements Direction, Attackable {
 	public void attack() {
 		// TODO 충돌처리
 		isAttacking = true;
-//		System.out.println("attack");
+		System.out.println("attack");
 		if (isRight)
 			setImage(new ImageIcon(
 					SNL.class.getResource("../images/attack_right_" + String.valueOf(charType) + ".png")));
@@ -183,21 +183,21 @@ public class Player extends GameObj implements Direction, Attackable {
 			return -1;
 		}
 		if (startX <= obj.getLocation('A').getX() && obj.getLocation('A').getX() <= endX && startY <= obj.getLocation('A').getY() && obj.getLocation('A').getY() <= endY) {
-//			System.out.println("1");
+			System.out.println("1");
 			return 1;
 		}
 
 		if (startX <= obj.getLocation('B').getX() && obj.getLocation('B').getX() <= endX && startY <= obj.getLocation('B').getY() && obj.getLocation('B').getY() <= endY) {
-//			System.out.println("2");
+			System.out.println("2");
 			return 1;
 		}
 
 		if (startX <= obj.getLocation('C').getX() && obj.getLocation('C').getX() <= endX && startY <= obj.getLocation('C').getY() && obj.getLocation('C').getY() <= endY) {
-//			System.out.println("3");
+			System.out.println("3");
 			return 1;
 		}
 		if (startX <= obj.getLocation('D').getX() && obj.getLocation('D').getX() <= endX && startY <= obj.getLocation('D').getY() && obj.getLocation('D').getY() <= endY) {
-//			System.out.println("4");
+			System.out.println("4");
 			return 1;
 		}
 

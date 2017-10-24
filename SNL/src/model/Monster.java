@@ -18,15 +18,14 @@ public class Monster extends GameObj {
 
 	//TODO
 	public Monster(int x, int y, ImageIcon image) {
-		super(x, y-image.getIconHeight()-10, image);
-		System.out.println(image.getIconHeight());
+		super(x, y, image);
 		int num = (int) (Math.random() * 10);
 		dy = 0;
 		if (num % 2 == 0) {
-			dx = 5;
+			dx = 3;
 			isRight = true;			
 		} else {
-			dx = -5;
+			dx = -3;
 			isRight = false;
 		}
 //		width = new ImageIcon(SNL.class.getResource("../images/front_monster.png")).getIconWidth();
@@ -44,11 +43,11 @@ public class Monster extends GameObj {
 
 		imageIdx += 0.3;
 		if (getPosX() > 900 - getWidth()) {
-			dx = -5;
+			dx *= -1;
 			isRight = false;
 		}
 		else if (getPosX() < 0) {
-			dx = 5;
+			dx *= -1;
 			isRight = true;
 		}
 		setPosX(getPosX() + dx);

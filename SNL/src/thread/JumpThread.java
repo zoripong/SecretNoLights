@@ -8,6 +8,8 @@ public class JumpThread extends Thread {
 
     boolean jumping=false;
     
+
+//    int jumpingy[]=new int[]{0, -41, -36, -25, -20, -15,-11,-11,-6, 0}; // y좌표 감소 후 재 증가 
     int jumpingy[]=new int[]{0, -41, -36, -25, -20, -15,-11,-11,-6, 0, 6, 11,11,15,20, 25, 36, 41}; // y좌표 감소 후 재 증가 
  
     

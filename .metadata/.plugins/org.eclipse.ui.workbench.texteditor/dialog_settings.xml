@@ -6,12 +6,16 @@
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="jumpListener" key="selection"/>
+		<item value="Player" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
+			<item value="Player"/>
+			<item value="p"/>
+			<item value="door"/>
+			<item value="문"/>
 			<item value="jumpListener"/>
 			<item value="JumpT"/>
 			<item value="jumbTh"/>
@@ -23,10 +27,6 @@
 			<item value="몬스터사망"/>
 			<item value="change"/>
 			<item value="new Monster"/>
-			<item value="width"/>
-			<item value="screen"/>
-			<item value="dra"/>
-			<item value="isRight"/>
 		</list>
 		<list key="replacehistory">
 			<item value="mMainPanel"/>

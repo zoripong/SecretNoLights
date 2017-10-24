@@ -8,6 +8,7 @@ import gui.SNL;
 import model.Monster;
 
 public class MonsterThread extends Thread implements JumpListener{
+	private final int BLOCK_WIDTH = 43;
 
 	Monster monster;
 	AutoMovingListener autoMovingListener;
@@ -59,17 +60,17 @@ public class MonsterThread extends Thread implements JumpListener{
 			//			icon = new ImageIcon(SNL.class.getResource("../images/jump_left_monster.png"));			
 		
 		monster.setImage(icon);
-		if (monster.getPosX() < 0) {
-			System.out.println("왼쪽 벽");
-			monster.setPosX(0);
+		
+		if (monster.getPosX() < BLOCK_WIDTH) {			
+			monster.setPosX(BLOCK_WIDTH);
 			monster.changeDirection();
 		}
-		if (monster.getPosX() > (SNL.SCREEN_WIDTH)) {
-			System.out.println("오른쪽 벽");
-			monster.setPosX(SNL.SCREEN_WIDTH);
+		
+		if (monster.getPosX() > (SNL.SCREEN_WIDTH - monster.getWidth() - BLOCK_WIDTH)) {			
+			monster.setPosX(SNL.SCREEN_WIDTH - monster.getWidth() - BLOCK_WIDTH);
 			monster.changeDirection();
 		}
-
+		
 		monster.setJumpIdx(jumpIdx);
 
 	}

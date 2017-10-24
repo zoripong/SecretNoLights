@@ -32,3 +32,11 @@
 1508778091778	Rename resource 'door_open1.png'
 1508779127824	Move file
 1508780346288	Delete element
+1508844293063	Delete element
+1508844298515	Rename resource 'door_close2.png'
+1508857752519	Rename method 'setMonsters'
+1508858743161	Rename method 'setStage'
+1508859156962	Delete element
+1508859170768	Copy file
+1508863785564	Delete element
+1508863890985	Move 'life.png' to 'Images'

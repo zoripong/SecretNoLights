@@ -7,49 +7,90 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 
+import customInterface.AutoMovingListener;
 import gui.SNL;
+import model.Location;
+import model.Monster;
+import thread.MonsterThread;
 
 public class MapReader {
 
 	private int mStage;
 	private int mMapInfo[][];
+	private ImageIcon doorImageIcon;
+	private ImageIcon blockImageIcon;
+	private int doorX;
+	private int doorY;
+
+	ArrayList<Monster> monsters;
+
+	private ArrayList<Location> monsterLocations;
 
 	public MapReader(int stage) {
-
 		mStage = stage;
+		blockImageIcon = new ImageIcon(SNL.class.getResource("../images/block.png"));
+
+		doorImageIcon = new ImageIcon(SNL.class.getResource("../images/door_close.png"));
+		readFile();
+		monsterLocations = new ArrayList<>();
 	}
 
-	public void setStage(Graphics g) {
-		Graphics2D g2d = (Graphics2D) g;
+	// 문과 몬스터의 좌표만 읽어들임
+	public void setStage() {
 
-		readFile();
 		int x = 0, y = 0;
 
-		ImageIcon blockImageIcon = new ImageIcon(SNL.class.getResource("../images/block.png"));
-		ImageIcon doorImageIcon = new ImageIcon(SNL.class.getResource("../images/door_close.png"));
+		monsterLocations.clear();
+
+		for (int i = 0; i < mMapInfo.length; i++) {
+			for (int j = 0; j < mMapInfo[0].length; j++) {
+
+				if (mMapInfo[i][j] == 2) {
+					doorX = x + 5;
+					doorY = y - doorImageIcon.getIconHeight() + 45;
+				} else if (mMapInfo[i][j] == 3) {
+					// monster
+					monsterLocations.add(new Location(x, y));
+					System.out.println(monsterLocations.size());
+				}
+
+				x += blockImageIcon.getIconWidth();
+
+			}
+			x = 0;
+			y += blockImageIcon.getIconHeight();
+		}
+
+	}
+
+	public void drawStage(Graphics g) {
+		Graphics2D g2d = (Graphics2D) g;
+
+		int x = 0, y = 0;
 
 		for (int i = 0; i < mMapInfo.length; i++) {
 			for (int j = 0; j < mMapInfo[0].length; j++) {
 				if (mMapInfo[i][j] == 1)
 					// 블록 설치
 					g2d.drawImage(blockImageIcon.getImage(), x, y, null);
-				else if (mMapInfo[i][j] == 2) {
-					g2d.drawImage(doorImageIcon.getImage(), x, y-doorImageIcon.getIconHeight()+40, null);
 
-				}
 				x += blockImageIcon.getIconWidth();
+
 			}
 			x = 0;
 			y += blockImageIcon.getIconHeight();
 		}
+
 	}
 
 	private void readFile() {
-		String fileName = "./src/map/stage_" + mStage + ".txt";
 
+		String fileName = "./src/map/stage_" + mStage + ".txt";
 		String line = "";
 		StringBuffer buff = new StringBuffer();
 
@@ -75,6 +116,9 @@ public class MapReader {
 		for (int i = 0; i < mMapInfo.length; i++) {
 			for (int j = 0; j < mMapInfo[0].length; j++) {
 				switch (mapData[cnt++]) {
+				case 51:
+					mMapInfo[i][j] = 3;
+					break;
 				case 50:
 					mMapInfo[i][j] = 2;
 					break;
@@ -93,5 +137,57 @@ public class MapReader {
 
 	public void nextStage() {
 		mStage++;
+		readFile(); // 파일 리드
+		setStage(); // 좌표 갱신
 	}
+
+	public double getDoorMid() {
+		return (double) (doorX + doorImageIcon.getIconWidth() / 2);
+	}
+
+	public int getDoorX() {
+		return doorX;
+	}
+
+	public int getDoorY() {
+		return doorY;
+	}
+
+	public void drawDoor(Graphics g, int isOpen) {
+		Graphics2D g2d = (Graphics2D) g;
+		ImageIcon doorImage;
+		if (isOpen == 1) {
+			doorImage = new ImageIcon(SNL.class.getResource("../images/door_open.png"));
+		} else {
+			doorImage = new ImageIcon(SNL.class.getResource("../images/door_close.png"));
+		}
+		g2d.drawImage(doorImage.getImage(), doorX, doorY, null);
+
+	}
+
+	public ArrayList<Monster> initMonsters() {
+		System.out.println(monsterLocations.size());
+		ImageIcon monster = new ImageIcon(SNL.class.getResource("../images/front_3.png"));
+		monsters = new ArrayList<Monster>();
+		for (int i = 0; i < monsterLocations.size(); i++) {
+			monsters.add(new Monster(monsterLocations.get(i).getX(), monsterLocations.get(i).getY(), monster));
+
+		}
+
+		return monsters;
+	}
+
+	public boolean isBlock(int coordX, int coordY) {
+
+//		System.out.println(
+//				"나머지 : " + coordX % blockImageIcon.getIconWidth() + "," + coordY % blockImageIcon.getIconHeight());
+//		System.out.println("(" + coordX / blockImageIcon.getIconWidth() + "," + coordY / blockImageIcon.getIconHeight()
+//				+ ") = " + mMapInfo[coordY / blockImageIcon.getIconHeight()][coordX / blockImageIcon.getIconWidth()]);
+
+		if (mMapInfo[coordY / blockImageIcon.getIconHeight()][coordX / blockImageIcon.getIconWidth()] == 1)
+			return true;
+		else
+			return false;
+	}
+
 }

@@ -1,0 +1,35 @@
+package model;
+
+public class Rectangle {
+	private Location startLocation;
+	private int width;
+	private int height;
+	
+	public Rectangle(Location startLocation, int width, int height) {
+		super();
+		this.startLocation = startLocation;
+		this.width = width;
+		this.height = height;
+	}
+	
+	public Location getStartLocation() {
+		return startLocation;
+	}
+	public void setStartLocation(Location startLocation) {
+		this.startLocation = startLocation;
+	}
+	public int getWidth() {
+		return width;
+	}
+	public void setWidth(int width) {
+		this.width = width;
+	}
+	public int getHeight() {
+		return height;
+	}
+	public void setHeight(int height) {
+		this.height = height;
+	}
+	
+	
+}

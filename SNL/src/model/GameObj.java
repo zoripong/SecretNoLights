@@ -8,7 +8,7 @@ public class GameObj {
 	private int posX;
 	private int posY;
 	private ImageIcon image;
-
+	
 	public GameObj(int x, int y, ImageIcon image) {
 		posX = x;
 		posY = y;
@@ -47,20 +47,23 @@ public class GameObj {
 		return image.getIconHeight();
 	}
 
-	public int[] getA() {
-		return new int[] { posX, posY };
-	}
-
-	public int[] getB() {
-		return new int[] { posX, posY + image.getIconHeight() };
-	}
-
-	public int[] getC() {
-		return new int[] { posX + image.getIconWidth(), posY + image.getIconHeight() };
-	}
-
-	public int[] getD() {
-		return new int[] { posX + image.getIconWidth(), posY };
+	public Location getLocation(char type) {
+		switch(type) {
+		case 'a':
+		case 'A':
+			return new Location( posX, posY );
+		case 'b':
+		case 'B':
+			return new Location( posX, posY + image.getIconHeight() );
+		case 'c':
+		case 'C':
+			return new Location( posX + image.getIconWidth(), posY + image.getIconHeight() );
+		case 'd':
+		case 'D':
+			return new Location( posX + image.getIconWidth(), posY );
+			default:
+				return null;
+		}
 	}
 
 }

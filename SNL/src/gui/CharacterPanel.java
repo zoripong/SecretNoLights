@@ -69,6 +69,10 @@ public class CharacterPanel extends JPanel implements ActionListener, KeyListene
 	public void keyPressed(KeyEvent e) {
 
 		switch (e.getKeyCode()) {
+		case KeyEvent.VK_ESCAPE:
+			gameMusic.close();
+			fm.changePanel("MainPanel");
+			break;
 		case KeyEvent.VK_LEFT:
 			if (charType > 0) {
 				charType--;

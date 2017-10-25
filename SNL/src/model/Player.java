@@ -28,7 +28,7 @@ public class Player extends GameObj implements Direction, Attackable {
 	int jumpIdx = 0;
 	private int charType;
 	private int life;
-	
+
 	private JumpListener jumpListener;
 
 	public Player(int x, int y, ImageIcon image, int charType, MapReader mapReader) {
@@ -44,26 +44,31 @@ public class Player extends GameObj implements Direction, Attackable {
 		life = 5;
 	}
 
-	public Player(int x, int y, ImageIcon image, int charType, int dx, int dy, boolean isSelecter) {
+	public Player(int x, int y, ImageIcon image, int charType, int dx, int dy) {
 		this(x, y + image.getIconHeight(), image, charType, null);
 		this.dx = dx;
 		this.dy = dy;
-		this.isSelecter = isSelecter;
+		this.isSelecter = true;
 	}
 
 	public void move(int direction) {
 		String imageFile;
+		System.out.println(getPosY());
 		switch (direction) {
 		case LEFT:
 			imageFile = "../images/left_" + String.valueOf(charType) + "_" + String.valueOf((int) imageIdx % 3 + 1)
 					+ ".png";
-//			System.out.println(imageFile);
+			// System.out.println(imageFile);
 			setImage(new ImageIcon(SNL.class.getResource(imageFile)));
 			imageIdx += 0.3;
 
 			if (getPosX() < BLOCK_WIDTH)
 				setPosX(BLOCK_WIDTH);
-			if(!(mMapReader.isBlock(getLocation('A').getX(), getLocation('B').getY()))){
+
+			// 블록 좌우 충돌
+			if (!(mMapReader.isBlock(getLocation('A').getX(), getLocation('A').getY())
+					|| mMapReader.isBlock(getLocation('B').getX(), getLocation('B').getY()))) {
+//				System.out.println("충돌중");
 				setPosX(getPosX() - dx);
 			}
 			break;
@@ -72,11 +77,15 @@ public class Player extends GameObj implements Direction, Attackable {
 					+ ".png";
 			setImage(new ImageIcon(SNL.class.getResource(imageFile)));
 			imageIdx += 0.3;
+
 			if (getPosX() > (SNL.SCREEN_WIDTH - getWidth() - BLOCK_WIDTH))
 				setPosX(SNL.SCREEN_WIDTH - getWidth() - BLOCK_WIDTH);
 			
-			if(!(mMapReader.isBlock(getLocation('D').getX(), getLocation('C').getY())))
+			if (!(mMapReader.isBlock(getLocation('C').getX(), getLocation('C').getY())
+					|| mMapReader.isBlock(getLocation('D').getX(), getLocation('D').getY()))) {
+//				System.out.println("충돌중");
 				setPosX(getPosX() + dx);
+			}
 			break;
 
 		case UP:
@@ -86,7 +95,7 @@ public class Player extends GameObj implements Direction, Attackable {
 		case DOWN:
 			if (isSelecter)
 				setPosY(getPosY() + dy);
-			
+
 			break;
 		}
 
@@ -105,11 +114,11 @@ public class Player extends GameObj implements Direction, Attackable {
 	public void setDy(int dy) {
 		this.dy = dy;
 	}
-	
+
 	public int getDx() {
 		return dx;
 	}
-	
+
 	public int getDy() {
 		return dy;
 	}
@@ -125,7 +134,7 @@ public class Player extends GameObj implements Direction, Attackable {
 	public boolean isRight() {
 		return isRight;
 	}
-	
+
 	public void setDirection(boolean isRight) {
 		this.isRight = isRight;
 	}
@@ -153,7 +162,7 @@ public class Player extends GameObj implements Direction, Attackable {
 	public void attack() {
 		// TODO 충돌처리
 		isAttacking = true;
-//		System.out.println("attack");
+		// System.out.println("attack");
 		if (isRight)
 			setImage(new ImageIcon(
 					SNL.class.getResource("../images/attack_right_" + String.valueOf(charType) + ".png")));
@@ -182,42 +191,46 @@ public class Player extends GameObj implements Direction, Attackable {
 		if (isAttacking) {
 			return -1;
 		}
-		if (startX <= obj.getLocation('A').getX() && obj.getLocation('A').getX() <= endX && startY <= obj.getLocation('A').getY() && obj.getLocation('A').getY() <= endY) {
-//			System.out.println("1");
+		if (startX <= obj.getLocation('A').getX() && obj.getLocation('A').getX() <= endX
+				&& startY <= obj.getLocation('A').getY() && obj.getLocation('A').getY() <= endY) {
+			// System.out.println("1");
 			return 1;
 		}
 
-		if (startX <= obj.getLocation('B').getX() && obj.getLocation('B').getX() <= endX && startY <= obj.getLocation('B').getY() && obj.getLocation('B').getY() <= endY) {
-//			System.out.println("2");
+		if (startX <= obj.getLocation('B').getX() && obj.getLocation('B').getX() <= endX
+				&& startY <= obj.getLocation('B').getY() && obj.getLocation('B').getY() <= endY) {
+			// System.out.println("2");
 			return 1;
 		}
 
-		if (startX <= obj.getLocation('C').getX() && obj.getLocation('C').getX() <= endX && startY <= obj.getLocation('C').getY() && obj.getLocation('C').getY() <= endY) {
-//			System.out.println("3");
+		if (startX <= obj.getLocation('C').getX() && obj.getLocation('C').getX() <= endX
+				&& startY <= obj.getLocation('C').getY() && obj.getLocation('C').getY() <= endY) {
+			// System.out.println("3");
 			return 1;
 		}
-		if (startX <= obj.getLocation('D').getX() && obj.getLocation('D').getX() <= endX && startY <= obj.getLocation('D').getY() && obj.getLocation('D').getY() <= endY) {
-//			System.out.println("4");
+		if (startX <= obj.getLocation('D').getX() && obj.getLocation('D').getX() <= endX
+				&& startY <= obj.getLocation('D').getY() && obj.getLocation('D').getY() <= endY) {
+			// System.out.println("4");
 			return 1;
 		}
 
 		return 0;
 	}
-	
+
 	public void addLife() {
 		life++;
 	}
-	
+
 	public void minusLife() {
 		life--;
 	}
-	
+
 	public void setLife(int life) {
 		this.life = life;
 	}
-	
+
 	public int getLife() {
 		return life;
 	}
-	
+
 }

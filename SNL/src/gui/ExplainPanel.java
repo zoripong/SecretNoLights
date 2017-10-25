@@ -2,6 +2,7 @@ package gui;
 
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.RenderingHints.Key;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -11,9 +12,11 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-public class ExplainPanel extends JPanel implements ActionListener, KeyListener{
+public class ExplainPanel extends JPanel implements ActionListener, KeyListener {
+	private final int MAX_PAGE = 2;
 	FrameManager fm;
-	
+
+	private int page;
 	Image background;
 	Image screenImage;
 	Timer t = new Timer(10, this);
@@ -21,39 +24,56 @@ public class ExplainPanel extends JPanel implements ActionListener, KeyListener{
 	public ExplainPanel(FrameManager fm) {
 		this.fm = fm;
 		init();
-		
+
 		setLayout(null);
 		setFocusable(true);
 		addKeyListener(this);
 	}
-	private void init() {
-		background = new ImageIcon(SNL.class.getResource("../images/explainGameBackground.png")).getImage();
 
+	private void init() {
+		page = 1;
+		background = new ImageIcon(SNL.class.getResource("../images/howto_detail_" + page + ".jpg")).getImage();
 	}
+
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
-		switch(e.getKeyCode()) {
-		case KeyEvent.VK_ENTER:
-		case KeyEvent.VK_SPACE:
+		switch (e.getKeyCode()) {
+		case KeyEvent.VK_RIGHT:
+			if (page >= MAX_PAGE) {
+				fm.changePanel("MainPanel");
+			} else {
+				page++;
+			}
+			break;
+		case KeyEvent.VK_LEFT:
+			if(page > 1)
+				page--;
+			break;
+		case KeyEvent.VK_ESCAPE:
 			fm.changePanel("MainPanel");
 			break;
+			
 		}
-		
+
 	}
+
 	@Override
 	public void keyReleased(KeyEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
+
 	@Override
 	public void keyTyped(KeyEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 	public void paint(Graphics g) {
 		super.paint(g);
+		background = new ImageIcon(SNL.class.getResource("../images/howto_detail_" + page + ".jpg")).getImage();
+
 		screenImage = createImage(SNL.SCREEN_WIDTH, SNL.SCREEN_HEIGHT);
 		Graphics screenGraphic = screenImage.getGraphics();
 		screenDraw(screenGraphic);
@@ -65,10 +85,11 @@ public class ExplainPanel extends JPanel implements ActionListener, KeyListener{
 		paintComponents(g);
 		this.repaint();
 	}
+
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

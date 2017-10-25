@@ -6,29 +6,30 @@
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="Arri" key="selection"/>
+		<item value="count" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
-			<item value="Arri"/>
-			<item value="arii"/>
-			<item value="Arr"/>
-			<item value="System."/>
+			<item value="count"/>
+			<item value="sleep"/>
+			<item value="move()"/>
+			<item value="move"/>
+			<item value="ended"/>
+			<item value="setJump"/>
+			<item value="setJumped"/>
+			<item value="Sys"/>
+			<item value="setStage"/>
+			<item value="좌우"/>
+			<item value=" getLocation"/>
+			<item value="getLocation"/>
+			<item value="arrive"/>
 			<item value="isBlock"/>
-			<item value="isRight()"/>
-			<item value="arri"/>
-			<item value="arr"/>
-			<item value="is"/>
-			<item value="isBlick"/>
-			<item value="setDx"/>
-			<item value="getD()"/>
-			<item value="getC()"/>
-			<item value="getB()"/>
-			<item value="getA()"/>
+			<item value="stopJum"/>
 		</list>
 		<list key="replacehistory">
+			<item value="p.getLocation"/>
 			<item value="getLocation(&apos;D&apos;)"/>
 			<item value="getLocation(&apos;C&apos;)"/>
 			<item value="getLocation(&apos;B&apos;)"/>
@@ -43,7 +44,7 @@
 		<item value="309" key="DIALOG_WIDTH"/>
 		<item value="1|맑은 고딕|9.0|0|WINDOWS|1|-15|0|0|0|400|0|0|0|1|0|0|0|0|맑은 고딕" key="DIALOG_FONT_NAME"/>
 		<item value="444" key="DIALOG_HEIGHT"/>
-		<item value="835" key="DIALOG_X_ORIGIN"/>
-		<item value="207" key="DIALOG_Y_ORIGIN"/>
+		<item value="1526" key="DIALOG_X_ORIGIN"/>
+		<item value="195" key="DIALOG_Y_ORIGIN"/>
 	</section>
 </section>

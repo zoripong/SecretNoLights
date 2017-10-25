@@ -42,7 +42,7 @@ public class MonsterThread extends Thread implements JumpListener{
 	}
 	
 	@Override
-	public void jumpTimeArrived(int jumpIdx, int jumpy) {
+	public void jumpTimeArrived(int jumpIdx, int jumpy, boolean isDown) {
 		// TODO Auto-generated method stub
 //		if (monster.isRight())
 //			p.addX(5);
@@ -76,7 +76,7 @@ public class MonsterThread extends Thread implements JumpListener{
 	}
 
 	@Override
-	public void jumpTimeEnded() {
+	public void jumpTimeEnded(boolean isStop) {
 		monster.setImage(new ImageIcon(SNL.class.getResource("../images/front_monster.png")));
 		monster.setJumpIdx(0);
 

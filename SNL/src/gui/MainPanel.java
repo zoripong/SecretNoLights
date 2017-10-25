@@ -18,8 +18,8 @@ import model.Player;
 import thread.JumpThread;
 
 public class MainPanel extends JPanel implements ActionListener, KeyListener, Direction {
-	private final int GAME_START = 410;
-	private final int EXPLAIN_GAME = 490;
+	private final int GAME_START = 450;
+	private final int EXPLAIN_GAME = 560;
 	FrameManager fm;
 
 	Image background;
@@ -50,7 +50,7 @@ public class MainPanel extends JPanel implements ActionListener, KeyListener, Di
 		ImageIcon selectImage = new ImageIcon(SNL.class.getResource("../images/selecter.png"));
 		// selecter = new Player(SNL.SCREEN_WIDTH/2 + 200, 490, selectImage, 0, 5,
 		// true);
-		selecter = new Player(SNL.SCREEN_WIDTH / 2 + 220, GAME_START, selectImage, -1, 0, 80, true);
+		selecter = new Player(SNL.SCREEN_WIDTH / 2 + 220, GAME_START+10, selectImage, -1, 0, EXPLAIN_GAME-GAME_START);
 		
 		background = new ImageIcon(SNL.class.getResource("../images/background.png")).getImage();
 
@@ -70,8 +70,8 @@ public class MainPanel extends JPanel implements ActionListener, KeyListener, Di
 		g.drawImage(screenImage, 0, 0, null);
 		selecter.draw(g);
 		
-		g.drawImage(startImage.getImage(), SNL.SCREEN_WIDTH/2 - startImage.getIconWidth()/2 -20, GAME_START - 40, null);
-		g.drawImage(explainImage.getImage(), SNL.SCREEN_WIDTH/2 - explainImage.getIconWidth()/2 -20, EXPLAIN_GAME - 30, null);
+		g.drawImage(startImage.getImage(), SNL.SCREEN_WIDTH/2 - startImage.getIconWidth()/2 -20, GAME_START, null);
+		g.drawImage(explainImage.getImage(), SNL.SCREEN_WIDTH/2 - explainImage.getIconWidth()/2 -20, EXPLAIN_GAME, null);
 	}
 
 	public void screenDraw(Graphics g) {
@@ -85,19 +85,19 @@ public class MainPanel extends JPanel implements ActionListener, KeyListener, Di
 		switch (e.getKeyCode()) {
 		case KeyEvent.VK_UP:
 			System.out.println(selecter.getPosY() + ">" + GAME_START);
-			if (selecter.getPosY() > GAME_START)
+			if (selecter.getPosY() -10> GAME_START)
 				selecter.move(UP);
 			break;
 		case KeyEvent.VK_DOWN:
 			System.out.println(selecter.getPosY() + "<" + EXPLAIN_GAME);
-			if (selecter.getPosY() < EXPLAIN_GAME)
+			if (selecter.getPosY() -10< EXPLAIN_GAME)
 				selecter.move(DOWN);
 			break;
 		case KeyEvent.VK_SPACE:
 		case KeyEvent.VK_ENTER:
 			// TODO 패널 전환
 			gameMusic.close();
-			if (selecter.getPosY() == GAME_START) {
+			if (selecter.getPosY()-10 == GAME_START) {
 				fm.changePanel("CharacterPanel");
 			} else {
 				fm.changePanel("ExplainPanel");

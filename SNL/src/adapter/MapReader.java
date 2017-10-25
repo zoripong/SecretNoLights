@@ -31,6 +31,7 @@ public class MapReader {
 
 	private ArrayList<Location> monsterLocations;
 
+
 	public MapReader(int stage) {
 		mStage = stage;
 		blockImageIcon = new ImageIcon(SNL.class.getResource("../images/block.png"));
@@ -56,7 +57,7 @@ public class MapReader {
 				} else if (mMapInfo[i][j] == 3) {
 					// monster
 					monsterLocations.add(new Location(x, y));
-					System.out.println(monsterLocations.size());
+					// System.out.println(monsterLocations.size());
 				}
 
 				x += blockImageIcon.getIconWidth();
@@ -132,7 +133,6 @@ public class MapReader {
 
 			}
 		}
-
 	}
 
 	public void nextStage() {
@@ -166,7 +166,6 @@ public class MapReader {
 	}
 
 	public ArrayList<Monster> initMonsters() {
-		System.out.println(monsterLocations.size());
 		ImageIcon monster = new ImageIcon(SNL.class.getResource("../images/front_3.png"));
 		monsters = new ArrayList<Monster>();
 		for (int i = 0; i < monsterLocations.size(); i++) {
@@ -179,15 +178,72 @@ public class MapReader {
 
 	public boolean isBlock(int coordX, int coordY) {
 
-//		System.out.println(
-//				"나머지 : " + coordX % blockImageIcon.getIconWidth() + "," + coordY % blockImageIcon.getIconHeight());
-//		System.out.println("(" + coordX / blockImageIcon.getIconWidth() + "," + coordY / blockImageIcon.getIconHeight()
-//				+ ") = " + mMapInfo[coordY / blockImageIcon.getIconHeight()][coordX / blockImageIcon.getIconWidth()]);
-
+		// System.out.println(
+		// "나머지 : " + coordX % blockImageIcon.getIconWidth() + "," + coordY %
+		// blockImageIcon.getIconHeight());
+		// System.out.println("(" + coordX / blockImageIcon.getIconWidth() + "," +
+		// coordY / blockImageIcon.getIconHeight()
+		// + ") = " + mMapInfo[coordY / blockImageIcon.getIconHeight()][coordX /
+		// blockImageIcon.getIconWidth()]);
 		if (mMapInfo[coordY / blockImageIcon.getIconHeight()][coordX / blockImageIcon.getIconWidth()] == 1)
 			return true;
 		else
 			return false;
 	}
+
+	public boolean isUnderBlock(int coordX, int coordY) {
+		
+		if (mMapInfo[coordY / blockImageIcon.getIconHeight()+1][coordX / blockImageIcon.getIconWidth()] == 1)
+			return true;
+		else
+			return false;
+	}
+	// TODO : // 끝에 블록 아니면 점프하면서 부딪히면 안돼용,,
+	// public boolean isAmongBlcok(int coordX, int coordY) {
+	//
+	// // System.out.println("(coord/location)="+coordY+"/"+p.get);
+	//
+	// // System.out.println("y좌표"+p.getLocation('A').getY()/
+	// // blockImageIcon.getIconHeight());
+	// if (coordX / blockImageIcon.getIconWidth() >= 0
+	// && coordX / blockImageIcon.getIconWidth() < mMapInfo[0].length) {
+	// System.out.println("----------------------------------------------------");
+	// System.out.println("1");
+	// System.out.println("coordY : " + coordY);
+	// System.out.println("idx : " + (coordY-blockImageIcon.getIconHeight()) /
+	// blockImageIcon.getIconHeight()+1));
+	// System.out.println("----------------------------------------------------");
+	// if (mMapInfo[(coordY - blockImageIcon.getIconHeight()) /
+	// blockImageIcon.getIconHeight()+1][coordX / blockImageIcon.getIconWidth() - 2]
+	// == 1
+	// && mMapInfo[(coordY- blockImageIcon.getIconHeight()) /
+	// blockImageIcon.getIconHeight()+1][coordX / blockImageIcon.getIconWidth()] ==
+	// 1) {
+	// System.out.println("x=" + coordY / blockImageIcon.getIconHeight() + "y="
+	// + (coordX / blockImageIcon.getIconWidth() - 2) + ","
+	// + mMapInfo[coordY / blockImageIcon.getIconHeight()][coordX /
+	// blockImageIcon.getIconWidth() - 2]);
+	// System.out.println("x=" + coordY / blockImageIcon.getIconHeight() + "y="
+	// + (coordX / blockImageIcon.getIconWidth()) + ","
+	// + mMapInfo[coordY / blockImageIcon.getIconHeight()][coordX /
+	// blockImageIcon.getIconWidth()]);
+	//
+	// return true;
+	// }
+	// } else if (coordX / blockImageIcon.getIconWidth() < 0) {
+	// System.out.println("2");
+	// if (mMapInfo[coordY / blockImageIcon.getIconHeight()][coordX /
+	// blockImageIcon.getIconWidth() + 1] == 1)
+	// return true;
+	// } else if (coordX / blockImageIcon.getIconWidth() >= mMapInfo[0].length) {
+	// System.out.println("3");
+	// if (mMapInfo[coordY / blockImageIcon.getIconHeight()][coordX /
+	// blockImageIcon.getIconWidth() - 1] == 1)
+	// return true;
+	// }
+	//
+	// return false;
+	//
+	// }
 
 }

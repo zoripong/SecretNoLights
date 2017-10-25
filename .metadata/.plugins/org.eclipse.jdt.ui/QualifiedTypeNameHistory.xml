@@ -26,7 +26,6 @@
 <fullyQualifiedTypeName name="model.Direction"/>
 <fullyQualifiedTypeName name="gui.SNL"/>
 <fullyQualifiedTypeName name="customInterface.Attackable"/>
-<fullyQualifiedTypeName name="thread.JumpThread"/>
 <fullyQualifiedTypeName name="adapter.Music"/>
 <fullyQualifiedTypeName name="model.Player"/>
 <fullyQualifiedTypeName name="javax.swing.JButton"/>
@@ -37,10 +36,8 @@
 <fullyQualifiedTypeName name="gui.CharacterPanel"/>
 <fullyQualifiedTypeName name="org.omg.CosNaming.IstringHelper"/>
 <fullyQualifiedTypeName name="javax.swing.JPanel"/>
-<fullyQualifiedTypeName name="java.awt.RenderingHints.Key"/>
 <fullyQualifiedTypeName name="java.awt.event.KeyListener"/>
 <fullyQualifiedTypeName name="java.awt.event.ActionListener"/>
-<fullyQualifiedTypeName name="java.awt.event.KeyEvent"/>
 <fullyQualifiedTypeName name="model.GameObj"/>
 <fullyQualifiedTypeName name="thread.MonsterThread"/>
 <fullyQualifiedTypeName name="customInterface.AutoMovingListener"/>
@@ -55,9 +52,12 @@
 <fullyQualifiedTypeName name="adapter.MapReader"/>
 <fullyQualifiedTypeName name="java.awt.Image"/>
 <fullyQualifiedTypeName name="java.awt.Graphics2D"/>
-<fullyQualifiedTypeName name="java.lang.InterruptedException"/>
 <fullyQualifiedTypeName name="model.Location"/>
 <fullyQualifiedTypeName name="java.lang.reflect.Array"/>
 <fullyQualifiedTypeName name="java.util.ArrayList"/>
 <fullyQualifiedTypeName name="model.Monster"/>
+<fullyQualifiedTypeName name="thread.JumpThread"/>
+<fullyQualifiedTypeName name="java.lang.InterruptedException"/>
+<fullyQualifiedTypeName name="java.awt.RenderingHints.Key"/>
+<fullyQualifiedTypeName name="java.awt.event.KeyEvent"/>
 </qualifiedTypeNameHistroy>

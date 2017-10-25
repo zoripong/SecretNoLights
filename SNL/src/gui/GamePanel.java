@@ -27,6 +27,7 @@ import thread.MonsterThread;
 
 public class GamePanel extends JPanel implements ActionListener, KeyListener, Direction, JumpListener {
 	private final int BLOCK_WIDTH = 43;
+	private final int BLOCK_HEIGHT = 40;
 
 	private FrameManager fm;
 	private int charType;
@@ -41,7 +42,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 	private MapReader mMapReader;
 	private boolean isMapDraw;
 	private int isOpenDoor;
+
 	private boolean isJumpingMove;
+	private JumpThread jumpThread;
 
 	ArrayList<Monster> monsters;
 	ArrayList<MonsterThread> monsterThreads;
@@ -89,6 +92,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 	}
 
 	public void paint(Graphics g) {
+		// System.out.println(p.isJumping());
 		super.paint(g);
 		if (isOpenDoor == 2) {
 			removeMonsters();
@@ -128,7 +132,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 				} else {
 					p.minusLife();
 				}
-//				System.out.println("남은 목숨 : " + p.getLife());
+				// System.out.println("남은 목숨 : " + p.getLife());
 
 				return;
 			}
@@ -166,20 +170,61 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 	}
 
 	public void jump() {
-		new JumpThread(this).start();
+		jumpThread = new JumpThread(this);
+		jumpThread.start();
 	}
 
 	@Override
-	public void jumpTimeArrived(int jumpIdx, int jumpy) {
+	public void jumpTimeArrived(int jumpIdx, int jumpy, boolean isDown) {
 		// TODO
 		// 벽돌과 부딪혔을 때 처리하는 부분
-		if (isJumpingMove) {
-			if (p.isRight())
-				p.addX(p.getDx());
-			else
-				p.addX(p.getDx() * -1);
+		if (isDown) { // 아래에 벽과 겹칠 때 . . .
+			System.out.println(mMapReader.isUnderBlock(p.getLocation('B').getX(), p.getLocation('C').getY()));
+			if (mMapReader.isUnderBlock(p.getLocation('C').getX(), p.getLocation('C').getY())
+					|| mMapReader.isUnderBlock(p.getLocation('B').getX(), p.getLocation('B').getY())) {
+				// try {
+				// Thread.sleep(1000);
+				// } catch (InterruptedException e) {
+				// e.printStackTrace();
+				// }
+				System.out.println("점프 끝..!");
+				jumpThread.stopJump();
+
+			}
 		}
-		
+
+		// 블록 좌우 충돌
+
+		if (isJumpingMove) {
+			if (p.isRight()) {
+				int cx = p.getLocation('C').getX();
+				int cy = p.getLocation('C').getY();
+				int dx = p.getLocation('D').getX();
+				int dy = p.getLocation('D').getY();
+
+				if (!(mMapReader.isBlock(cx, cy) || mMapReader.isBlock(dx, dy))) {
+					System.out.println((cx / 45) + "/" + (cy / 40) + "/" + (dx / 45) + "/" + (dy / 40));
+					System.out.println("충돌중");
+					// setPosX(getPosX() + dx);
+					// 벽돌이 양옆에 벽돌이 있는지 check
+					p.addX(p.getDx());
+				}
+			} else {
+				if (!(mMapReader.isBlock(p.getLocation('A').getX(), p.getLocation('A').getY())
+						|| mMapReader.isBlock(p.getLocation('B').getX(), p.getLocation('B').getY()))) {
+					// System.out.println("충돌중");
+					// setPosX(getPosX() - dx);
+					p.addX(p.getDx() * -1);
+				}
+			}
+		}
+
+		if (p.getPosX() > (SNL.SCREEN_WIDTH - p.getWidth() - BLOCK_WIDTH))
+			p.setPosX(SNL.SCREEN_WIDTH - p.getWidth() - BLOCK_WIDTH);
+
+		if (p.getPosX() < BLOCK_WIDTH)
+			p.setPosX(BLOCK_WIDTH);
+
 		p.addY(jumpy);
 		ImageIcon icon;
 		if (p.isRight())
@@ -188,20 +233,21 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 			icon = new ImageIcon(SNL.class.getResource("../images/jump_left_" + String.valueOf(charType) + ".png"));
 
 		p.setImage(icon);
-		if (p.getPosX() > (SNL.SCREEN_WIDTH - p.getWidth() - BLOCK_WIDTH))
-			p.setPosX(SNL.SCREEN_WIDTH - p.getWidth() - BLOCK_WIDTH);
-
-		if (p.getPosX() < BLOCK_WIDTH)
-			p.setPosX(BLOCK_WIDTH);
 
 		p.setJumpIdx(jumpIdx);
 
 	}
 
 	@Override
-	public void jumpTimeEnded() {
+	public void jumpTimeEnded(boolean isStop) {
 		p.setImage(new ImageIcon(SNL.class.getResource("../images/front_" + String.valueOf(charType) + ".png")));
 		p.setJumpIdx(0);
+
+		if (isStop) {
+			System.out.println(p.getPosY());
+			p.setPosY(p.getPosY() + p.getPosY() % 40 );
+			System.out.println(p.getPosY());
+		}
 	}
 
 	@Override
@@ -212,9 +258,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 	@Override
 	public void keyReleased(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-//			System.out.println("AttackBefore" + p.getPosX());
+			// System.out.println("AttackBefore" + p.getPosX());
 			p.attackEnd();
-//			System.out.println("AttackAfter" + p.getPosX());
+			// System.out.println("AttackAfter" + p.getPosX());
 		}
 		p.setImage(new ImageIcon(SNL.class.getResource("../images/front_" + String.valueOf(charType) + ".png")));
 		isJumpingMove = false;

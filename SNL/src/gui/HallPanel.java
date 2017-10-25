@@ -27,7 +27,7 @@ public class HallPanel extends JPanel implements ActionListener, KeyListener{
 		addKeyListener(this);
 	}
 	private void init() {
-		background = new ImageIcon(SNL.class.getResource("../images/explainGameBackground.png")).getImage();
+		background = new ImageIcon(SNL.class.getResource("../images/howto_detail_1.jpg")).getImage();
 
 	}
 	@Override

@@ -1,16 +1,5 @@
 package gui;
 
-//http://lacti.me/2011/11/06/flight-game-with-java-3/
-/*
-// * 딜레이	
- *  private void playerShot() {
-        if (shotTick < System.currentTimeMillis()) {
-            shotTick = System.currentTimeMillis() + 200;
-            bullets.add(new Bullet(shipPos.x, shipPos.y - (ship.getHeight(this) / 2 + 8), -1));
-        }
-    }
- * 
- */
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.RenderingHints.Key;
@@ -114,7 +103,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 
 		keyCount = 0;
 
-
 		startCrush = new ArrayList<>();
 		startCrushes = new ArrayList<>();
 		crushCount = new ArrayList<>();
@@ -140,7 +128,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 			Rectangle2D a = new Rectangle2D.Double(p.getPosX(), p.getPosY() + 3, front.getIconWidth(),
 					front.getIconHeight());
 
-			if ((!mMapReader.isCrush(a))) {
+			if ((!mMapReader.isCrush(a)) && !p.isAttack()) {
 				isJumpable = false;
 				p.setPosY(p.getPosY() + 2);
 				if (p.isRight()) {
@@ -176,37 +164,37 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 
 				crushCount.set(i, crushCount.get(i) + 1);
 				// 공격중
-				if (isCrush == false) {
-					isCrush = true;
-					if ((System.currentTimeMillis() - startCrush.get(i)) >= 250) {
-						startCrush.set(i, startCrush.get(i) + 250);
-						if (p.isAttack()) {
-							if (p.isRight()) {
-								if (p.getPosX() < monster.getX()) {
 
-									crushMonster(i);
-								} else {
-									// 플레이어 사망
-									if (crushPlayer())
-										return;
-								}
+				isCrush = true;
+				System.out.println("코코");
+				if ((System.currentTimeMillis() - startCrush.get(i)) >= 250) {
+					startCrush.set(i, startCrush.get(i) + 250);
+					System.out.println("충돌로롤롤");
+					if (p.isAttack()) {
+						if (p.isRight()) {
+							if (p.getPosX() < monster.getX()) {
+
+								crushMonster(i);
 							} else {
-								if (p.getPosX() > monster.getX()) {
-									// 몬스터 사망
-									crushMonster(i);
-								} else {
-									// 플레이어 사망
-									if (crushPlayer())
-										return;
-								}
+								// 플레이어 사망
+								if (crushPlayer())
+									return;
 							}
 						} else {
+							if (p.getPosX() > monster.getX()) {
+								// 몬스터 사망
 
-							if (crushPlayer())
-								return;
+								crushMonster(i);
+							} else {
+								// 플레이어 사망
+								if (crushPlayer())
+									return;
+							}
 						}
+					} else {
+						if (crushPlayer())
+							return;
 					}
-
 				}
 
 			} else {
@@ -351,6 +339,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 		case KeyEvent.VK_SPACE:
 			if (p.isAttack())
 				return;
+			System.out.println(keyCount);
+
+			keyCount += 1;
 			p.attack();
 			break;
 		}
@@ -412,6 +403,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 	}
 
 	private boolean crushPlayer() {
+		isCrush = false;
 		if (p.getLife() == 0) {
 			gameMusic.close();
 			fm.changePanel("HallPanel");
@@ -425,9 +417,13 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 	}
 
 	private void crushMonster(int i) {
+		isCrush = false;
 		monsterThreads.get(i).onStop();
 		monsterThreads.remove(i);
 		monsters.remove(i);
+		startCrush.remove(i);
+		startCrushes.remove(i);
+		crushCount.remove(i);
 	}
 
 }

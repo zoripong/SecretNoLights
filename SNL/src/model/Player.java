@@ -29,7 +29,7 @@ public class Player extends GameObj implements Direction, Attackable {
 	private int charType;
 	private int life;
 	private int score;
-
+	private int attackCount;
 	private JumpListener jumpListener;
 
 	private String imageName;
@@ -49,7 +49,7 @@ public class Player extends GameObj implements Direction, Attackable {
 		mMapReader = mapReader;
 		life = 5;
 		currentImage = image;
-		
+
 		// TODO attack
 		attackLocation = new ArrayList<>();
 		attackLocation.add(new Location(86, 21));
@@ -57,6 +57,8 @@ public class Player extends GameObj implements Direction, Attackable {
 		attackLocation.add(new Location(76, 0));
 		attackLocation.add(new Location(80, 0));
 
+		attackCount = 0;
+		score = 0;
 	}
 
 	public Player(int x, int y, ImageIcon image, int charType, int dx, int dy) {
@@ -179,7 +181,7 @@ public class Player extends GameObj implements Direction, Attackable {
 		// TODO 충돌처리
 		isAttacking = true;
 		// System.out.println("attack");
-
+		System.out.println(attackCount);
 		if (isRight) {
 			imageName = "../images/attack_right_" + String.valueOf(charType) + ".png";
 			currentImage = new ImageIcon(SNL.class.getResource(imageName));
@@ -188,16 +190,27 @@ public class Player extends GameObj implements Direction, Attackable {
 			// TODO LEFT ATTACK
 			imageName = "../images/attack_left_" + String.valueOf(charType) + ".png";
 			currentImage = new ImageIcon(SNL.class.getResource(imageName));
+
 			setImage(currentImage);
 
 		}
+		if (attackCount == 0) {
+			if (!isRight()) 
+				setPosX(getPosX() - getAttackPosX(charType));
+			setPosY(getPosY() - getAttackPosY(charType));
+		}
+		attackCount++;
 	}
 
 	public void attackEnd() {
 		isAttacking = false;
-		// if (!isRight)
-		// setPosX(getPosX() + 60);
-
+		attackCount = 0;
+		if (isRight) {
+			setPosY(getPosY() + getAttackPosY(charType));
+		} else {
+			setPosX(getPosX() + getAttackPosX(charType));
+			setPosY(getPosY() + getAttackPosY(charType));
+		}
 	}
 
 	public int isCrush(GameObj obj) {
@@ -249,6 +262,7 @@ public class Player extends GameObj implements Direction, Attackable {
 	}
 
 	public int getLife() {
+		System.out.println("남은 목숨" + life);
 		return life;
 	}
 
@@ -268,15 +282,15 @@ public class Player extends GameObj implements Direction, Attackable {
 
 		return "현재 좌표 (" + x + "," + y + ")";
 	}
-	
+
 	public ImageIcon currentImage() {
 		return currentImage;
 	}
-	
+
 	public int getAttackPosX(int charType) {
 		return attackLocation.get(charType).getX();
 	}
-	
+
 	public int getAttackPosY(int charType) {
 		return attackLocation.get(charType).getY();
 	}

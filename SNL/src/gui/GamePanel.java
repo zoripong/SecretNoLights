@@ -1,5 +1,16 @@
 package gui;
 
+//http://lacti.me/2011/11/06/flight-game-with-java-3/
+/*
+// * 딜레이	
+ *  private void playerShot() {
+        if (shotTick < System.currentTimeMillis()) {
+            shotTick = System.currentTimeMillis() + 200;
+            bullets.add(new Bullet(shipPos.x, shipPos.y - (ship.getHeight(this) / 2 + 8), -1));
+        }
+    }
+ * 
+ */
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.RenderingHints.Key;
@@ -7,6 +18,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
@@ -20,6 +32,7 @@ import adapter.Music;
 import customInterface.AutoMovingListener;
 import customInterface.Direction;
 import customInterface.JumpListener;
+import model.Location;
 import model.Monster;
 import model.Player;
 import thread.JumpThread;
@@ -37,6 +50,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 
 	Timer t = new Timer(10, this); // 1초마다 actionPerformed 실행
 	Player p;
+	Rectangle2D player;
 
 	private Music gameMusic;
 	private MapReader mMapReader;
@@ -45,9 +59,18 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 
 	private boolean isJumpingMove;
 	private JumpThread jumpThread;
+	private boolean isJumpable;
 
 	ArrayList<Monster> monsters;
 	ArrayList<MonsterThread> monsterThreads;
+
+	private boolean isCrush;
+
+	ArrayList<ArrayList<Long>> startCrushes;
+	ArrayList<Long> startCrush;
+	ArrayList<Integer> crushCount;
+
+	private int keyCount;
 
 	public GamePanel(FrameManager fm, int charType) {
 		this.fm = fm;
@@ -74,6 +97,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 		mMapReader.setStage();
 		isMapDraw = true;
 		isJumpingMove = false;
+		isJumpable = true;
 
 		// Monster
 		monsterThreads = new ArrayList<MonsterThread>();
@@ -82,9 +106,23 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 		// init player
 		ImageIcon character = new ImageIcon(
 				SNL.class.getResource("../images/front_" + String.valueOf(charType) + ".png"));
-		p = new Player(40, SNL.SCREEN_HEIGHT - 80, character, charType, mMapReader);
+		p = new Player(46, SNL.SCREEN_HEIGHT - 80, character, charType, mMapReader);
+		player = new Rectangle2D.Double(p.getPosX(), p.getPosY(), p.getWidth(), p.getHeight());
 
 		isOpenDoor = 0;
+		isCrush = false;
+
+		keyCount = 0;
+
+
+		startCrush = new ArrayList<>();
+		startCrushes = new ArrayList<>();
+		crushCount = new ArrayList<>();
+		for (int i = 0; i < monsters.size(); i++) {
+			startCrush.add((long) 0);
+			startCrushes.add(new ArrayList<>());
+			crushCount.add(0);
+		}
 	}
 
 	public void actionPerformed(ActionEvent ae) {
@@ -92,61 +130,111 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 	}
 
 	public void paint(Graphics g) {
-		// System.out.println(p.isJumping());
 		super.paint(g);
-		if (isOpenDoor == 2) {
-			removeMonsters();
+		player = new Rectangle2D.Double(p.getPosX(), p.getPosY(), p.getWidth(), p.getHeight());
+		// System.out.println(p.getPosY());
+		if (!p.isJumping()) {
 
-			try {
-				Thread.sleep(2000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+			ImageIcon front = new ImageIcon(
+					SNL.class.getResource("../images/front_" + String.valueOf(charType) + ".png"));
+			Rectangle2D a = new Rectangle2D.Double(p.getPosX(), p.getPosY() + 3, front.getIconWidth(),
+					front.getIconHeight());
+
+			if ((!mMapReader.isCrush(a))) {
+				isJumpable = false;
+				p.setPosY(p.getPosY() + 2);
+				if (p.isRight()) {
+					p.setImage(new ImageIcon(
+							SNL.class.getResource("../images/jump_right_" + String.valueOf(charType) + ".png")));
+				} else {
+					p.setImage(new ImageIcon(
+							SNL.class.getResource("../images/jump_left_" + String.valueOf(charType) + ".png")));
+				}
+			} else {
+				isJumpable = true;
+				if (!isJumpingMove && !p.isAttack())
+					p.setImage(new ImageIcon(
+							SNL.class.getResource("../images/front_" + String.valueOf(charType) + ".png")));
 			}
 
-			isOpenDoor = 0;
-
-			mMapReader.nextStage(); // 좌표 갱신을 포함하고 있음 [setStage()]
-			setMonsters();
-
 		}
+
+		if (isOpenDoor == 2) {
+			nextStage();
+		}
+
+		Rectangle2D mosPlayer = new Rectangle2D.Double(p.getPosX(), p.getPosY(), p.getWidth(), p.getHeight());
 
 		for (int i = 0; i < monsters.size(); i++) {
-			switch (p.isCrush(monsters.get(i))) {
-			case -1:
-				// 몬스터 사망
-				// TODO : 시간 지속 시 사망으로,,
-				// System.out.println("몬스터 사망");
-				monsterThreads.get(i).onStop();
-				monsterThreads.remove(i);
-				monsters.remove(i);
-				break;
-			case 0:
-				// 아무것도 아닌 상황
-				break;
-			case 1:
-				// todo : 몇 초 이상 지속시 감소
-				// 몬스터에 맞아서 죽음
-				if (p.getLife() == 0) {
-					gameMusic.close();
-					fm.changePanel("HallPanel");
-				} else {
-					p.minusLife();
+			Rectangle2D monster = new Rectangle2D.Double(monsters.get(i).getPosX(), monsters.get(i).getPosY(),
+					monsters.get(i).getWidth(), monsters.get(i).getHeight());
+			// TODO : 공격공격!!
+			if (mosPlayer.intersects(monster)) {
+				if (crushCount.get(i) == 0) {
+					startCrush.set(i, System.currentTimeMillis());
 				}
-				// System.out.println("남은 목숨 : " + p.getLife());
 
-				return;
+				crushCount.set(i, crushCount.get(i) + 1);
+				// 공격중
+				if (isCrush == false) {
+					isCrush = true;
+					if ((System.currentTimeMillis() - startCrush.get(i)) >= 250) {
+						startCrush.set(i, startCrush.get(i) + 250);
+						if (p.isAttack()) {
+							if (p.isRight()) {
+								if (p.getPosX() < monster.getX()) {
+
+									crushMonster(i);
+								} else {
+									// 플레이어 사망
+									if (crushPlayer())
+										return;
+								}
+							} else {
+								if (p.getPosX() > monster.getX()) {
+									// 몬스터 사망
+									crushMonster(i);
+								} else {
+									// 플레이어 사망
+									if (crushPlayer())
+										return;
+								}
+							}
+						} else {
+
+							if (crushPlayer())
+								return;
+						}
+					}
+
+				}
+
+			} else {
+				isCrush = false;
+				if (crushCount.get(i) != 0) {
+					// System.out.println("충돌 끝,,");
+					// System.out.println("startCrush " + startCrush.get(i));
+					// System.out.println("startCrush Size " + startCrushes.get(i).size());
+					// System.out.println("crushCount " + crushCount);
+					startCrushes.get(i).clear();
+					crushCount.set(i, 0);
+				}
+
+				// startCrush.set(i, (long) 0);
 			}
 		}
-		// set the background
+
+		// draw the background
 		screenImage = createImage(SNL.SCREEN_WIDTH, SNL.SCREEN_HEIGHT);
 		Graphics screenGraphic = screenImage.getGraphics();
 		screenDraw(screenGraphic);
-
 		g.drawImage(screenImage, 0, 0, null);
 
+		// draw the door
 		mMapReader.drawDoor(g, isOpenDoor);
 		if (isOpenDoor == 1)
 			isOpenDoor++;
+
 		// draw the Map
 		if (isMapDraw) {
 			mMapReader.drawStage(g);
@@ -170,53 +258,19 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 	}
 
 	public void jump() {
-		jumpThread = new JumpThread(this);
+		jumpThread = new JumpThread(this, mMapReader, p);
 		jumpThread.start();
 	}
 
 	@Override
-	public void jumpTimeArrived(int jumpIdx, int jumpy, boolean isDown) {
-		// TODO
-		// 벽돌과 부딪혔을 때 처리하는 부분
-		if (isDown) { // 아래에 벽과 겹칠 때 . . .
-			System.out.println(mMapReader.isUnderBlock(p.getLocation('B').getX(), p.getLocation('C').getY()));
-			if (mMapReader.isUnderBlock(p.getLocation('C').getX(), p.getLocation('C').getY())
-					|| mMapReader.isUnderBlock(p.getLocation('B').getX(), p.getLocation('B').getY())) {
-				// try {
-				// Thread.sleep(1000);
-				// } catch (InterruptedException e) {
-				// e.printStackTrace();
-				// }
-				System.out.println("점프 끝..!");
-				jumpThread.stopJump();
-
-			}
-		}
-
-		// 블록 좌우 충돌
+	public void jumpTimeArrived(int jumpIdx, int jumpy) {
+		jumpThread.setMap(mMapReader, p);
 
 		if (isJumpingMove) {
-			if (p.isRight()) {
-				int cx = p.getLocation('C').getX();
-				int cy = p.getLocation('C').getY();
-				int dx = p.getLocation('D').getX();
-				int dy = p.getLocation('D').getY();
-
-				if (!(mMapReader.isBlock(cx, cy) || mMapReader.isBlock(dx, dy))) {
-					System.out.println((cx / 45) + "/" + (cy / 40) + "/" + (dx / 45) + "/" + (dy / 40));
-					System.out.println("충돌중");
-					// setPosX(getPosX() + dx);
-					// 벽돌이 양옆에 벽돌이 있는지 check
-					p.addX(p.getDx());
-				}
-			} else {
-				if (!(mMapReader.isBlock(p.getLocation('A').getX(), p.getLocation('A').getY())
-						|| mMapReader.isBlock(p.getLocation('B').getX(), p.getLocation('B').getY()))) {
-					// System.out.println("충돌중");
-					// setPosX(getPosX() - dx);
-					p.addX(p.getDx() * -1);
-				}
-			}
+			if (p.isRight())
+				p.setPosX(p.getPosX() + p.getDx());
+			else
+				p.setPosX(p.getPosX() - p.getDx());
 		}
 
 		if (p.getPosX() > (SNL.SCREEN_WIDTH - p.getWidth() - BLOCK_WIDTH))
@@ -244,9 +298,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 		p.setJumpIdx(0);
 
 		if (isStop) {
-			System.out.println(p.getPosY());
-			p.setPosY(p.getPosY() + p.getPosY() % 40 );
-			System.out.println(p.getPosY());
+			p.setPosY(p.getPosY() + p.getPosY() % 40);
 		}
 	}
 
@@ -258,12 +310,11 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 	@Override
 	public void keyReleased(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-			// System.out.println("AttackBefore" + p.getPosX());
 			p.attackEnd();
-			// System.out.println("AttackAfter" + p.getPosX());
 		}
 		p.setImage(new ImageIcon(SNL.class.getResource("../images/front_" + String.valueOf(charType) + ".png")));
 		isJumpingMove = false;
+		keyCount = 0;
 	}
 
 	@Override
@@ -285,20 +336,17 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 		case KeyEvent.VK_UP:
 			if (p.isJumping())
 				return;
-			jump();
+			if (isJumpable)
+				jump();
 			break;
 		case KeyEvent.VK_DOWN:
 			p.move(DOWN);
-			// System.out.println(p.getA()[0] + "/" + mMapReader.getDoorMid() + "/" +
-			// p.getD()[0]);
 			if (!p.isJumping()) {
 				if (p.getLocation('A').getX() <= mMapReader.getDoorMid()
 						&& mMapReader.getDoorMid() <= p.getLocation('D').getX()) {
-					// System.out.println("열려라 참깨");
 					isOpenDoor = 1;
 				}
 			}
-
 			break;
 		case KeyEvent.VK_SPACE:
 			if (p.isAttack())
@@ -316,7 +364,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 
 		for (int i = 0; i < monsters.size(); i++) {
 			Monster monster = monsters.get(i);
-			monsterThreads.add(new MonsterThread(monster, new AutoMovingListener() {
+			monsterThreads.add(new MonsterThread(monster, mMapReader, new AutoMovingListener() {
 				@Override
 				public void repaintable() {
 					if (monster.getPosX() < BLOCK_WIDTH) {
@@ -338,10 +386,48 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 
 	private void removeMonsters() {
 		for (int i = 0; i < monsters.size(); i++) {
-			monsterThreads.get(i).onStop();
-			monsterThreads.remove(i);
-			monsters.remove(i);
+			crushMonster(i);
 		}
+	}
+
+	private void nextStage() {
+		removeMonsters();
+
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+
+		isOpenDoor = 0;
+
+		mMapReader.nextStage();
+		setMonsters();
+
+		for (int i = 0; i < monsters.size(); i++) {
+			startCrush.add((long) 0);
+			startCrushes.add(new ArrayList<>());
+			crushCount.add(0);
+		}
+	}
+
+	private boolean crushPlayer() {
+		if (p.getLife() == 0) {
+			gameMusic.close();
+			fm.changePanel("HallPanel");
+			return true;
+		} else {
+			// System.out.println("목숨 :" + p.getLife());
+			p.minusLife();
+			return false;
+		}
+
+	}
+
+	private void crushMonster(int i) {
+		monsterThreads.get(i).onStop();
+		monsterThreads.remove(i);
+		monsters.remove(i);
 	}
 
 }

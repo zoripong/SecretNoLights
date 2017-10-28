@@ -2,6 +2,7 @@ package adapter;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.geom.Rectangle2D;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -9,16 +10,23 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.swing.ImageIcon;
 
 import customInterface.AutoMovingListener;
+import customInterface.Direction;
 import gui.SNL;
+import model.Area;
 import model.Location;
 import model.Monster;
 import thread.MonsterThread;
 
-public class MapReader {
+public class MapReader implements Direction {
 
 	private int mStage;
 	private int mMapInfo[][];
@@ -28,17 +36,20 @@ public class MapReader {
 	private int doorY;
 
 	ArrayList<Monster> monsters;
-
 	private ArrayList<Location> monsterLocations;
 
+	private HashMap<Location, Rectangle2D> rectangleMap;
 
 	public MapReader(int stage) {
 		mStage = stage;
+		rectangleMap = new HashMap<>();
+
 		blockImageIcon = new ImageIcon(SNL.class.getResource("../images/block.png"));
 
 		doorImageIcon = new ImageIcon(SNL.class.getResource("../images/door_close.png"));
 		readFile();
 		monsterLocations = new ArrayList<>();
+
 	}
 
 	// 문과 몬스터의 좌표만 읽어들임
@@ -67,6 +78,7 @@ public class MapReader {
 			y += blockImageIcon.getIconHeight();
 		}
 
+		initMap();
 	}
 
 	public void drawStage(Graphics g) {
@@ -90,7 +102,6 @@ public class MapReader {
 	}
 
 	private void readFile() {
-
 		String fileName = "./src/map/stage_" + mStage + ".txt";
 		String line = "";
 		StringBuffer buff = new StringBuffer();
@@ -169,81 +180,80 @@ public class MapReader {
 		ImageIcon monster = new ImageIcon(SNL.class.getResource("../images/front_3.png"));
 		monsters = new ArrayList<Monster>();
 		for (int i = 0; i < monsterLocations.size(); i++) {
-			monsters.add(new Monster(monsterLocations.get(i).getX(), monsterLocations.get(i).getY(), monster));
-
+			monsters.add(new Monster(monsterLocations.get(i).getX(), monsterLocations.get(i).getY(), monster, this));
 		}
-
 		return monsters;
 	}
 
 	public boolean isBlock(int coordX, int coordY) {
-
-		// System.out.println(
-		// "나머지 : " + coordX % blockImageIcon.getIconWidth() + "," + coordY %
-		// blockImageIcon.getIconHeight());
-		// System.out.println("(" + coordX / blockImageIcon.getIconWidth() + "," +
-		// coordY / blockImageIcon.getIconHeight()
-		// + ") = " + mMapInfo[coordY / blockImageIcon.getIconHeight()][coordX /
-		// blockImageIcon.getIconWidth()]);
 		if (mMapInfo[coordY / blockImageIcon.getIconHeight()][coordX / blockImageIcon.getIconWidth()] == 1)
 			return true;
 		else
 			return false;
 	}
 
-	public boolean isUnderBlock(int coordX, int coordY) {
-		
-		if (mMapInfo[coordY / blockImageIcon.getIconHeight()+1][coordX / blockImageIcon.getIconWidth()] == 1)
-			return true;
-		else
-			return false;
-	}
-	// TODO : // 끝에 블록 아니면 점프하면서 부딪히면 안돼용,,
-	// public boolean isAmongBlcok(int coordX, int coordY) {
-	//
-	// // System.out.println("(coord/location)="+coordY+"/"+p.get);
-	//
-	// // System.out.println("y좌표"+p.getLocation('A').getY()/
-	// // blockImageIcon.getIconHeight());
-	// if (coordX / blockImageIcon.getIconWidth() >= 0
-	// && coordX / blockImageIcon.getIconWidth() < mMapInfo[0].length) {
-	// System.out.println("----------------------------------------------------");
-	// System.out.println("1");
-	// System.out.println("coordY : " + coordY);
-	// System.out.println("idx : " + (coordY-blockImageIcon.getIconHeight()) /
-	// blockImageIcon.getIconHeight()+1));
-	// System.out.println("----------------------------------------------------");
-	// if (mMapInfo[(coordY - blockImageIcon.getIconHeight()) /
-	// blockImageIcon.getIconHeight()+1][coordX / blockImageIcon.getIconWidth() - 2]
-	// == 1
-	// && mMapInfo[(coordY- blockImageIcon.getIconHeight()) /
-	// blockImageIcon.getIconHeight()+1][coordX / blockImageIcon.getIconWidth()] ==
-	// 1) {
-	// System.out.println("x=" + coordY / blockImageIcon.getIconHeight() + "y="
-	// + (coordX / blockImageIcon.getIconWidth() - 2) + ","
-	// + mMapInfo[coordY / blockImageIcon.getIconHeight()][coordX /
-	// blockImageIcon.getIconWidth() - 2]);
-	// System.out.println("x=" + coordY / blockImageIcon.getIconHeight() + "y="
-	// + (coordX / blockImageIcon.getIconWidth()) + ","
-	// + mMapInfo[coordY / blockImageIcon.getIconHeight()][coordX /
-	// blockImageIcon.getIconWidth()]);
-	//
-	// return true;
-	// }
-	// } else if (coordX / blockImageIcon.getIconWidth() < 0) {
-	// System.out.println("2");
-	// if (mMapInfo[coordY / blockImageIcon.getIconHeight()][coordX /
-	// blockImageIcon.getIconWidth() + 1] == 1)
-	// return true;
-	// } else if (coordX / blockImageIcon.getIconWidth() >= mMapInfo[0].length) {
-	// System.out.println("3");
-	// if (mMapInfo[coordY / blockImageIcon.getIconHeight()][coordX /
-	// blockImageIcon.getIconWidth() - 1] == 1)
-	// return true;
-	// }
-	//
-	// return false;
-	//
-	// }
+	public void initMap() {
+		boolean isBlock = false;
 
+		int startX = -1, startY = -1;
+		int endX = -1, endY = -1;
+
+		rectangleMap.clear();
+		for (int i = 0; i < mMapInfo.length; i++) {
+			for (int j = 0; j < mMapInfo[0].length; j++) {
+
+				if (mMapInfo[i][j] == 1) {
+					if (isBlock == false) {
+						startX = j;
+						isBlock = true;
+					}
+				} else {
+					if (isBlock) {
+						endX = j - 1;
+						putData(startX, endX, i);
+						isBlock = false;
+					}
+				}
+
+			}
+			isBlock = false;
+		}
+
+		putData(0, 19, 17); // 천장
+	}
+
+	private void putData(int startX, int endX, int y) {
+		Area block;
+
+		for (int i = 0; i < (endX - startX + 1); i++) {
+			rectangleMap.put(
+					new Location((startX * blockImageIcon.getIconWidth()) + i * blockImageIcon.getIconWidth(),
+							y * blockImageIcon.getIconHeight()),
+					new Rectangle2D.Double(startX * blockImageIcon.getIconWidth(), y * blockImageIcon.getIconHeight(),
+							(endX - startX + 1) * blockImageIcon.getIconWidth(), blockImageIcon.getIconHeight()));
+		}
+
+	}
+
+	public boolean isCrush(Rectangle2D player) {
+
+		Iterator<?> it = rectangleMap.entrySet().iterator();
+		while (it.hasNext()) {
+			Map.Entry<Location, Rectangle2D> me = (Entry<Location, Rectangle2D>) it.next();
+			if (player.intersects(me.getValue())) {
+
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	public int getBlockHeight() {
+		return blockImageIcon.getIconHeight();
+	}
+
+	public int getBlockWidth() {
+		return blockImageIcon.getIconWidth();
+	}
 }

@@ -3,6 +3,7 @@ package model;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.ImageObserver;
 import java.util.ArrayList;
 
@@ -16,7 +17,6 @@ import gui.SNL;
 import thread.JumpThread;
 
 public class Player extends GameObj implements Direction, Attackable {
-	private final int BLOCK_WIDTH = 43;
 
 	private boolean isSelecter;
 	private int dx, dy;
@@ -28,8 +28,14 @@ public class Player extends GameObj implements Direction, Attackable {
 	int jumpIdx = 0;
 	private int charType;
 	private int life;
+	private int score;
 
 	private JumpListener jumpListener;
+
+	private String imageName;
+
+	private ImageIcon currentImage;
+	private ArrayList<Location> attackLocation;
 
 	public Player(int x, int y, ImageIcon image, int charType, MapReader mapReader) {
 		super(x, y - image.getIconHeight(), image);
@@ -42,6 +48,15 @@ public class Player extends GameObj implements Direction, Attackable {
 		isAttacking = false;
 		mMapReader = mapReader;
 		life = 5;
+		currentImage = image;
+		
+		// TODO attack
+		attackLocation = new ArrayList<>();
+		attackLocation.add(new Location(86, 21));
+		attackLocation.add(new Location(101, 20));
+		attackLocation.add(new Location(76, 0));
+		attackLocation.add(new Location(80, 0));
+
 	}
 
 	public Player(int x, int y, ImageIcon image, int charType, int dx, int dy) {
@@ -52,40 +67,41 @@ public class Player extends GameObj implements Direction, Attackable {
 	}
 
 	public void move(int direction) {
-		String imageFile;
-		System.out.println(getPosY());
+		Rectangle2D player = new Rectangle2D.Double(getPosX(), getPosY(), getWidth(), getHeight());
+
 		switch (direction) {
 		case LEFT:
-			imageFile = "../images/left_" + String.valueOf(charType) + "_" + String.valueOf((int) imageIdx % 3 + 1)
+			imageName = "../images/left_" + String.valueOf(charType) + "_" + String.valueOf((int) imageIdx % 3 + 1)
 					+ ".png";
 			// System.out.println(imageFile);
-			setImage(new ImageIcon(SNL.class.getResource(imageFile)));
+
+			currentImage = new ImageIcon(SNL.class.getResource(imageName));
+			setImage(currentImage);
+
 			imageIdx += 0.3;
 
-			if (getPosX() < BLOCK_WIDTH)
-				setPosX(BLOCK_WIDTH);
+			if (getPosX() < mMapReader.getBlockWidth())
+				setPosX(mMapReader.getBlockWidth());
 
-			// 블록 좌우 충돌
-			if (!(mMapReader.isBlock(getLocation('A').getX(), getLocation('A').getY())
-					|| mMapReader.isBlock(getLocation('B').getX(), getLocation('B').getY()))) {
-//				System.out.println("충돌중");
+			if (!mMapReader.isCrush(player))
 				setPosX(getPosX() - dx);
-			}
+
 			break;
 		case RIGHT:
-			imageFile = "../images/right_" + String.valueOf(charType) + "_" + String.valueOf((int) imageIdx % 3 + 1)
+
+			imageName = "../images/right_" + String.valueOf(charType) + "_" + String.valueOf((int) imageIdx % 3 + 1)
 					+ ".png";
-			setImage(new ImageIcon(SNL.class.getResource(imageFile)));
+			currentImage = new ImageIcon(SNL.class.getResource(imageName));
+			setImage(currentImage);
+
 			imageIdx += 0.3;
 
-			if (getPosX() > (SNL.SCREEN_WIDTH - getWidth() - BLOCK_WIDTH))
-				setPosX(SNL.SCREEN_WIDTH - getWidth() - BLOCK_WIDTH);
-			
-			if (!(mMapReader.isBlock(getLocation('C').getX(), getLocation('C').getY())
-					|| mMapReader.isBlock(getLocation('D').getX(), getLocation('D').getY()))) {
-//				System.out.println("충돌중");
+			if (getPosX() > (SNL.SCREEN_WIDTH - getWidth() - mMapReader.getBlockWidth()))
+				setPosX(SNL.SCREEN_WIDTH - getWidth() - mMapReader.getBlockWidth());
+
+			if (!mMapReader.isCrush(player))
 				setPosX(getPosX() + dx);
-			}
+
 			break;
 
 		case UP:
@@ -163,14 +179,17 @@ public class Player extends GameObj implements Direction, Attackable {
 		// TODO 충돌처리
 		isAttacking = true;
 		// System.out.println("attack");
-		if (isRight)
-			setImage(new ImageIcon(
-					SNL.class.getResource("../images/attack_right_" + String.valueOf(charType) + ".png")));
-		else {
+
+		if (isRight) {
+			imageName = "../images/attack_right_" + String.valueOf(charType) + ".png";
+			currentImage = new ImageIcon(SNL.class.getResource(imageName));
+			setImage(currentImage);
+		} else {
 			// TODO LEFT ATTACK
-			setPosX(getPosX() - 60);
-			setImage(
-					new ImageIcon(SNL.class.getResource("../images/attack_left_" + String.valueOf(charType) + ".png")));
+			imageName = "../images/attack_left_" + String.valueOf(charType) + ".png";
+			currentImage = new ImageIcon(SNL.class.getResource(imageName));
+			setImage(currentImage);
+
 		}
 	}
 
@@ -233,4 +252,32 @@ public class Player extends GameObj implements Direction, Attackable {
 		return life;
 	}
 
+	public Location currentLocation() {
+		ImageIcon blockImageIcon = new ImageIcon(SNL.class.getResource("../images/block.png"));
+
+		int x = (getPosX() + (currentImage.getIconWidth() / 2)) / blockImageIcon.getIconWidth();
+		int y = (getPosY() + (currentImage.getIconHeight() * 3 / 2)) / blockImageIcon.getIconHeight();
+		return new Location(x, y);
+	}
+
+	public String toString() {
+		ImageIcon blockImageIcon = new ImageIcon(SNL.class.getResource("../images/block.png"));
+
+		int x = (getPosX() + (currentImage.getIconWidth() / 2)) / blockImageIcon.getIconWidth();
+		int y = (getPosY() + (currentImage.getIconHeight() * 3 / 2)) / blockImageIcon.getIconHeight();
+
+		return "현재 좌표 (" + x + "," + y + ")";
+	}
+	
+	public ImageIcon currentImage() {
+		return currentImage;
+	}
+	
+	public int getAttackPosX(int charType) {
+		return attackLocation.get(charType).getX();
+	}
+	
+	public int getAttackPosY(int charType) {
+		return attackLocation.get(charType).getY();
+	}
 }

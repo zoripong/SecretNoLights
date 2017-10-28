@@ -32,7 +32,7 @@ public class ExplainPanel extends JPanel implements ActionListener, KeyListener 
 
 	private void init() {
 		page = 1;
-		background = new ImageIcon(SNL.class.getResource("../images/howto_detail_" + page + ".jpg")).getImage();
+		background = new ImageIcon(SNL.class.getResource("../images/howto_detail_" + page + ".png")).getImage();
 	}
 
 	@Override
@@ -72,7 +72,7 @@ public class ExplainPanel extends JPanel implements ActionListener, KeyListener 
 
 	public void paint(Graphics g) {
 		super.paint(g);
-		background = new ImageIcon(SNL.class.getResource("../images/howto_detail_" + page + ".jpg")).getImage();
+		background = new ImageIcon(SNL.class.getResource("../images/howto_detail_" + page + ".png")).getImage();
 
 		screenImage = createImage(SNL.SCREEN_WIDTH, SNL.SCREEN_HEIGHT);
 		Graphics screenGraphic = screenImage.getGraphics();

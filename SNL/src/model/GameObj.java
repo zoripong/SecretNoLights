@@ -5,6 +5,8 @@ import java.awt.Image;
 import javax.swing.ImageIcon;
 
 public class GameObj {
+	private final int BLOCK_WIDTH = 43;
+
 	private int posX;
 	private int posY;
 	private ImageIcon image;

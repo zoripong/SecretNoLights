@@ -2,6 +2,7 @@ package thread;
 
 import javax.swing.ImageIcon;
 
+import adapter.MapReader;
 import customInterface.AutoMovingListener;
 import customInterface.JumpListener;
 import gui.SNL;
@@ -13,10 +14,12 @@ public class MonsterThread extends Thread implements JumpListener{
 	Monster monster;
 	AutoMovingListener autoMovingListener;
 	private boolean isLive = true;
+	private MapReader mapReader;
 	
-	public MonsterThread(Monster monster, AutoMovingListener autoMovingListener) {
+	public MonsterThread(Monster monster, MapReader mapReader, AutoMovingListener autoMovingListener) {
 		this.monster = monster;
 		this.autoMovingListener = autoMovingListener;
+		this.mapReader = mapReader;
 	}
 
 	public void run() {
@@ -25,7 +28,7 @@ public class MonsterThread extends Thread implements JumpListener{
 		while (isLive) {
 			flag++;
 			
-			if(flag % 20 == 0 && ((int)(Math.random()*50))%2 == 0)
+			if(flag % 20 == 0 && ((int)(Math.random()*117))%2 == 0)
 				monster.changeDirection();
 			
 			monster.update();
@@ -36,18 +39,14 @@ public class MonsterThread extends Thread implements JumpListener{
 
 			}
 
-			if(flag % 30 == 0 && ((int)(Math.random()*100)%4) == 0)
-				new JumpThread(this).start();
+			if(monster.isJumpable() && flag % 30 == 0 && ((int)(Math.random()*5)%3) == 0)
+				new JumpThread(this, mapReader, monster).start();
 		}
 	}
 	
 	@Override
-	public void jumpTimeArrived(int jumpIdx, int jumpy, boolean isDown) {
-		// TODO Auto-generated method stub
-//		if (monster.isRight())
-//			p.addX(5);
-//		else
-//			monster.addX(-5);
+	public void jumpTimeArrived(int jumpIdx, int jumpy) {
+
 		monster.addY(jumpy);
 		ImageIcon icon;
 		if(monster.isRight())

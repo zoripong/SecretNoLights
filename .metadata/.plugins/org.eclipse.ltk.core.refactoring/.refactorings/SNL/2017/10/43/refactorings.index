@@ -42,3 +42,9 @@
 1508863890985	Move 'life.png' to 'Images'
 1508954070840	Delete element
 1508954366223	Rename resource 'howto_detail2.jpg'
+1509030818325	Rename local variable 'imageFile'
+1509180920210	Delete element
+1509183680964	Rename method 'test'
+1509183721851	Rename method 'putMap'
+1509209479140	Delete element
+1509209481091	Delete element

@@ -3,54 +3,95 @@ package model;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.geom.Rectangle2D;
 
 import javax.swing.ImageIcon;
 
+import adapter.MapReader;
 import gui.SNL;
 
 public class Monster extends GameObj {
+	
+	private MapReader mMapReader;
+	private Rectangle2D mMonsterArea;
 	private int dx, dy;
 
 	private int jumpIdx = 0;
 	private double imageIdx = 0;
 
 	private boolean isRight;
+	private boolean isJumpable;
 
-	//TODO
-	public Monster(int x, int y, ImageIcon image) {
+	public Monster(int x, int y, ImageIcon image, MapReader mapReader) {
 		super(x, y, image);
 		int num = (int) (Math.random() * 10);
 		dy = 0;
+		dx = 3;
 		if (num % 2 == 0) {
-			dx = 3;
 			isRight = true;			
 		} else {
-			dx = -3;
 			isRight = false;
 		}
-//		width = new ImageIcon(SNL.class.getResource("../images/front_monster.png")).getIconWidth();
+		this.mMapReader = mapReader;
+		mMonsterArea = new Rectangle2D.Double(getPosX(), getPosY(), getWidth(), getHeight());
+		isJumpable = true;
 	}
+
 
 	public void update() {
 		String imageFile;
+		mMonsterArea = new Rectangle2D.Double(getPosX(), getPosY(), getWidth(), getHeight());
+
+		if (!isJumping()) {
+			Rectangle2D a = new Rectangle2D.Double(getPosX(), getPosY() + 5, getWidth(), getHeight());
+
+			if ((!mMapReader.isCrush(a))) {
+				isJumpable = false;
+				setPosY(getPosY() + 8
+						);
+//				System.out.println(getPosX());
+			} else {
+				isJumpable = true;
+			}
+
+		}
 		if (isRight) {
 			imageFile = "../images/right_monster_" + String.valueOf((int) imageIdx % 3 + 1) + ".png";
+		
+
 		} else {
 			imageFile = "../images/left_monster_" + String.valueOf((int) imageIdx % 3 + 1) + ".png";
-
 		}
 		setImage(new ImageIcon(SNL.class.getResource(imageFile)));
 
 		imageIdx += 0.3;
-		if (getPosX() > 900 - getWidth()) {
-			dx *= -1;
-			isRight = false;
-		}
-		else if (getPosX() < 0) {
-			dx *= -1;
+
+		if (getPosX() < mMapReader.getBlockWidth()) {			
 			isRight = true;
 		}
-		setPosX(getPosX() + dx);
+
+
+		if (getPosX() > (SNL.SCREEN_WIDTH - getWidth() - mMapReader.getBlockWidth())) {
+			
+			isRight = false;
+		}
+
+		if (!mMapReader.isCrush(mMonsterArea)) {
+			if(isRight)
+				setPosX(getPosX() + dx);
+			else
+				setPosX(getPosX() - dx);
+		}
+		else {
+
+			if(isRight)
+				setPosX(getPosX() - dx);
+			else
+				setPosX(getPosX() + dx);
+			changeDirection();
+		}
+		
+	
 	}
 
 	public void draw(Graphics g) {
@@ -60,7 +101,7 @@ public class Monster extends GameObj {
 	}
 
 	public void changeDirection() {
-		dx *= -1;
+//		dx *= -1;
 		isRight = !isRight;
 	}
 
@@ -102,6 +143,9 @@ public class Monster extends GameObj {
 	public void addY(int add) {
 		setPosY(getPosY() + add);
 	}
-	
+
+	public boolean isJumpable() {
+		return isJumpable;
+	}
 
 }

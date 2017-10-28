@@ -36,7 +36,7 @@ public class CharacterPanel extends JPanel implements ActionListener, KeyListene
 	}
 
 	private void init() {
-		System.out.println("character panel");
+//		System.out.println("character panel");
 		background = new ImageIcon(SNL.class.getResource("../images/characterBackground.png")).getImage();
 
 		charImages = new Image[4];
@@ -121,7 +121,7 @@ public class CharacterPanel extends JPanel implements ActionListener, KeyListene
 		else
 			source = "../images/character_type_"+String.valueOf(i)+".png";
 		
-		System.out.println(source);
+//		System.out.println(source);
 		charImages[i] = new ImageIcon(SNL.class.getResource(source)).getImage();
 	}
 

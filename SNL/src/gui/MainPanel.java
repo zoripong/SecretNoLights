@@ -36,13 +36,11 @@ public class MainPanel extends JPanel implements ActionListener, KeyListener, Di
 		fm = f;
 
 		init();
-
 		setLayout(null);
 		setFocusable(true);
 		addKeyListener(this);
 
 		t.start();
-
 	}
 
 	private void init() {
@@ -58,7 +56,7 @@ public class MainPanel extends JPanel implements ActionListener, KeyListener, Di
 		explainImage = new ImageIcon(SNL.class.getResource("../images/explain.png"));
 
 		
-		gameMusic = new Music("mainMusic.mp3", true);
+		gameMusic = new Music("Above_and_Beyond.mp3", true);
 		gameMusic.start();
 	}
 
@@ -79,6 +77,8 @@ public class MainPanel extends JPanel implements ActionListener, KeyListener, Di
 		paintComponents(g);
 		this.repaint();
 	}
+	
+	
 
 	@Override
 	public void keyPressed(KeyEvent e) {

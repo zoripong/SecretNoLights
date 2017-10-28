@@ -6,29 +6,30 @@
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="" key="selection"/>
+		<item value="nextStage(" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
-			<item value="isUnderBlcok"/>
+			<item value="nextStage("/>
+			<item value="nextStage"/>
+			<item value="isOpenDoor"/>
+			<item value="move("/>
+			<item value="move()"/>
+			<item value="sleep"/>
+			<item value="package gui;"/>
+			<item value="nextStage()"/>
+			<item value="System.out."/>
 			<item value="System."/>
-			<item value="Sys"/>
-			<item value="System`"/>
-			<item value="System"/>
-			<item value="move"/>
-			<item value="test"/>
-			<item value="좌우 충돌"/>
-			<item value="좌우"/>
-			<item value="//&#x09;&#x09;&#x09;if (!(mMapReader.isBlock(getLocation(&apos;A&apos;).getX(), getLocation(&apos;A&apos;).getY())"/>
-			<item value="setSta"/>
-			<item value="syso"/>
-			<item value="[x=135, y=560]"/>
-			<item value="true]"/>
-			<item value="y=3]"/>
+			<item value="nextS"/>
+			<item value="next"/>
+			<item value="점끝"/>
+			<item value="점프 시작"/>
+			<item value=""/>
 		</list>
 		<list key="replacehistory">
+			<item value=".png"/>
 			<item value="p.getLocation"/>
 			<item value="getLocation(&apos;D&apos;)"/>
 			<item value="getLocation(&apos;C&apos;)"/>

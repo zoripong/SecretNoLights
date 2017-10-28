@@ -37,6 +37,11 @@ public class Player extends GameObj implements Direction, Attackable {
 	private ImageIcon currentImage;
 	private ArrayList<Location> attackLocation;
 
+	private ArrayList<ImageIcon> scoreNumbers;
+	private ImageIcon scoreImage;
+
+	private ImageIcon lifeImage;
+
 	public Player(int x, int y, ImageIcon image, int charType, MapReader mapReader) {
 		super(x, y - image.getIconHeight(), image);
 		this.charType = charType;
@@ -50,7 +55,7 @@ public class Player extends GameObj implements Direction, Attackable {
 		life = 5;
 		currentImage = image;
 
-		// TODO attack
+		// 캐릭터별 이미지차
 		attackLocation = new ArrayList<>();
 		attackLocation.add(new Location(86, 21));
 		attackLocation.add(new Location(101, 20));
@@ -59,6 +64,17 @@ public class Player extends GameObj implements Direction, Attackable {
 
 		attackCount = 0;
 		score = 0;
+
+		// life
+		lifeImage = new ImageIcon(SNL.class.getResource("../images/life.png"));
+
+		// score
+		scoreImage = new ImageIcon(SNL.class.getResource("../images/score.png"));
+
+		scoreNumbers = new ArrayList<>();
+		for (int i = 0; i < 10; i++)
+			scoreNumbers.add(new ImageIcon(SNL.class.getResource("../images/score_" + String.valueOf(i) + ".png")));
+
 	}
 
 	public Player(int x, int y, ImageIcon image, int charType, int dx, int dy) {
@@ -125,6 +141,37 @@ public class Player extends GameObj implements Direction, Attackable {
 		// System.out.println("(" + getPosX() + "," + getPosY() + ")");
 	}
 
+	public void drawLife(Graphics g) {
+		Graphics2D g2d = (Graphics2D) g;
+
+		int x = SNL.SCREEN_WIDTH - ((lifeImage.getIconWidth() + 10) * 5) - 20;
+		int y = 10;
+
+		for (int i = 0; i < life; i++) {
+			g2d.drawImage(lifeImage.getImage(), x, y, null);
+			x += lifeImage.getIconWidth() + 10;
+		}
+	}
+
+	public void drawScore(Graphics g) {
+		Graphics2D g2d = (Graphics2D) g;
+
+		int x = 10;
+		int y = 10;
+
+		g2d.drawImage(scoreImage.getImage(), x, y, null);
+		x += scoreImage.getIconWidth() + 10;
+
+		char charOfScore[] = String.valueOf(score).toCharArray();
+
+		for (int i = 0; i < charOfScore.length; i++) {
+			int number = Integer.parseInt(String.valueOf(charOfScore[i]));
+			g2d.drawImage(scoreNumbers.get(number).getImage(), x, y, null);
+			x += scoreNumbers.get(number).getIconWidth() + 10;
+		}
+
+	}
+
 	public void setDx(int dx) {
 		this.dx = dx;
 	}
@@ -180,8 +227,6 @@ public class Player extends GameObj implements Direction, Attackable {
 	public void attack() {
 		// TODO 충돌처리
 		isAttacking = true;
-		// System.out.println("attack");
-		System.out.println(attackCount);
 		if (isRight) {
 			imageName = "../images/attack_right_" + String.valueOf(charType) + ".png";
 			currentImage = new ImageIcon(SNL.class.getResource(imageName));
@@ -195,7 +240,7 @@ public class Player extends GameObj implements Direction, Attackable {
 
 		}
 		if (attackCount == 0) {
-			if (!isRight()) 
+			if (!isRight())
 				setPosX(getPosX() - getAttackPosX(charType));
 			setPosY(getPosY() - getAttackPosY(charType));
 		}
@@ -293,5 +338,14 @@ public class Player extends GameObj implements Direction, Attackable {
 
 	public int getAttackPosY(int charType) {
 		return attackLocation.get(charType).getY();
+	}
+
+	public void increaseScore(int score) {
+		this.score += score;
+		System.out.println("현재 스코어 " + this.score);
+	}
+
+	public int getScore() {
+		return score;
 	}
 }

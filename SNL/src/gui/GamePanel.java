@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints.Key;
 import java.awt.event.ActionEvent;
@@ -53,13 +54,17 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 	ArrayList<Monster> monsters;
 	ArrayList<MonsterThread> monsterThreads;
 
-	private boolean isCrush;
-
 	ArrayList<ArrayList<Long>> startCrushes;
 	ArrayList<Long> startCrush;
 	ArrayList<Integer> crushCount;
 
-	private int keyCount;
+	private long startStageTime;
+
+	private ImageIcon darknessImage;
+	private ImageIcon nextStageImage;
+
+	private int beforePosX;
+	private int beforePosY;
 
 	public GamePanel(FrameManager fm, int charType) {
 		this.fm = fm;
@@ -82,7 +87,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 		gameMusic.start();
 
 		// Map read
-		mMapReader = new MapReader(1);
+		mMapReader = new MapReader(0);
 		mMapReader.setStage();
 		isMapDraw = true;
 		isJumpingMove = false;
@@ -95,13 +100,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 		// init player
 		ImageIcon character = new ImageIcon(
 				SNL.class.getResource("../images/front_" + String.valueOf(charType) + ".png"));
-		p = new Player(46, SNL.SCREEN_HEIGHT - 80, character, charType, mMapReader);
+		p = new Player(SNL.SCREEN_WIDTH - 200, SNL.SCREEN_HEIGHT - 80, character, charType, mMapReader);
 		player = new Rectangle2D.Double(p.getPosX(), p.getPosY(), p.getWidth(), p.getHeight());
 
 		isOpenDoor = 0;
-		isCrush = false;
-
-		keyCount = 0;
 
 		startCrush = new ArrayList<>();
 		startCrushes = new ArrayList<>();
@@ -111,6 +113,11 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 			startCrushes.add(new ArrayList<>());
 			crushCount.add(0);
 		}
+
+		startStageTime = System.currentTimeMillis();
+		darknessImage = new ImageIcon(SNL.class.getResource("../images/darkness_2.png"));
+		nextStageImage = new ImageIcon(SNL.class.getResource("../images/next_stage.png"));
+
 	}
 
 	public void actionPerformed(ActionEvent ae) {
@@ -119,8 +126,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 
 	public void paint(Graphics g) {
 		super.paint(g);
+		Graphics2D g2d = (Graphics2D) g;
 		player = new Rectangle2D.Double(p.getPosX(), p.getPosY(), p.getWidth(), p.getHeight());
-		// System.out.println(p.getPosY());
+
+		System.out.println(p.getPosX() + ", " + p.getPosY());
 		if (!p.isJumping()) {
 
 			ImageIcon front = new ImageIcon(
@@ -148,7 +157,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 		}
 
 		if (isOpenDoor == 2) {
-			nextStage();
+			nextStage(g);
+
 		}
 
 		Rectangle2D mosPlayer = new Rectangle2D.Double(p.getPosX(), p.getPosY(), p.getWidth(), p.getHeight());
@@ -156,7 +166,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 		for (int i = 0; i < monsters.size(); i++) {
 			Rectangle2D monster = new Rectangle2D.Double(monsters.get(i).getPosX(), monsters.get(i).getPosY(),
 					monsters.get(i).getWidth(), monsters.get(i).getHeight());
-			// TODO : 공격공격!!
+
 			if (mosPlayer.intersects(monster)) {
 				if (crushCount.get(i) == 0) {
 					startCrush.set(i, System.currentTimeMillis());
@@ -164,16 +174,13 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 
 				crushCount.set(i, crushCount.get(i) + 1);
 				// 공격중
-
-				isCrush = true;
-				System.out.println("코코");
 				if ((System.currentTimeMillis() - startCrush.get(i)) >= 250) {
 					startCrush.set(i, startCrush.get(i) + 250);
-					System.out.println("충돌로롤롤");
 					if (p.isAttack()) {
 						if (p.isRight()) {
 							if (p.getPosX() < monster.getX()) {
-
+								// 몬스터 사망
+								p.increaseScore(300);
 								crushMonster(i);
 							} else {
 								// 플레이어 사망
@@ -183,7 +190,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 						} else {
 							if (p.getPosX() > monster.getX()) {
 								// 몬스터 사망
-
+								p.increaseScore(300);
 								crushMonster(i);
 							} else {
 								// 플레이어 사망
@@ -198,7 +205,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 				}
 
 			} else {
-				isCrush = false;
 				if (crushCount.get(i) != 0) {
 					// System.out.println("충돌 끝,,");
 					// System.out.println("startCrush " + startCrush.get(i));
@@ -220,13 +226,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 
 		// draw the door
 		mMapReader.drawDoor(g, isOpenDoor);
-		if (isOpenDoor == 1)
-			isOpenDoor++;
 
 		// draw the Map
 		if (isMapDraw) {
 			mMapReader.drawStage(g);
-			// isMapDraw = false;
 		}
 
 		// draw the player
@@ -235,6 +238,23 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 		// draw the monsters
 		for (int i = 0; i < monsters.size(); i++)
 			monsters.get(i).draw(g);
+
+		g2d.drawImage(darknessImage.getImage(), (p.getPosX() + p.getWidth() / 2) - darknessImage.getIconWidth() / 2,
+				(p.getPosY() + p.getHeight() / 2) - darknessImage.getIconHeight() / 2, null);
+
+		if (isOpenDoor == 1) {
+			beforePosX = p.getPosX();
+			beforePosY = p.getPosY();
+			g2d.drawImage(nextStageImage.getImage(), SNL.SCREEN_WIDTH / 2 - nextStageImage.getIconWidth() / 2,
+					SNL.SCREEN_HEIGHT / 2 - nextStageImage.getIconHeight() / 2, null);
+			isOpenDoor++;
+		}
+
+		// draw the life
+		p.drawLife(g);
+
+		// draw the score
+		p.drawScore(g);
 
 	}
 
@@ -277,14 +297,12 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 		p.setImage(icon);
 
 		p.setJumpIdx(jumpIdx);
-
 	}
 
 	@Override
 	public void jumpTimeEnded(boolean isStop) {
 		p.setImage(new ImageIcon(SNL.class.getResource("../images/front_" + String.valueOf(charType) + ".png")));
 		p.setJumpIdx(0);
-
 		if (isStop) {
 			p.setPosY(p.getPosY() + p.getPosY() % 40);
 		}
@@ -302,7 +320,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 		}
 		p.setImage(new ImageIcon(SNL.class.getResource("../images/front_" + String.valueOf(charType) + ".png")));
 		isJumpingMove = false;
-		keyCount = 0;
 	}
 
 	@Override
@@ -339,9 +356,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 		case KeyEvent.VK_SPACE:
 			if (p.isAttack())
 				return;
-			System.out.println(keyCount);
 
-			keyCount += 1;
 			p.attack();
 			break;
 		}
@@ -352,7 +367,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 	private void setMonsters() {
 		monsters = mMapReader.initMonsters();
 		monsterThreads.clear();
-
 		for (int i = 0; i < monsters.size(); i++) {
 			Monster monster = monsters.get(i);
 			monsterThreads.add(new MonsterThread(monster, mMapReader, new AutoMovingListener() {
@@ -362,7 +376,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 						monster.setPosX(BLOCK_WIDTH);
 						monster.changeDirection();
 					}
-
 					if (monster.getPosX() > (SNL.SCREEN_WIDTH - monster.getWidth() - BLOCK_WIDTH)) {
 						monster.setPosX(SNL.SCREEN_WIDTH - monster.getWidth() - BLOCK_WIDTH);
 						monster.changeDirection();
@@ -381,9 +394,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 		}
 	}
 
-	private void nextStage() {
-		removeMonsters();
+	private void nextStage(Graphics g) {
 
+		removeMonsters();
 		try {
 			Thread.sleep(2000);
 		} catch (InterruptedException e) {
@@ -391,6 +404,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 		}
 
 		isOpenDoor = 0;
+
+		p.increaseScore((int) (System.currentTimeMillis() - startStageTime) / 10);
+		startStageTime = System.currentTimeMillis();
 
 		mMapReader.nextStage();
 		setMonsters();
@@ -403,8 +419,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 	}
 
 	private boolean crushPlayer() {
-		isCrush = false;
-		if (p.getLife() == 0) {
+		if (p.getLife() == 1) {
 			gameMusic.close();
 			fm.changePanel("HallPanel");
 			return true;
@@ -417,7 +432,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 	}
 
 	private void crushMonster(int i) {
-		isCrush = false;
 		monsterThreads.get(i).onStop();
 		monsterThreads.remove(i);
 		monsters.remove(i);

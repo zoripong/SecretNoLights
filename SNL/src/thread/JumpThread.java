@@ -54,8 +54,6 @@ public class JumpThread extends Thread {
 	public void run() {
 		isJumping = true;
 		while (this.jumpIdx < this.jumpingy.length) { // index < array length
-			if (jumpIdx == 1 && player != null)
-				System.out.println("점프 시작 : " + player.getLocation('B').getY());
 			if (jumpingy[this.jumpIdx] > 0)
 				isDownJumping = true;
 			else
@@ -78,9 +76,7 @@ public class JumpThread extends Thread {
 
 					if (player.getLocation('C').getY() % mMapReader.getBlockHeight() < mMapReader.getBlockHeight()
 							/ 2) {
-						System.out.println("점끝");
 						player.setPosY(player.getPosY() - player.getLocation('C').getY() % mMapReader.getBlockHeight());
-						System.out.println(player.getLocation('B').getY());
 						jumpListener.jumpTimeEnded(false);
 						return;
 
@@ -101,10 +97,8 @@ public class JumpThread extends Thread {
 
 					if (monster.getLocation('C').getY() % mMapReader.getBlockHeight() < mMapReader.getBlockHeight()
 							/ 2) {
-						System.out.println("점끝");
 						monster.setPosY(
 								monster.getPosY() - monster.getLocation('C').getY() % mMapReader.getBlockHeight() - 2);
-						System.out.println(monster.getLocation('B').getY() - 2);
 						jumpListener.jumpTimeEnded(false);
 						return;
 

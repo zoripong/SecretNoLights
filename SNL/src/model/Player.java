@@ -5,8 +5,12 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.ImageObserver;
+import java.io.File;
 import java.util.ArrayList;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.ImageIcon;
 
 import adapter.MapReader;
@@ -225,8 +229,17 @@ public class Player extends GameObj implements Direction, Attackable {
 
 	@Override
 	public void attack() {
-		// TODO 충돌처리
 		isAttacking = true;
+		
+		try {
+			AudioInputStream ais = AudioSystem.getAudioInputStream(new File("./src/music/attack_effect.wav"));
+			Clip clip = AudioSystem.getClip();
+			clip.stop();
+			clip.open(ais);
+			clip.start();
+		} catch (Exception ex) {
+		}
+		
 		if (isRight) {
 			imageName = "../images/attack_right_" + String.valueOf(charType) + ".png";
 			currentImage = new ImageIcon(SNL.class.getResource(imageName));

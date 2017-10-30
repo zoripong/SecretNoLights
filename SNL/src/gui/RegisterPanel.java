@@ -13,6 +13,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import adapter.Music;
 import adapter.RankingReader;
 import model.Record;
 
@@ -23,14 +24,27 @@ public class RegisterPanel extends JPanel implements ActionListener, KeyListener
 	private Image screenImage;
 	private Timer t = new Timer(10, this);
 	
-	private int startX;
-	private int startY;
+	private final int INITIAL_X = 325;
+	private final int INITIAL_Y = 285;
+	private final int INITIAL_TERM = 110;
+	
+	private final int SCORE_X = 310;
+	private final int SCORE_Y = 120;
+	private final int SCORE_TERM = 50;
+	
+	
 	private boolean isWrite;
 	
 	private ArrayList<ImageIcon> alphabets;
+	private ArrayList<ImageIcon> numbers;
+
 	private ArrayList<Character> writeChar;
+	private char [] scores;
 	
 	private Record record;
+	
+	Music gameMusic;
+
 	public RegisterPanel(FrameManager fm, Record record) {
 		this.fm = fm;
 		this.record = record;
@@ -40,13 +54,14 @@ public class RegisterPanel extends JPanel implements ActionListener, KeyListener
 		setLayout(null);
 		setFocusable(true);
 		addKeyListener(this);
+		
+		gameMusic = new Music("800_Lives.mp3", true);
+		gameMusic.start();
 	}
 
 	private void init() {
-		background = new ImageIcon(SNL.class.getResource("../images/ranking_background.png")).getImage();
+		background = new ImageIcon(SNL.class.getResource("../images/register_background.png")).getImage();
 		
-		startX = 100;
-		startY = 100;
 		isWrite = true;
 
 		alphabets = new ArrayList<ImageIcon>();
@@ -56,15 +71,23 @@ public class RegisterPanel extends JPanel implements ActionListener, KeyListener
 			alphabets.add(new ImageIcon(SNL.class.getResource(name)));
 			alpha++;
 		}
-		
+				
+		numbers = new ArrayList<ImageIcon>();
+		for (int i = 0; i < 10; i++) {
+			String name = "../images/ranking_" + String.valueOf(i) + ".png";
+			numbers.add(new ImageIcon(SNL.class.getResource(name)));
+		}
+
 		writeChar = new ArrayList<Character>();
 		
+		scores = record.getNumber().toCharArray();
+		
+
 	}
 	
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub
 		switch (e.getKeyCode()) {
 		case KeyEvent.VK_A:
 			pushAlpha('a');
@@ -147,6 +170,10 @@ public class RegisterPanel extends JPanel implements ActionListener, KeyListener
 		case KeyEvent.VK_BACK_SPACE:
 			deleteAlpha();
 			break;
+		case KeyEvent.VK_ENTER:
+			changePanel();
+			break;
+			
 		}
 
 	}
@@ -184,23 +211,21 @@ public class RegisterPanel extends JPanel implements ActionListener, KeyListener
 		screenDraw(screenGraphic);
 		g.drawImage(screenImage, 0, 0, null);
 		
-		if(writeChar.size() == 4) {
-			fm.changePanel("HallPanel");
-			String name = "";
-			for(int i = 0; i<3; i++) {
-				name += writeChar.get(i);
-			}
-			System.out.println("name : "+ name);
-			fm.getRecord().setName(name);
-			return;
+		int start = SCORE_X;
+		for(int i = 0; i<scores.length; i++) {
+			g2d.drawImage(numbers.get(Integer.valueOf(scores[i]) - 48).getImage(), start, SCORE_Y, null);
+			start += SCORE_TERM;
 		}
 		
-		startX = 100;
-		for(int i = 0; i<writeChar.size(); i++){
-			
-			g2d.drawImage(alphabets.get(Math.abs((int) (97 - writeChar.get(i)))).getImage(), startX, startY, null);
-			startX += (alphabets.get(Math.abs((int) (97 - writeChar.get(i)))).getIconWidth() + 10);
-			
+		
+		start = INITIAL_X;
+		for(int i = 0; i<writeChar.size(); i++){			
+			g2d.drawImage(alphabets.get(Math.abs((int) (97 - writeChar.get(i)))).getImage(), start, INITIAL_Y, null);
+			start += INITIAL_TERM;
+		}
+		
+		if(writeChar.size() == 3) {
+			g2d.drawImage(new ImageIcon(SNL.class.getResource("../images/press_enter.png")).getImage(), 320, 360, null);
 		}
 				
 
@@ -219,4 +244,16 @@ public class RegisterPanel extends JPanel implements ActionListener, KeyListener
 
 	}
 
+	private void changePanel() {
+		if(writeChar.size() != 3)
+			return;
+		fm.changePanel("HallPanel");
+		String name = "";
+		for(int i = 0; i<3; i++) {
+			name += writeChar.get(i);
+		}
+		System.out.println("name : "+ name);
+		fm.getRecord().setName(name);
+		gameMusic.close();
+	}
 }

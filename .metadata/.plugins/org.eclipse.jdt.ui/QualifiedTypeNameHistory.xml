@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="JumpListener"/>
-<fullyQualifiedTypeName name="customInterface.Debuggable"/>
-<fullyQualifiedTypeName name="javax.swing.JFrame"/>
-<fullyQualifiedTypeName name="java.awt.Frame"/>
 <fullyQualifiedTypeName name="javax.swing.Timer"/>
 <fullyQualifiedTypeName name="javax.tools.Diagnostic"/>
 <fullyQualifiedTypeName name="model.Direction"/>
@@ -20,7 +16,6 @@
 <fullyQualifiedTypeName name="thread.MonsterThread"/>
 <fullyQualifiedTypeName name="customInterface.AutoMovingListener"/>
 <fullyQualifiedTypeName name="customInterface.JumpListener"/>
-<fullyQualifiedTypeName name="java.io.File"/>
 <fullyQualifiedTypeName name="java.io.FileReader"/>
 <fullyQualifiedTypeName name="java.io.FileNotFoundException"/>
 <fullyQualifiedTypeName name="java.io.BufferedReader"/>
@@ -29,7 +24,6 @@
 <fullyQualifiedTypeName name="java.lang.reflect.Array"/>
 <fullyQualifiedTypeName name="thread.JumpThread"/>
 <fullyQualifiedTypeName name="java.awt.RenderingHints.Key"/>
-<fullyQualifiedTypeName name="java.awt.event.KeyEvent"/>
 <fullyQualifiedTypeName name="java.lang.Math"/>
 <fullyQualifiedTypeName name="java.awt.geom.Area"/>
 <fullyQualifiedTypeName name="model.Area"/>
@@ -60,4 +54,10 @@
 <fullyQualifiedTypeName name="java.io.FileWriter"/>
 <fullyQualifiedTypeName name="model.Record"/>
 <fullyQualifiedTypeName name="java.lang.InterruptedException"/>
+<fullyQualifiedTypeName name="javax.sound.sampled.AudioInputStream"/>
+<fullyQualifiedTypeName name="javax.sound.sampled.AudioSystem"/>
+<fullyQualifiedTypeName name="javax.sound.sampled.Clip"/>
+<fullyQualifiedTypeName name="java.io.File"/>
+<fullyQualifiedTypeName name="java.util.HashSet"/>
+<fullyQualifiedTypeName name="java.awt.event.KeyEvent"/>
 </qualifiedTypeNameHistroy>

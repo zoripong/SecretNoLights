@@ -8,23 +8,17 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
 
 import javax.swing.ImageIcon;
 
-import customInterface.AutoMovingListener;
 import customInterface.Direction;
 import gui.SNL;
-import model.Area;
 import model.Location;
 import model.Monster;
-import thread.MonsterThread;
 
 public class MapReader implements Direction {
 	private int mStage;
@@ -37,11 +31,11 @@ public class MapReader implements Direction {
 	ArrayList<Monster> monsters;
 	private ArrayList<Location> monsterLocations;
 
-	private HashMap<Location, Rectangle2D> rectangleMap;
-
+	private HashSet <Rectangle2D> rectangleSet;
+	
 	public MapReader(int stage) {
 		mStage = stage;
-		rectangleMap = new HashMap<>();
+		rectangleSet = new HashSet<>();
 
 		blockImageIcon = new ImageIcon(SNL.class.getResource("../images/block.png"));
 
@@ -198,7 +192,7 @@ public class MapReader implements Direction {
 		int startX = -1, startY = -1;
 		int endX = -1, endY = -1;
 
-		rectangleMap.clear();
+		rectangleSet.clear();
 		for (int i = 0; i < mMapInfo.length; i++) {
 			for (int j = 0; j < mMapInfo[0].length; j++) {
 
@@ -223,27 +217,20 @@ public class MapReader implements Direction {
 	}
 
 	private void putData(int startX, int endX, int y) {
-		Area block;
-
+		
 		for (int i = 0; i < (endX - startX + 1); i++) {
-			rectangleMap.put(
-					new Location((startX * blockImageIcon.getIconWidth()) + i * blockImageIcon.getIconWidth(),
-							y * blockImageIcon.getIconHeight()),
-					new Rectangle2D.Double(startX * blockImageIcon.getIconWidth(), y * blockImageIcon.getIconHeight(),
-							(endX - startX + 1) * blockImageIcon.getIconWidth(), blockImageIcon.getIconHeight()));
+			rectangleSet.add(new Rectangle2D.Double(startX * blockImageIcon.getIconWidth(), y * blockImageIcon.getIconHeight(),
+					(endX - startX + 1) * blockImageIcon.getIconWidth(), blockImageIcon.getIconHeight()));
 		}
 
 	}
 
-	public boolean isCrush(Rectangle2D player) {
-
-		Iterator<?> it = rectangleMap.entrySet().iterator();
-		while (it.hasNext()) {
-			Map.Entry<Location, Rectangle2D> me = (Entry<Location, Rectangle2D>) it.next();
-			if (player.intersects(me.getValue())) {
-
+	public boolean isCrush(Rectangle2D player) {		
+		Iterator<Rectangle2D> iterator = rectangleSet.iterator();
+		while(iterator.hasNext()) {
+			Rectangle2D map = iterator.next();
+			if(player.intersects(map))
 				return true;
-			}
 		}
 
 		return false;

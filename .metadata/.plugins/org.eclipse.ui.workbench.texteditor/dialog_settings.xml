@@ -6,12 +6,20 @@
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="showRecord" key="selection"/>
+		<item value="TODO" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
+			<item value="TODO"/>
+			<item value="Thre"/>
+			<item value="Thread.s"/>
+			<item value="Thread"/>
+			<item value="rectangleMap"/>
+			<item value="Area"/>
+			<item value="isCrush"/>
+			<item value="crush"/>
 			<item value="showRecord"/>
 			<item value="Name"/>
 			<item value="name"/>
@@ -19,14 +27,6 @@
 			<item value="RegisterPanel"/>
 			<item value="Register"/>
 			<item value="fm."/>
-			<item value="isWrite"/>
-			<item value="isWiret = false"/>
-			<item value="push"/>
-			<item value="System.out."/>
-			<item value="System."/>
-			<item value="System.out"/>
-			<item value="Hall"/>
-			<item value="monsters"/>
 		</list>
 		<list key="replacehistory">
 			<item value=".png"/>

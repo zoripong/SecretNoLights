@@ -9,8 +9,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.geom.Rectangle2D;
+import java.io.File;
 import java.util.ArrayList;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -191,6 +195,15 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 						if (p.isRight()) {
 							if (p.getPosX() < monster.getX()) {
 								// ∏ÛΩ∫≈Õ ªÁ∏¡
+								try {
+									AudioInputStream ais = AudioSystem.getAudioInputStream(new File("./src/music/crush_monster.wav"));
+									Clip clip = AudioSystem.getClip();
+									clip.stop();
+									clip.open(ais);
+									clip.start();
+								} catch (Exception ex) {
+								}
+								
 								p.increaseScore(300);
 								crushMonster(i);
 							} else {
@@ -200,7 +213,17 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 							}
 						} else {
 							if (p.getPosX() > monster.getX()) {
+								
 								// ∏ÛΩ∫≈Õ ªÁ∏¡
+								try {
+									AudioInputStream ais = AudioSystem.getAudioInputStream(new File("./src/music/crush_monster.wav"));
+									Clip clip = AudioSystem.getClip();
+									clip.stop();
+									clip.open(ais);
+									clip.start();
+								} catch (Exception ex) {
+								}
+
 								p.increaseScore(300);
 								crushMonster(i);
 							} else {

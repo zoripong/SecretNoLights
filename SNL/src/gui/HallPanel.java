@@ -12,6 +12,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import adapter.Music;
 import adapter.RankingReader;
 import model.Record;
 
@@ -27,6 +28,8 @@ public class HallPanel extends JPanel implements ActionListener, KeyListener {
 
 	private int myRank;
 	private int outputIdx;
+	
+	Music gameMusic;
 
 	public HallPanel(FrameManager fm, Record record) {
 		this.fm = fm;
@@ -37,6 +40,10 @@ public class HallPanel extends JPanel implements ActionListener, KeyListener {
 		setLayout(null);
 		setFocusable(true);
 		addKeyListener(this);
+		
+		gameMusic = new Music("Blue_Smile.mp3", true);
+		gameMusic.start();
+
 	}
 
 	private void init() {
@@ -44,7 +51,6 @@ public class HallPanel extends JPanel implements ActionListener, KeyListener {
 		rankingReader = new RankingReader(record);
 		myRank = rankingReader.insertRecord();
 
-		
 		if (myRank+1 == 1 || myRank+1 == 2) {
 			outputIdx = 0;
 		} else if (myRank+1 == rankingReader.getRankingSize()) {
@@ -54,14 +60,7 @@ public class HallPanel extends JPanel implements ActionListener, KeyListener {
 		} else {
 			outputIdx = myRank - 2;
 		}
-		System.out.println("size : "+rankingReader.getRankingSize()+" / ∑©≈∑ :" + myRank +" / ¿Œµ¶Ω∫ : "+ outputIdx);
-		
-		try {
-			Thread.sleep(3000);
-		}catch(InterruptedException e) {
-			e.printStackTrace();
-		}
-		
+			
 	}
 
 	@Override
@@ -72,6 +71,7 @@ public class HallPanel extends JPanel implements ActionListener, KeyListener {
 		case KeyEvent.VK_SPACE:
 			fm.changePanel("MainPanel");
 			rankingReader.writeFile();
+			gameMusic.close();
 			break;
 		}
 

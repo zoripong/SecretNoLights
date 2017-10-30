@@ -2,6 +2,11 @@ package thread;
 
 import java.awt.geom.Rectangle2D;
 import java.beans.IntrospectionException;
+import java.io.File;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 
 import adapter.MapReader;
 import customInterface.JumpListener;
@@ -52,6 +57,16 @@ public class JumpThread extends Thread {
 	}
 
 	public void run() {
+		if (player != null && monster == null) {
+			try {
+				AudioInputStream ais = AudioSystem.getAudioInputStream(new File("./src/music/jump_effect.wav"));
+				Clip clip = AudioSystem.getClip();
+				clip.stop();
+				clip.open(ais);
+				clip.start();
+			} catch (Exception ex) {
+			}
+		}
 		isJumping = true;
 		while (this.jumpIdx < this.jumpingy.length) { // index < array length
 			if (jumpingy[this.jumpIdx] > 0)
@@ -105,7 +120,7 @@ public class JumpThread extends Thread {
 					}
 				}
 			}
-			this.jumpListener.jumpTimeArrived(this.jumpIdx, this.jumpingy[this.jumpIdx]); 
+			this.jumpListener.jumpTimeArrived(this.jumpIdx, this.jumpingy[this.jumpIdx]);
 
 			try {
 				Thread.sleep(50);

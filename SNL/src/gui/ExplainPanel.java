@@ -12,6 +12,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import adapter.Music;
+
 public class ExplainPanel extends JPanel implements ActionListener, KeyListener {
 	private final int MAX_PAGE = 2;
 	FrameManager fm;
@@ -20,6 +22,8 @@ public class ExplainPanel extends JPanel implements ActionListener, KeyListener 
 	Image background;
 	Image screenImage;
 	Timer t = new Timer(10, this);
+
+	Music gameMusic;
 
 	public ExplainPanel(FrameManager fm) {
 		this.fm = fm;
@@ -33,6 +37,9 @@ public class ExplainPanel extends JPanel implements ActionListener, KeyListener 
 	private void init() {
 		page = 1;
 		background = new ImageIcon(SNL.class.getResource("../images/howto_detail_" + page + ".png")).getImage();
+	
+		gameMusic = new Music("Black_Highway.mp3", true);
+		gameMusic.start();
 	}
 
 	@Override
@@ -52,6 +59,7 @@ public class ExplainPanel extends JPanel implements ActionListener, KeyListener 
 			break;
 		case KeyEvent.VK_ESCAPE:
 			fm.changePanel("MainPanel");
+			gameMusic.close();
 			break;
 			
 		}

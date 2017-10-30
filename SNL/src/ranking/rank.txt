@@ -1,0 +1,10 @@
+abc 57800
+def 49002
+ghi 42305
+jkl 26856
+mno 24856
+pqr 15468
+stu 12486
+vwx 9043
+zab 1253
+hyr 0

@@ -7,10 +7,13 @@ import java.awt.event.KeyListener;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import model.Record;
+
 public class FrameManager extends JFrame {
 
-	Container contain;
-
+	private Container contain;
+	private Record record;
+	
 	public FrameManager() {
 		init();
 	}
@@ -53,8 +56,12 @@ public class FrameManager extends JFrame {
 		case "ExplainPanel":
 			p = new ExplainPanel(this);
 			break;
+		case "RegisterPanel":
+			if(record != null)
+				p = new RegisterPanel(this, record);
+			break;
 		case "HallPanel":
-			p = new HallPanel(this);
+			p = new HallPanel(this, record);
 			break;
 		}
 		contain.add(p);
@@ -79,4 +86,12 @@ public class FrameManager extends JFrame {
 		repaint();
 
 	}
+	
+	public void setRecord(Record record) {
+		this.record = record;
+	}
+	public Record getRecord() {
+		return this.record;
+	}
+	
 }

@@ -158,9 +158,7 @@ public class Test {
 
 	private void putData(int startX, int endX, int y) {
 		// TODO : 위에도 체크,, !
-
 		Area block;
-
 		for (int i = 0; i < (endX - startX + 1); i++) {
 			if (blockMap.containsKey(
 					new Location((startX * blockImageIcon.getIconWidth()) + i * blockImageIcon.getIconWidth(),
@@ -181,11 +179,23 @@ public class Test {
 	}
 
 	public static void main(String[] args) {
-		Test test = new Test(2);
-		test.readFile();
-		test.setStage();
-		test.test();
+//		Test test = new Test(2);
+//		test.readFile();
+//		test.setStage();
+//		test.test();
 
+//		int a = 2;
+//		if(a > 0) {
+//			System.out.println(1);
+//		}else if( a > 1) {
+//			System.out.println(2);
+//		}
+		
+		char a = 'a';
+		int b = 97;
+		for(int i = 0; i < 26; i++) {
+			System.out.println();
+		}
 	}
 
 }

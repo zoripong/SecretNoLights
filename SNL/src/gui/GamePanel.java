@@ -25,12 +25,15 @@ import customInterface.JumpListener;
 import model.Location;
 import model.Monster;
 import model.Player;
+import model.Record;
 import thread.JumpThread;
 import thread.MonsterThread;
 
 public class GamePanel extends JPanel implements ActionListener, KeyListener, Direction, JumpListener {
 	private final int BLOCK_WIDTH = 43;
 	private final int BLOCK_HEIGHT = 40;
+
+	private final int MAX_STAGE = 3;
 
 	private FrameManager fm;
 	private int charType;
@@ -129,7 +132,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 		Graphics2D g2d = (Graphics2D) g;
 		player = new Rectangle2D.Double(p.getPosX(), p.getPosY(), p.getWidth(), p.getHeight());
 
-		System.out.println(p.getPosX() + ", " + p.getPosY());
+//		System.out.println(p.getPosX() + ", " + p.getPosY());
 		if (!p.isJumping()) {
 
 			ImageIcon front = new ImageIcon(
@@ -157,7 +160,15 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 		}
 
 		if (isOpenDoor == 2) {
-			nextStage(g);
+			if (mMapReader.getStage() >= MAX_STAGE) {
+				mMapReader = null;
+				gameMusic.close();
+				fm.setRecord(new Record(String.valueOf(p.getScore())));
+				fm.changePanel("RegisterPanel");
+				return;
+			}else {
+				nextStage(g);
+			}
 
 		}
 
@@ -405,7 +416,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 
 		isOpenDoor = 0;
 
-		p.increaseScore((int) (System.currentTimeMillis() - startStageTime) / 10);
+		int score = 5000 - (int) (System.currentTimeMillis() - startStageTime) / 10;
+		if (score > 0)
+			p.increaseScore(score);
+
 		startStageTime = System.currentTimeMillis();
 
 		mMapReader.nextStage();
@@ -420,8 +434,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 
 	private boolean crushPlayer() {
 		if (p.getLife() == 1) {
+			mMapReader = null;
 			gameMusic.close();
-			fm.changePanel("HallPanel");
+			fm.setRecord(new Record(String.valueOf(p.getScore())));
+			fm.changePanel("RegisterPanel");
 			return true;
 		} else {
 			// System.out.println("¸ñ¼û :" + p.getLife());

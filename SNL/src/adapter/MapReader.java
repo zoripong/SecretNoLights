@@ -27,7 +27,6 @@ import model.Monster;
 import thread.MonsterThread;
 
 public class MapReader implements Direction {
-
 	private int mStage;
 	private int mMapInfo[][];
 	private ImageIcon doorImageIcon;
@@ -47,6 +46,7 @@ public class MapReader implements Direction {
 		blockImageIcon = new ImageIcon(SNL.class.getResource("../images/block.png"));
 
 		doorImageIcon = new ImageIcon(SNL.class.getResource("../images/door_close.png"));
+		monsters = new ArrayList<Monster>();
 		readFile();
 		monsterLocations = new ArrayList<>();
 
@@ -255,5 +255,9 @@ public class MapReader implements Direction {
 
 	public int getBlockWidth() {
 		return blockImageIcon.getIconWidth();
+	}
+
+	public int getStage() {
+		return mStage;
 	}
 }

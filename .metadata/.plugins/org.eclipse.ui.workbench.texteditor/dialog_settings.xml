@@ -6,27 +6,27 @@
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="nextStage(" key="selection"/>
+		<item value="showRecord" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
-			<item value="nextStage("/>
-			<item value="nextStage"/>
-			<item value="isOpenDoor"/>
-			<item value="move("/>
-			<item value="move()"/>
-			<item value="sleep"/>
-			<item value="package gui;"/>
-			<item value="nextStage()"/>
+			<item value="showRecord"/>
+			<item value="Name"/>
+			<item value="name"/>
+			<item value="랭킹"/>
+			<item value="RegisterPanel"/>
+			<item value="Register"/>
+			<item value="fm."/>
+			<item value="isWrite"/>
+			<item value="isWiret = false"/>
+			<item value="push"/>
 			<item value="System.out."/>
 			<item value="System."/>
-			<item value="nextS"/>
-			<item value="next"/>
-			<item value="점끝"/>
-			<item value="점프 시작"/>
-			<item value=""/>
+			<item value="System.out"/>
+			<item value="Hall"/>
+			<item value="monsters"/>
 		</list>
 		<list key="replacehistory">
 			<item value=".png"/>

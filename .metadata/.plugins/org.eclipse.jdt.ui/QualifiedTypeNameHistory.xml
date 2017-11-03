@@ -34,7 +34,6 @@
 <fullyQualifiedTypeName name="java.util.Map"/>
 <fullyQualifiedTypeName name="java.util.Map.Entry"/>
 <fullyQualifiedTypeName name="java.util.HashMap"/>
-<fullyQualifiedTypeName name="model.Player"/>
 <fullyQualifiedTypeName name="model.GameObj"/>
 <fullyQualifiedTypeName name="model.Monster"/>
 <fullyQualifiedTypeName name="gui.SNL"/>
@@ -60,4 +59,5 @@
 <fullyQualifiedTypeName name="java.io.File"/>
 <fullyQualifiedTypeName name="java.util.HashSet"/>
 <fullyQualifiedTypeName name="java.awt.event.KeyEvent"/>
+<fullyQualifiedTypeName name="model.Player"/>
 </qualifiedTypeNameHistroy>

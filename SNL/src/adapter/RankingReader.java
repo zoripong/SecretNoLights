@@ -114,7 +114,7 @@ public class RankingReader {
 
 		int startX = 145, startY = 190, termY = 103;
 
-	
+
 		for (int i = idx; i < idx+5; i++) {
 			System.out.println(i +", "+records.size());
 			char userRank[] = String.valueOf(i).toCharArray();

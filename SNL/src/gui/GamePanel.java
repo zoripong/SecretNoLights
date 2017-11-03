@@ -37,7 +37,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 	private final int BLOCK_WIDTH = 43;
 	private final int BLOCK_HEIGHT = 40;
 
-	private final int MAX_STAGE = 3;
+	private final int MAX_STAGE = 10;
 
 	private FrameManager fm;
 	private int charType;
@@ -67,12 +67,11 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 
 	private long startStageTime;
 
-	private ImageIcon darknessImage;
 	private ImageIcon nextStageImage;
-
-	private int beforePosX;
-	private int beforePosY;
-
+	private ImageIcon darknessImage;
+	
+	private boolean setDark;
+	private long darkStart;
 	public GamePanel(FrameManager fm, int charType) {
 		this.fm = fm;
 		this.charType = charType;
@@ -89,6 +88,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 	public void init() {
 
 		background = new ImageIcon(SNL.class.getResource("../images/game_background.png")).getImage();
+		darknessImage = new ImageIcon(SNL.class.getResource("../images/darkness_2.png"));
 
 		gameMusic = new Music("gameMusic.mp3", true);
 		gameMusic.start();
@@ -122,9 +122,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 		}
 
 		startStageTime = System.currentTimeMillis();
-		darknessImage = new ImageIcon(SNL.class.getResource("../images/darkness_2.png"));
 		nextStageImage = new ImageIcon(SNL.class.getResource("../images/next_stage.png"));
 
+		darkStart = -1;
+		setDark = false;
 	}
 
 	public void actionPerformed(ActionEvent ae) {
@@ -189,8 +190,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 
 				crushCount.set(i, crushCount.get(i) + 1);
 				// °ø°ÝÁß
-				if ((System.currentTimeMillis() - startCrush.get(i)) >= 250) {
-					startCrush.set(i, startCrush.get(i) + 250);
+				if ((System.currentTimeMillis() - startCrush.get(i)) >= 230) {
+					startCrush.set(i, startCrush.get(i) + 230);
 					if (p.isAttack()) {
 						if (p.isRight()) {
 							if (p.getPosX() < monster.getX()) {
@@ -252,6 +253,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 			}
 		}
 
+
 		// draw the background
 		screenImage = createImage(SNL.SCREEN_WIDTH, SNL.SCREEN_HEIGHT);
 		Graphics screenGraphic = screenImage.getGraphics();
@@ -273,12 +275,26 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 		for (int i = 0; i < monsters.size(); i++)
 			monsters.get(i).draw(g);
 
+
+		// draw the dark
+		if(setDark) {
+			darknessImage = new ImageIcon(SNL.class.getResource("../images/darkness_3.png"));
+			if(darkStart != -1) {
+				if(System.currentTimeMillis() - darkStart > 3000)
+					setDark = false;
+			}
+
+		}else {
+			darknessImage = new ImageIcon(SNL.class.getResource("../images/darkness_2.png"));
+
+		}
+
 		g2d.drawImage(darknessImage.getImage(), (p.getPosX() + p.getWidth() / 2) - darknessImage.getIconWidth() / 2,
 				(p.getPosY() + p.getHeight() / 2) - darknessImage.getIconHeight() / 2, null);
 
+
+		// draw the next stage
 		if (isOpenDoor == 1) {
-			beforePosX = p.getPosX();
-			beforePosY = p.getPosY();
 			g2d.drawImage(nextStageImage.getImage(), SNL.SCREEN_WIDTH / 2 - nextStageImage.getIconWidth() / 2,
 					SNL.SCREEN_HEIGHT / 2 - nextStageImage.getIconHeight() / 2, null);
 			isOpenDoor++;
@@ -429,6 +445,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 	}
 
 	private void nextStage(Graphics g) {
+		darknessImage = new ImageIcon(SNL.class.getResource("../images/darkness_2.png"));
 
 		removeMonsters();
 		try {
@@ -453,10 +470,11 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 			startCrushes.add(new ArrayList<>());
 			crushCount.add(0);
 		}
+					
 	}
 
 	private boolean crushPlayer() {
-		if (p.getLife() == 1) {
+		if (p.getLife() == 1) {	
 			mMapReader = null;
 			gameMusic.close();
 			fm.setRecord(new Record(String.valueOf(p.getScore())));
@@ -464,6 +482,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 			return true;
 		} else {
 			// System.out.println("¸ñ¼û :" + p.getLife());
+			setDark = true;
+			darkStart = System.currentTimeMillis();
 			p.minusLife();
 			return false;
 		}

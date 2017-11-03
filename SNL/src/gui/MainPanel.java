@@ -98,7 +98,7 @@ public class MainPanel extends JPanel implements ActionListener, KeyListener, Di
 			// TODO 패널 전환
 			gameMusic.close();
 			if (selecter.getPosY()-10 == GAME_START) {
-				fm.changePanel("CharacterPanel");
+				fm.changePanel("StoryPanel");
 			} else {
 				fm.changePanel("ExplainPanel");
 			}

@@ -33,6 +33,7 @@ public class MapReader implements Direction {
 
 	private HashSet <Rectangle2D> rectangleSet;
 	
+	
 	public MapReader(int stage) {
 		mStage = stage;
 		rectangleSet = new HashSet<>();
@@ -43,6 +44,7 @@ public class MapReader implements Direction {
 		monsters = new ArrayList<Monster>();
 		readFile();
 		monsterLocations = new ArrayList<>();
+
 
 	}
 
@@ -200,10 +202,18 @@ public class MapReader implements Direction {
 					if (isBlock == false) {
 						startX = j;
 						isBlock = true;
+					}else {
+						if(j == mMapInfo[0].length - 1) {
+							endX = mMapInfo[0].length-1;
+							System.out.println("startX "+startX+"/ endX "+endX + "/ y "+i);
+							putData(startX, endX, i);
+						}
+							
 					}
 				} else {
 					if (isBlock) {
 						endX = j - 1;
+						System.out.println("startX "+startX+"/ endX "+endX + "/ y "+i);
 						putData(startX, endX, i);
 						isBlock = false;
 					}
@@ -214,14 +224,15 @@ public class MapReader implements Direction {
 		}
 
 		putData(0, 19, 17); // √µ¿Â
+		System.out.println(rectangleSet);
 	}
 
 	private void putData(int startX, int endX, int y) {
 		
-		for (int i = 0; i < (endX - startX + 1); i++) {
+//		for (int i = 0; i < (endX - startX + 1); i++) {
 			rectangleSet.add(new Rectangle2D.Double(startX * blockImageIcon.getIconWidth(), y * blockImageIcon.getIconHeight(),
 					(endX - startX + 1) * blockImageIcon.getIconWidth(), blockImageIcon.getIconHeight()));
-		}
+//		}
 
 	}
 
@@ -247,4 +258,6 @@ public class MapReader implements Direction {
 	public int getStage() {
 		return mStage;
 	}
+	
+
 }

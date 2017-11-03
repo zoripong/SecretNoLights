@@ -1,16 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<item value="G:\2619 JAVA\JLayer1.0.1" key="org.eclipse.jdt.ui.lastextjar"/>
-	<section name="org.eclipse.ltk.ui.refactoring.settings">
-		<item value="false" key="updateQualifiedNames"/>
-		<item value="*" key="patterns"/>
-		<item value="false" key="updateSimilarElements"/>
-		<item value="1" key="updateSimilarElementsMatchStrategy"/>
-		<item value="false" key="updateTextualMatches"/>
-	</section>
-	<section name="GenerateConstructorUsingFieldsSelectionDialog">
-		<item value="false" key="OmitCallToSuper"/>
-	</section>
 	<section name="org.eclipse.jdt.internal.ui.packageview.PackageExplorerPart">
 		<item value="2" key="layout"/>
 		<item value="true" key="group_libraries"/>
@@ -25,6 +15,58 @@
 		<item value="154" key="DIALOG_X_ORIGIN"/>
 		<item value="9" key="DIALOG_Y_ORIGIN"/>
 	</section>
+	<section name="SourceActionDialog.constructors">
+		<item value="false" key="SynchronizedModifier"/>
+		<item value="false" key="Comments"/>
+		<item value="1" key="VisibilityModifier"/>
+		<item value="false" key="FinalModifier"/>
+	</section>
+	<section name="org.eclipse.jdt.internal.ui.text.QuickOutline">
+		<item value="true" key="org.eclipse.jdt.internal.ui.text.JavaOutlineInformationControlDIALOG_USE_PERSISTED_SIZE"/>
+		<item value="450" key="org.eclipse.jdt.internal.ui.text.JavaOutlineInformationControlDIALOG_WIDTH"/>
+		<item value="400" key="org.eclipse.jdt.internal.ui.text.JavaOutlineInformationControlDIALOG_HEIGHT"/>
+		<item value="false" key="GoIntoTopLevelTypeAction.isChecked"/>
+		<item value="false" key="org.eclipse.jdt.internal.ui.text.JavaOutlineInformationControlDIALOG_USE_PERSISTED_LOCATION"/>
+	</section>
+	<section name="FatJarPackageWizard">
+		<item value="G:\JavaProject" key="FatJarPackageWizardPage.ANTSCRIPT_LOCATION"/>
+		<item value="SNL (3) - SNL" key="FatJarPackageWizardPage.LAUNCH_CONFIGURATION_SELECTION_NAME"/>
+		<item value="G:\2619 JAVA\snl.jar" key="FatJarPackageWizardPage.DESTINATION_PATH_SELECTION"/>
+		<item value="false" key="FatJarPackageWizardPage.ANTSCRIPT_SAVE"/>
+		<item value="1" key="FatJarPackageWizardPage.LIBRARY_HANDLING"/>
+		<list key="FatJarPackageWizardPage.DESTINATION_NAMES_ID">
+			<item value="G:\2619 JAVA\snl.jar"/>
+		</list>
+		<list key="FatJarPackageWizardPage.ANTSCRIPT_LOCATION_HISTORY">
+			<item value="G:\JavaProject.xml"/>
+			<item value=".xml"/>
+		</list>
+	</section>
+	<section name="OverrideMethodDialog">
+		<item value="true" key="showtypes"/>
+	</section>
+	<section name="RenameInformationPopup">
+	</section>
+	<section name="completion_proposal_size">
+		<item value="277" key="contextSelector.size.y"/>
+		<item value="337" key="contextSelector.size.x"/>
+	</section>
+	<section name="AddGetterSetterDialog">
+		<item value="false" key="SortOrdering"/>
+		<item value="false" key="RemoveFinal"/>
+	</section>
+	<section name="JavaElementSearchActions">
+	</section>
+	<section name="org.eclipse.ltk.ui.refactoring.settings">
+		<item value="false" key="updateQualifiedNames"/>
+		<item value="*" key="patterns"/>
+		<item value="false" key="updateSimilarElements"/>
+		<item value="1" key="updateSimilarElementsMatchStrategy"/>
+		<item value="false" key="updateTextualMatches"/>
+	</section>
+	<section name="GenerateConstructorUsingFieldsSelectionDialog">
+		<item value="false" key="OmitCallToSuper"/>
+	</section>
 	<section name="NewClassWizardPage">
 		<item value="false" key="create_constructor"/>
 		<item value="true" key="create_unimplemented"/>
@@ -38,12 +80,6 @@
 		<item value="738" key="DIALOG_HEIGHT"/>
 		<item value="670" key="DIALOG_X_ORIGIN"/>
 		<item value="32" key="DIALOG_Y_ORIGIN"/>
-	</section>
-	<section name="SourceActionDialog.constructors">
-		<item value="false" key="SynchronizedModifier"/>
-		<item value="false" key="Comments"/>
-		<item value="1" key="VisibilityModifier"/>
-		<item value="false" key="FinalModifier"/>
 	</section>
 	<section name="DialogBounds_OverrideMethodDialog">
 		<item value="679" key="DIALOG_WIDTH"/>
@@ -66,13 +102,6 @@
 		<item value="670" key="DIALOG_X_ORIGIN"/>
 		<item value="9" key="DIALOG_Y_ORIGIN"/>
 	</section>
-	<section name="org.eclipse.jdt.internal.ui.text.QuickOutline">
-		<item value="true" key="org.eclipse.jdt.internal.ui.text.JavaOutlineInformationControlDIALOG_USE_PERSISTED_SIZE"/>
-		<item value="450" key="org.eclipse.jdt.internal.ui.text.JavaOutlineInformationControlDIALOG_WIDTH"/>
-		<item value="400" key="org.eclipse.jdt.internal.ui.text.JavaOutlineInformationControlDIALOG_HEIGHT"/>
-		<item value="false" key="GoIntoTopLevelTypeAction.isChecked"/>
-		<item value="false" key="org.eclipse.jdt.internal.ui.text.JavaOutlineInformationControlDIALOG_USE_PERSISTED_LOCATION"/>
-	</section>
 	<section name="RefactoringWizard.preview">
 		<item value="600" key="width"/>
 		<item value="400" key="height"/>
@@ -91,10 +120,8 @@
 		<item value="false" key="FinalModifier"/>
 		<item value="10" key="LimitValue"/>
 	</section>
-	<section name="OverrideMethodDialog">
-		<item value="true" key="showtypes"/>
-	</section>
-	<section name="RenameInformationPopup">
+	<section name="ClasspathContainerSelectionPage">
+		<item value="0" key="index"/>
 	</section>
 	<section name="quick_assist_proposal_size">
 	</section>
@@ -108,15 +135,5 @@
 		<item value="0" key="HISTORY_SIZE"/>
 		<item value="false" key="CASE_SENSITIVE"/>
 		<item value="11" key="INCLUDE_MASK"/>
-	</section>
-	<section name="completion_proposal_size">
-		<item value="277" key="contextSelector.size.y"/>
-		<item value="337" key="contextSelector.size.x"/>
-	</section>
-	<section name="AddGetterSetterDialog">
-		<item value="false" key="SortOrdering"/>
-		<item value="false" key="RemoveFinal"/>
-	</section>
-	<section name="JavaElementSearchActions">
 	</section>
 </section>

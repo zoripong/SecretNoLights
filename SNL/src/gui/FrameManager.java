@@ -63,6 +63,9 @@ public class FrameManager extends JFrame {
 		case "HallPanel":
 			p = new HallPanel(this, record);
 			break;
+		case "StoryPanel":
+			p = new StoryPanel(this);
+			break;
 		}
 		contain.add(p);
 		p.requestFocus();

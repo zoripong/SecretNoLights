@@ -49,6 +49,7 @@ public class ExplainPanel extends JPanel implements ActionListener, KeyListener 
 		case KeyEvent.VK_RIGHT:
 			if (page >= MAX_PAGE) {
 				fm.changePanel("MainPanel");
+				gameMusic.close();
 			} else {
 				page++;
 			}

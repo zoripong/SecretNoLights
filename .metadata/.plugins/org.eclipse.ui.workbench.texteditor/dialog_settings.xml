@@ -6,27 +6,27 @@
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="System." key="selection"/>
+		<item value="AudioInputStream" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
-			<item value="System."/>
-			<item value="Syste."/>
-			<item value="setDark = true"/>
-			<item value="200"/>
-			<item value="next"/>
-			<item value="nextStage"/>
-			<item value="crushPlayer"/>
-			<item value="crushP"/>
-			<item value="crushp"/>
-			<item value="isCrush"/>
-			<item value="crush("/>
+			<item value="AudioInputStream"/>
+			<item value="remove"/>
+			<item value="re"/>
+			<item value="itemEyesight"/>
+			<item value="darkS"/>
+			<item value="crushPlayer()"/>
+			<item value="items.add"/>
+			<item value="life"/>
+			<item value="nextStag"/>
+			<item value="dra"/>
+			<item value="ran"/>
 			<item value="crush"/>
-			<item value="darkness"/>
-			<item value="crushPl"/>
-			<item value="inter"/>
+			<item value="아무튼"/>
+			<item value="RIGHT"/>
+			<item value="down"/>
 		</list>
 		<list key="replacehistory">
 			<item value=".png"/>

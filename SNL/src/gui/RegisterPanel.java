@@ -179,7 +179,7 @@ public class RegisterPanel extends JPanel implements ActionListener, KeyListener
 	}
 
 	private void pushAlpha(char ch) {
-		if(writeChar.size()>3)
+		if(writeChar.size()>=3)
 			return;
 		if(isWrite) {			
 			writeChar.add(ch);

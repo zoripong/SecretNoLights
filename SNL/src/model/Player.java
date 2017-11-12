@@ -89,6 +89,7 @@ public class Player extends GameObj implements Direction, Attackable {
 	}
 
 	public void move(int direction) {
+		 
 		Rectangle2D player = new Rectangle2D.Double(getPosX(), getPosY(), getWidth(), getHeight());
 
 		switch (direction) {
@@ -105,8 +106,16 @@ public class Player extends GameObj implements Direction, Attackable {
 			if (getPosX() < mMapReader.getBlockWidth())
 				setPosX(mMapReader.getBlockWidth());
 
-			if (!mMapReader.isCrush(player))
-				setPosX(getPosX() - dx);
+			if(isJumping()) {
+				Rectangle2D a = new Rectangle2D.Double(getPosX()-getDx(), getPosY(), getWidth(), getHeight());
+				System.out.println("¿ÖÁö?");
+				if (!mMapReader.isCrush(a))
+					setPosX(getPosX() + dx);
+				
+			}else {
+				if (!mMapReader.isCrush(player))
+					setPosX(getPosX() - dx);
+			}
 
 			break;
 		case RIGHT:
@@ -121,9 +130,18 @@ public class Player extends GameObj implements Direction, Attackable {
 			if (getPosX() > (SNL.SCREEN_WIDTH - getWidth() - mMapReader.getBlockWidth()))
 				setPosX(SNL.SCREEN_WIDTH - getWidth() - mMapReader.getBlockWidth());
 
-			if (!mMapReader.isCrush(player))
-				setPosX(getPosX() + dx);
 
+			if(isJumping()) {
+				Rectangle2D a = new Rectangle2D.Double(getPosX()+getDx(), getPosY(), getWidth(), getHeight());
+				
+				if (!mMapReader.isCrush(a))
+					setPosX(getPosX() + dx);
+				
+			}else {
+				if (!mMapReader.isCrush(player))
+					setPosX(getPosX() + dx);
+			}
+			
 			break;
 
 		case UP:
@@ -229,6 +247,8 @@ public class Player extends GameObj implements Direction, Attackable {
 
 	@Override
 	public void attack() {
+//		if(isJumping())
+//			return;
 		isAttacking = true;
 		
 		try {
@@ -271,43 +291,45 @@ public class Player extends GameObj implements Direction, Attackable {
 		}
 	}
 
-	public int isCrush(GameObj obj) {
-		int startX = getLocation('A').getX();
-		int endX = getLocation('D').getX();
-
-		int startY = getLocation('A').getY();
-		int endY = getLocation('B').getY();
-
-		if (isAttacking) {
-			return -1;
-		}
-		if (startX <= obj.getLocation('A').getX() && obj.getLocation('A').getX() <= endX
-				&& startY <= obj.getLocation('A').getY() && obj.getLocation('A').getY() <= endY) {
-			// System.out.println("1");
-			return 1;
-		}
-
-		if (startX <= obj.getLocation('B').getX() && obj.getLocation('B').getX() <= endX
-				&& startY <= obj.getLocation('B').getY() && obj.getLocation('B').getY() <= endY) {
-			// System.out.println("2");
-			return 1;
-		}
-
-		if (startX <= obj.getLocation('C').getX() && obj.getLocation('C').getX() <= endX
-				&& startY <= obj.getLocation('C').getY() && obj.getLocation('C').getY() <= endY) {
-			// System.out.println("3");
-			return 1;
-		}
-		if (startX <= obj.getLocation('D').getX() && obj.getLocation('D').getX() <= endX
-				&& startY <= obj.getLocation('D').getY() && obj.getLocation('D').getY() <= endY) {
-			// System.out.println("4");
-			return 1;
-		}
-
-		return 0;
-	}
+//	public int isCrush(GameObj obj) {
+//		int startX = getLocation('A').getX();
+//		int endX = getLocation('D').getX();
+//
+//		int startY = getLocation('A').getY();
+//		int endY = getLocation('B').getY();
+//
+//		if (isAttacking) {
+//			return -1;
+//		}
+//		if (startX <= obj.getLocation('A').getX() && obj.getLocation('A').getX() <= endX
+//				&& startY <= obj.getLocation('A').getY() && obj.getLocation('A').getY() <= endY) {
+//			// System.out.println("1");
+//			return 1;
+//		}
+//
+//		if (startX <= obj.getLocation('B').getX() && obj.getLocation('B').getX() <= endX
+//				&& startY <= obj.getLocation('B').getY() && obj.getLocation('B').getY() <= endY) {
+//			// System.out.println("2");
+//			return 1;
+//		}
+//
+//		if (startX <= obj.getLocation('C').getX() && obj.getLocation('C').getX() <= endX
+//				&& startY <= obj.getLocation('C').getY() && obj.getLocation('C').getY() <= endY) {
+//			// System.out.println("3");
+//			return 1;
+//		}
+//		if (startX <= obj.getLocation('D').getX() && obj.getLocation('D').getX() <= endX
+//				&& startY <= obj.getLocation('D').getY() && obj.getLocation('D').getY() <= endY) {
+//			// System.out.println("4");
+//			return 1;
+//		}
+//
+//		return 0;
+//	}
 
 	public void addLife() {
+		if(life >= 5)
+			return;
 		life++;
 	}
 

@@ -7,7 +7,6 @@
 <fullyQualifiedTypeName name="adapter.Music"/>
 <fullyQualifiedTypeName name="javax.swing.JButton"/>
 <fullyQualifiedTypeName name="java.awt.Container"/>
-<fullyQualifiedTypeName name="gui.GamePanel"/>
 <fullyQualifiedTypeName name="gui.CharacterPanel"/>
 <fullyQualifiedTypeName name="org.omg.CosNaming.IstringHelper"/>
 <fullyQualifiedTypeName name="javax.swing.JPanel"/>
@@ -34,17 +33,13 @@
 <fullyQualifiedTypeName name="java.util.Map"/>
 <fullyQualifiedTypeName name="java.util.Map.Entry"/>
 <fullyQualifiedTypeName name="java.util.HashMap"/>
-<fullyQualifiedTypeName name="model.GameObj"/>
 <fullyQualifiedTypeName name="model.Monster"/>
 <fullyQualifiedTypeName name="gui.SNL"/>
 <fullyQualifiedTypeName name="java.awt.geom.Rectangle2D"/>
-<fullyQualifiedTypeName name="java.awt.geom.Rectangle2D.Double"/>
-<fullyQualifiedTypeName name="javax.swing.ImageIcon"/>
 <fullyQualifiedTypeName name="model.Location"/>
 <fullyQualifiedTypeName name="java.lang.System"/>
 <fullyQualifiedTypeName name="java.lang.Thread"/>
 <fullyQualifiedTypeName name="adapter.MapReader"/>
-<fullyQualifiedTypeName name="java.util.ArrayList"/>
 <fullyQualifiedTypeName name="java.awt.Graphics"/>
 <fullyQualifiedTypeName name="adapter.RankingReader"/>
 <fullyQualifiedTypeName name="java.awt.Graphics2D"/>
@@ -60,4 +55,9 @@
 <fullyQualifiedTypeName name="java.util.HashSet"/>
 <fullyQualifiedTypeName name="java.awt.event.KeyEvent"/>
 <fullyQualifiedTypeName name="model.Player"/>
+<fullyQualifiedTypeName name="gui.GamePanel"/>
+<fullyQualifiedTypeName name="model.GameObj"/>
+<fullyQualifiedTypeName name="javax.swing.ImageIcon"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="java.awt.geom.Rectangle2D.Double"/>
 </qualifiedTypeNameHistroy>

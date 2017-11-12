@@ -1,3 +1,4 @@
+
 package gui;
 
 import java.awt.Graphics;
@@ -26,6 +27,7 @@ import adapter.Music;
 import customInterface.AutoMovingListener;
 import customInterface.Direction;
 import customInterface.JumpListener;
+import model.GameObj;
 import model.Location;
 import model.Monster;
 import model.Player;
@@ -65,13 +67,23 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 	ArrayList<Long> startCrush;
 	ArrayList<Integer> crushCount;
 
+	ArrayList<GameObj> items;
+	ArrayList<ImageIcon> itemImages;
+
 	private long startStageTime;
 
 	private ImageIcon nextStageImage;
 	private ImageIcon darknessImage;
-	
+
 	private boolean setDark;
 	private long darkStart;
+	
+	private boolean setLight;
+	private long lightStart;
+
+	private boolean isSpeedUp;
+	private long speedUpStart;
+	
 	public GamePanel(FrameManager fm, int charType) {
 		this.fm = fm;
 		this.charType = charType;
@@ -115,6 +127,15 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 		startCrush = new ArrayList<>();
 		startCrushes = new ArrayList<>();
 		crushCount = new ArrayList<>();
+		items = new ArrayList<>();
+		itemImages = new ArrayList<>();
+
+		itemImages.add(new ImageIcon(SNL.class.getResource("../images/item_eyesight.png")));
+
+		itemImages.add(new ImageIcon(SNL.class.getResource("../images/item_hp.png")));
+
+		itemImages.add(new ImageIcon(SNL.class.getResource("../images/item_speed.png")));
+
 		for (int i = 0; i < monsters.size(); i++) {
 			startCrush.add((long) 0);
 			startCrushes.add(new ArrayList<>());
@@ -126,6 +147,12 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 
 		darkStart = -1;
 		setDark = false;
+		
+		lightStart = -1;
+		setLight = false;
+		
+		speedUpStart = -1;
+		isSpeedUp = false;
 	}
 
 	public void actionPerformed(ActionEvent ae) {
@@ -137,11 +164,21 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 		Graphics2D g2d = (Graphics2D) g;
 		player = new Rectangle2D.Double(p.getPosX(), p.getPosY(), p.getWidth(), p.getHeight());
 
-//		System.out.println(p.getPosX() + ", " + p.getPosY());
+		if(isSpeedUp) {
+			if(speedUpStart != -1) {
+				if(System.currentTimeMillis() - speedUpStart > 3000) {
+					isSpeedUp = false;
+					p.setDx(p.getDx()/2);
+				}
+			}
+		}
+		
+		// System.out.println(p.getPosX() + ", " + p.getPosY());
 		if (!p.isJumping()) {
 
 			ImageIcon front = new ImageIcon(
 					SNL.class.getResource("../images/front_" + String.valueOf(charType) + ".png"));
+
 			Rectangle2D a = new Rectangle2D.Double(p.getPosX(), p.getPosY() + 3, front.getIconWidth(),
 					front.getIconHeight());
 
@@ -171,13 +208,48 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 				fm.setRecord(new Record(String.valueOf(p.getScore())));
 				fm.changePanel("RegisterPanel");
 				return;
-			}else {
+			} else {
 				nextStage(g);
 			}
 
 		}
 
 		Rectangle2D mosPlayer = new Rectangle2D.Double(p.getPosX(), p.getPosY(), p.getWidth(), p.getHeight());
+		if (!p.isAttack()) {
+			for (int i = 0; i < items.size(); i++) {
+				Rectangle2D item = new Rectangle2D.Double(items.get(i).getPosX(), items.get(i).getPosY(),
+						items.get(i).getWidth(), items.get(i).getHeight());
+				if (mosPlayer.intersects(item)) {
+					try {
+						AudioInputStream ais = AudioSystem
+								.getAudioInputStream(new File("./src/music/item.wav"));
+						Clip clip = AudioSystem.getClip();
+						clip.stop();
+						clip.open(ais);
+						clip.start();
+					}catch(Exception e) {
+						
+					}
+					switch (items.get(i).getItemType()) {
+					case 0:
+						itemEyesight();
+						System.out.println("시야 확보");
+						break;
+					case 1:
+						p.addLife();
+						System.out.println("체력 충전");
+						break;
+					case 2:
+						itemSpeedUp();
+						System.out.println("속도 업");
+						break;
+					}
+					items.remove(i);
+					break;
+				}
+
+			}
+		}
 
 		for (int i = 0; i < monsters.size(); i++) {
 			Rectangle2D monster = new Rectangle2D.Double(monsters.get(i).getPosX(), monsters.get(i).getPosY(),
@@ -197,16 +269,18 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 							if (p.getPosX() < monster.getX()) {
 								// 몬스터 사망
 								try {
-									AudioInputStream ais = AudioSystem.getAudioInputStream(new File("./src/music/crush_monster.wav"));
+									AudioInputStream ais = AudioSystem
+											.getAudioInputStream(new File("./src/music/crush_monster.wav"));
 									Clip clip = AudioSystem.getClip();
 									clip.stop();
 									clip.open(ais);
 									clip.start();
 								} catch (Exception ex) {
 								}
-								
+								createItem(monsters.get(i));
 								p.increaseScore(300);
 								crushMonster(i);
+
 							} else {
 								// 플레이어 사망
 								if (crushPlayer())
@@ -214,17 +288,18 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 							}
 						} else {
 							if (p.getPosX() > monster.getX()) {
-								
+
 								// 몬스터 사망
 								try {
-									AudioInputStream ais = AudioSystem.getAudioInputStream(new File("./src/music/crush_monster.wav"));
+									AudioInputStream ais = AudioSystem
+											.getAudioInputStream(new File("./src/music/crush_monster.wav"));
 									Clip clip = AudioSystem.getClip();
 									clip.stop();
 									clip.open(ais);
 									clip.start();
 								} catch (Exception ex) {
 								}
-
+								createItem(monsters.get(i));
 								p.increaseScore(300);
 								crushMonster(i);
 							} else {
@@ -253,7 +328,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 			}
 		}
 
-
 		// draw the background
 		screenImage = createImage(SNL.SCREEN_WIDTH, SNL.SCREEN_HEIGHT);
 		Graphics screenGraphic = screenImage.getGraphics();
@@ -262,6 +336,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 
 		// draw the door
 		mMapReader.drawDoor(g, isOpenDoor);
+
+		// draw the item
+		drawItems(g);
 
 		// draw the Map
 		if (isMapDraw) {
@@ -275,23 +352,29 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 		for (int i = 0; i < monsters.size(); i++)
 			monsters.get(i).draw(g);
 
-
 		// draw the dark
-		if(setDark) {
+		if (setDark) {
 			darknessImage = new ImageIcon(SNL.class.getResource("../images/darkness_3.png"));
-			if(darkStart != -1) {
-				if(System.currentTimeMillis() - darkStart > 3000)
+			if (darkStart != -1) {
+				if (System.currentTimeMillis() - darkStart > 3000)
 					setDark = false;
 			}
 
-		}else {
+		} else {
 			darknessImage = new ImageIcon(SNL.class.getResource("../images/darkness_2.png"));
 
 		}
-
-		g2d.drawImage(darknessImage.getImage(), (p.getPosX() + p.getWidth() / 2) - darknessImage.getIconWidth() / 2,
-				(p.getPosY() + p.getHeight() / 2) - darknessImage.getIconHeight() / 2, null);
-
+		
+		if(setLight) {
+			if (lightStart != -1) {
+				if (System.currentTimeMillis() - lightStart > 3000)
+					setLight = false;
+			}
+		}else {
+			g2d.drawImage(darknessImage.getImage(), (p.getPosX() + p.getWidth() / 2) - darknessImage.getIconWidth() / 2,
+					(p.getPosY() + p.getHeight() / 2) - darknessImage.getIconHeight() / 2, null);
+			
+		}
 
 		// draw the next stage
 		if (isOpenDoor == 1) {
@@ -306,6 +389,34 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 		// draw the score
 		p.drawScore(g);
 
+	}
+	
+	public void itemEyesight() {
+		setLight = true;
+		lightStart = System.currentTimeMillis();
+	}
+	
+	public void itemSpeedUp() {
+		isSpeedUp = true;
+		speedUpStart = System.currentTimeMillis();
+		p.setDx(p.getDx()*2);
+	}
+
+	public void createItem(Monster monster) {
+		int type = (int) (Math.random() * 3);
+
+		items.add(
+				new GameObj(monster.getPosX() + (monster.getWidth() / 2),
+						monster.getPosY() + monster.getHeight()
+								- itemImages.get(type).getIconHeight(),
+						itemImages.get(type), type));
+
+
+	}
+	public void drawItems(Graphics g) {
+		Graphics2D g2d = (Graphics2D) g;
+		for (int i = 0; i < items.size(); i++)
+			g2d.drawImage(items.get(i).getImage(), items.get(i).getPosX(), items.get(i).getPosY(), null);
 	}
 
 	public void screenDraw(Graphics g) {
@@ -324,7 +435,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 	public void jumpTimeArrived(int jumpIdx, int jumpy) {
 		jumpThread.setMap(mMapReader, p);
 
-		if (isJumpingMove) {
+		Rectangle2D a = new Rectangle2D.Double(p.getPosX() + p.getDx(), p.getPosY(), p.getWidth(), p.getHeight());
+		Rectangle2D b = new Rectangle2D.Double(p.getPosX() - p.getDy(), p.getPosY(), p.getWidth(), p.getHeight());
+
+		if (isJumpingMove && !mMapReader.isCrush(a) && !mMapReader.isCrush(b)) {
 			if (p.isRight())
 				p.setPosX(p.getPosX() + p.getDx());
 			else
@@ -352,6 +466,13 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 	@Override
 	public void jumpTimeEnded(boolean isStop) {
 		p.setImage(new ImageIcon(SNL.class.getResource("../images/front_" + String.valueOf(charType) + ".png")));
+
+		Rectangle2D a = new Rectangle2D.Double(p.getPosX() - p.getDx(), p.getPosY(), p.getWidth(), p.getHeight());
+
+		if (mMapReader.isCrush(a)) {
+			System.out.println("아무튼,,");
+			p.setPosX(p.getPosX() + p.getDx() + 3);
+		}
 		p.setJumpIdx(0);
 		if (isStop) {
 			p.setPosY(p.getPosY() + p.getPosY() % 40);
@@ -446,7 +567,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 
 	private void nextStage(Graphics g) {
 		darknessImage = new ImageIcon(SNL.class.getResource("../images/darkness_2.png"));
-
+		items.clear();
 		removeMonsters();
 		try {
 			Thread.sleep(2000);
@@ -470,11 +591,11 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 			startCrushes.add(new ArrayList<>());
 			crushCount.add(0);
 		}
-					
+
 	}
 
 	private boolean crushPlayer() {
-		if (p.getLife() == 1) {	
+		if (p.getLife() == 1) {
 			mMapReader = null;
 			gameMusic.close();
 			fm.setRecord(new Record(String.valueOf(p.getScore())));

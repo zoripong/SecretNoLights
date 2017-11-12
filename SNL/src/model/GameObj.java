@@ -10,13 +10,39 @@ public class GameObj {
 	private int posX;
 	private int posY;
 	private ImageIcon image;
+	private int itemType;
 	
 	public GameObj(int x, int y, ImageIcon image) {
 		posX = x;
 		posY = y;
 		this.image = image;
+		itemType = -1;
 	}
-
+	
+	public GameObj(int x, int y, ImageIcon image, int itemType) {
+		posX = x;
+		posY = y;
+		this.image = image;
+		this.itemType = itemType;
+	}
+	
+	public boolean isItem() {
+		if(itemType == -1)
+			return false;
+		else return true;
+	}
+	
+	public int getItemType() {
+		return itemType;
+	}
+	
+	public void setItemType(int itemType) {
+		this.itemType = itemType;
+	}
+	
+	public void setItem() {
+		
+	}
 	public int getPosX() {
 		return posX;
 	}

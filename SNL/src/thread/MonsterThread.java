@@ -32,6 +32,7 @@ public class MonsterThread extends Thread implements JumpListener{
 				monster.changeDirection();
 			
 			monster.update();
+			
 			autoMovingListener.repaintable();
 			try {
 				Thread.sleep(50);
@@ -39,6 +40,11 @@ public class MonsterThread extends Thread implements JumpListener{
 
 			}
 
+			if(monster.isJumpTime()) {
+				System.out.println("강제 점프!");
+				new JumpThread(this, mapReader, monster).start();
+				continue;
+			}
 			if(monster.isJumpable() && flag % 30 == 0 && ((int)(Math.random()*5)%3) == 0)
 				new JumpThread(this, mapReader, monster).start();
 		}

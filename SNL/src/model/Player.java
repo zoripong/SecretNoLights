@@ -45,6 +45,8 @@ public class Player extends GameObj implements Direction, Attackable {
 	private ImageIcon scoreImage;
 
 	private ImageIcon lifeImage;
+	
+	private boolean isJumpingAttack;
 
 	public Player(int x, int y, ImageIcon image, int charType, MapReader mapReader) {
 		super(x, y - image.getIconHeight(), image);
@@ -55,6 +57,7 @@ public class Player extends GameObj implements Direction, Attackable {
 		isRight = true;
 		imageIdx = 1; // 좌우 이동
 		isAttacking = false;
+		isJumpingAttack = false;
 		mMapReader = mapReader;
 		life = 5;
 		currentImage = image;
@@ -97,7 +100,7 @@ public class Player extends GameObj implements Direction, Attackable {
 			imageName = "images/left_" + String.valueOf(charType) + "_" + String.valueOf((int) imageIdx % 3 + 1)
 					+ ".png";
 			// System.out.println(imageFile);
-
+			
 			currentImage = new ImageIcon(SNL.class.getClassLoader().getResource(imageName));
 			setImage(currentImage);
 
@@ -106,15 +109,22 @@ public class Player extends GameObj implements Direction, Attackable {
 			if (getPosX() < mMapReader.getBlockWidth())
 				setPosX(mMapReader.getBlockWidth());
 
+
+			
 			if(isJumping()) {
-				Rectangle2D a = new Rectangle2D.Double(getPosX()-getDx(), getPosY(), getWidth(), getHeight());
+				ImageIcon jump = new ImageIcon(SNL.class.getClassLoader().getResource("images/jump_left_"+String.valueOf(charType)+".png"));
+				Rectangle2D a = new Rectangle2D.Double(getPosX()-getDx(), getPosY(), jump.getIconWidth(), jump.getIconHeight());
 				System.out.println("왜지?");
 				if (!mMapReader.isCrush(a))
-					setPosX(getPosX() + dx);
+					setPosX(getPosX());
 				
 			}else {
-				if (!mMapReader.isCrush(player))
-					setPosX(getPosX() - dx);
+				if (!mMapReader.isCrush(player) && getPosX()>45) {
+					if(isAttacking)
+						return;
+					else
+						setPosX(getPosX() - dx);
+				}
 			}
 
 			break;
@@ -130,17 +140,19 @@ public class Player extends GameObj implements Direction, Attackable {
 			if (getPosX() > (SNL.SCREEN_WIDTH - getWidth() - mMapReader.getBlockWidth()))
 				setPosX(SNL.SCREEN_WIDTH - getWidth() - mMapReader.getBlockWidth());
 
-
-			if(isJumping()) {
-				Rectangle2D a = new Rectangle2D.Double(getPosX()+getDx(), getPosY(), getWidth(), getHeight());
-				
-				if (!mMapReader.isCrush(a))
-					setPosX(getPosX() + dx);
-				
-			}else {
-				if (!mMapReader.isCrush(player))
-					setPosX(getPosX() + dx);
-			}
+			if (!mMapReader.isCrush(player))
+				setPosX(getPosX() + dx);
+//
+//			if(isJumping()) {
+//				Rectangle2D a = new Rectangle2D.Double(getPosX()+getDx(), getPosY(), getWidth(), getHeight());
+//				
+//				if (!mMapReader.isCrush(a))
+//					setPosX(getPosX() + dx);
+//				
+//			}else {
+//				if (!mMapReader.isCrush(player))
+//					setPosX(getPosX() + dx);
+//			}
 			
 			break;
 
@@ -247,8 +259,11 @@ public class Player extends GameObj implements Direction, Attackable {
 
 	@Override
 	public void attack() {
-//		if(isJumping())
-//			return;
+		if(isJumping()) {
+			isJumpingAttack = true;
+			return;
+		}
+		
 		isAttacking = true;
 		
 		try {
@@ -282,6 +297,12 @@ public class Player extends GameObj implements Direction, Attackable {
 	}
 
 	public void attackEnd() {
+		System.out.println(isJumpingAttack);
+		if(isJumpingAttack) {
+			isJumpingAttack = false;
+			return;
+		}
+		
 		isAttacking = false;
 		attackCount = 0;
 		if (isRight) {
@@ -291,42 +312,6 @@ public class Player extends GameObj implements Direction, Attackable {
 			setPosY(getPosY() + getAttackPosY(charType));
 		}
 	}
-
-//	public int isCrush(GameObj obj) {
-//		int startX = getLocation('A').getX();
-//		int endX = getLocation('D').getX();
-//
-//		int startY = getLocation('A').getY();
-//		int endY = getLocation('B').getY();
-//
-//		if (isAttacking) {
-//			return -1;
-//		}
-//		if (startX <= obj.getLocation('A').getX() && obj.getLocation('A').getX() <= endX
-//				&& startY <= obj.getLocation('A').getY() && obj.getLocation('A').getY() <= endY) {
-//			// System.out.println("1");
-//			return 1;
-//		}
-//
-//		if (startX <= obj.getLocation('B').getX() && obj.getLocation('B').getX() <= endX
-//				&& startY <= obj.getLocation('B').getY() && obj.getLocation('B').getY() <= endY) {
-//			// System.out.println("2");
-//			return 1;
-//		}
-//
-//		if (startX <= obj.getLocation('C').getX() && obj.getLocation('C').getX() <= endX
-//				&& startY <= obj.getLocation('C').getY() && obj.getLocation('C').getY() <= endY) {
-//			// System.out.println("3");
-//			return 1;
-//		}
-//		if (startX <= obj.getLocation('D').getX() && obj.getLocation('D').getX() <= endX
-//				&& startY <= obj.getLocation('D').getY() && obj.getLocation('D').getY() <= endY) {
-//			// System.out.println("4");
-//			return 1;
-//		}
-//
-//		return 0;
-//	}
 
 	public void addLife() {
 		if(life >= 5)

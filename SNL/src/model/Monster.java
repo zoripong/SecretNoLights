@@ -22,6 +22,10 @@ public class Monster extends GameObj {
 	private boolean isRight;
 	private boolean isJumpable;
 
+	private int beforeX;
+	private long sameLocationTime;
+	private boolean jumpTime;
+	
 	public Monster(int x, int y, ImageIcon image, MapReader mapReader) {
 		super(x, y, image);
 		int num = (int) (Math.random() * 10);
@@ -35,20 +39,21 @@ public class Monster extends GameObj {
 		this.mMapReader = mapReader;
 		mMonsterArea = new Rectangle2D.Double(getPosX(), getPosY(), getWidth(), getHeight());
 		isJumpable = true;
+		beforeX = x;
+		jumpTime = false;
 	}
 
 
 	public void update() {
 		String imageFile;
-		mMonsterArea = new Rectangle2D.Double(getPosX(), getPosY(), getWidth(), getHeight());
+		mMonsterArea = new Rectangle2D.Double(getPosX(), getPosY(), getWidth(), getHeight()-2);
 
 		if (!isJumping()) {
 			Rectangle2D a = new Rectangle2D.Double(getPosX(), getPosY() + 5, getWidth(), getHeight());
 
 			if ((!mMapReader.isCrush(a))) {
 				isJumpable = false;
-				setPosY(getPosY() + 8
-						);
+				setPosY(getPosY() + 8);
 //				System.out.println(getPosX());
 			} else {
 				isJumpable = true;
@@ -75,23 +80,29 @@ public class Monster extends GameObj {
 			
 			isRight = false;
 		}
-
-		if (!mMapReader.isCrush(mMonsterArea)) {
-			if(isRight)
-				setPosX(getPosX() + dx);
-			else
-				setPosX(getPosX() - dx);
-		}
-		else {
-
-			if(isRight)
-				setPosX(getPosX() - dx);
-			else
-				setPosX(getPosX() + dx);
-			changeDirection();
-		}
 		
-	
+
+		if (!mMapReader.isCrush(mMonsterArea) && getPosX() > 45) {
+			if(isRight)
+				setPosX(getPosX() + dx);
+			else
+				setPosX(getPosX() - dx);
+		}	
+		
+		if(Math.abs(beforeX - getPosX())<50) {
+			sameLocationTime = System.currentTimeMillis();
+		}		
+		
+		beforeX = getPosX();
+		
+		if(sameLocationTime - System.currentTimeMillis() > 2000)
+			jumpTime = true;
+		else
+			jumpTime = false;
+		
+
+
+		
 	}
 
 	public void draw(Graphics g) {
@@ -148,4 +159,7 @@ public class Monster extends GameObj {
 		return isJumpable;
 	}
 
+	public boolean isJumpTime() {
+		return jumpTime;
+	}
 }

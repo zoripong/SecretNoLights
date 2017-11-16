@@ -29,12 +29,14 @@
 		<item value="false" key="org.eclipse.jdt.internal.ui.text.JavaOutlineInformationControlDIALOG_USE_PERSISTED_LOCATION"/>
 	</section>
 	<section name="FatJarPackageWizard">
-		<item value="G:\JavaProject" key="FatJarPackageWizardPage.ANTSCRIPT_LOCATION"/>
+		<item value="G:\JavaProject.xml" key="FatJarPackageWizardPage.ANTSCRIPT_LOCATION"/>
 		<item value="SNL (3) - SNL" key="FatJarPackageWizardPage.LAUNCH_CONFIGURATION_SELECTION_NAME"/>
-		<item value="G:\2619 JAVA\snl.jar" key="FatJarPackageWizardPage.DESTINATION_PATH_SELECTION"/>
+		<item value="SNL\snl.jar" key="FatJarPackageWizardPage.DESTINATION_PATH_SELECTION"/>
 		<item value="false" key="FatJarPackageWizardPage.ANTSCRIPT_SAVE"/>
 		<item value="1" key="FatJarPackageWizardPage.LIBRARY_HANDLING"/>
 		<list key="FatJarPackageWizardPage.DESTINATION_NAMES_ID">
+			<item value="SNL\snl.jar"/>
+			<item value="SNL/snl.jar"/>
 			<item value="G:\2619 JAVA\snl.jar"/>
 		</list>
 		<list key="FatJarPackageWizardPage.ANTSCRIPT_LOCATION_HISTORY">

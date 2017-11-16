@@ -182,8 +182,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 			Rectangle2D a = new Rectangle2D.Double(p.getPosX(), p.getPosY() + 3, front.getIconWidth(),
 					front.getIconHeight());
 
-			if ((!mMapReader.isCrush(a)) && !p.isAttack()) {
+			if (((!mMapReader.isCrush(a)) && !p.isAttack())) {
 				isJumpable = false;
+
 				p.setPosY(p.getPosY() + 2);
 				if (p.isRight()) {
 					p.setImage(new ImageIcon(
@@ -287,7 +288,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 									return;
 							}
 						} else {
-							if (p.getPosX() > monster.getX()) {
+							if (p.getPosX()+p.getAttackPosX(charType) > monster.getX()) {
 
 								// ∏ÛΩ∫≈Õ ªÁ∏¡
 								try {
@@ -464,7 +465,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 
 	@Override
 	public void jumpTimeEnded(boolean isStop) {
-		p.setImage(new ImageIcon(SNL.class.getClassLoader().getResource("images/front_" + String.valueOf(charType) + ".png")));
+		p.setImage(new ImageIcon(SNL.class.getClassLoader().getResource("images/jump_left_" + String.valueOf(charType) + ".png")));
 
 		Rectangle2D a = new Rectangle2D.Double(p.getPosX() - p.getDx(), p.getPosY(), p.getWidth(), p.getHeight());
 
@@ -517,10 +518,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 		case KeyEvent.VK_DOWN:
 			p.move(DOWN);
 			if (!p.isJumping()) {
-				if (p.getLocation('A').getX() <= mMapReader.getDoorMid()
-						&& mMapReader.getDoorMid() <= p.getLocation('D').getX()) {
+				Rectangle2D player = new Rectangle2D.Double(p.getPosX(), p.getPosY(), p.getWidth(), p.getHeight());
+				if(player.intersects(mMapReader.getDoorArea()))
 					isOpenDoor = 1;
-				}
 			}
 			break;
 		case KeyEvent.VK_SPACE:
@@ -565,6 +565,15 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 	}
 
 	private void nextStage(Graphics g) {
+		try {
+			AudioInputStream ais = AudioSystem.getAudioInputStream(new File(SNL.class.getClassLoader().getResource("music/next_stage.wav").toURI()));
+			Clip clip = AudioSystem.getClip();
+			clip.stop();
+			clip.open(ais);
+			clip.start();
+		}catch(Exception e) {
+			
+		}
 		darknessImage = new ImageIcon(SNL.class.getClassLoader().getResource("images/darkness_2.png"));
 		items.clear();
 		removeMonsters();

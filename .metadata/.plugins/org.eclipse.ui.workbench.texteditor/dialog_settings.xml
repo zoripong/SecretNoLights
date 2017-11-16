@@ -6,29 +6,32 @@
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="AudioInputStream" key="selection"/>
+		<item value="" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
+			<item value="getAudioInputStream"/>
 			<item value="AudioInputStream"/>
+			<item value="ais"/>
+			<item value="map/"/>
+			<item value="map"/>
+			<item value="src"/>
+			<item value="./src"/>
+			<item value="./map"/>
+			<item value="SNL.class"/>
+			<item value="../images"/>
+			<item value="..images"/>
+			<item value="images/"/>
+			<item value="images"/>
+			<item value="SNL"/>
 			<item value="remove"/>
-			<item value="re"/>
-			<item value="itemEyesight"/>
-			<item value="darkS"/>
-			<item value="crushPlayer()"/>
-			<item value="items.add"/>
-			<item value="life"/>
-			<item value="nextStag"/>
-			<item value="dra"/>
-			<item value="ran"/>
-			<item value="crush"/>
-			<item value="아무튼"/>
-			<item value="RIGHT"/>
-			<item value="down"/>
 		</list>
 		<list key="replacehistory">
+			<item value="images"/>
+			<item value="image"/>
+			<item value=""/>
 			<item value=".png"/>
 			<item value="p.getLocation"/>
 			<item value="getLocation(&apos;D&apos;)"/>

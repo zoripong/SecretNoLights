@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="javax.swing.Timer"/>
-<fullyQualifiedTypeName name="javax.tools.Diagnostic"/>
 <fullyQualifiedTypeName name="model.Direction"/>
 <fullyQualifiedTypeName name="customInterface.Attackable"/>
 <fullyQualifiedTypeName name="adapter.Music"/>
@@ -60,4 +58,6 @@
 <fullyQualifiedTypeName name="javax.swing.ImageIcon"/>
 <fullyQualifiedTypeName name="java.util.ArrayList"/>
 <fullyQualifiedTypeName name="java.awt.geom.Rectangle2D.Double"/>
+<fullyQualifiedTypeName name="java.io.BufferedInputStream"/>
+<fullyQualifiedTypeName name="java.nio.file.Paths"/>
 </qualifiedTypeNameHistroy>

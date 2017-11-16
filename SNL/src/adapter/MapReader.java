@@ -153,8 +153,14 @@ public class MapReader implements Direction {
 		setStage(); // ÁÂÇ¥ °»½Å
 	}
 
-	public double getDoorMid() {
+	public Rectangle2D getDoorArea() {
+		return new Rectangle2D.Double(doorX, doorY, doorImageIcon.getIconWidth(), doorImageIcon.getIconHeight());
+	}
+	public double getDoorMidX() {
 		return (double) (doorX + doorImageIcon.getIconWidth() / 2);
+	}
+	public double getDoorMidY() {
+		return (double) (doorY + doorImageIcon.getIconHeight() / 2);
 	}
 
 	public int getDoorX() {
@@ -263,6 +269,5 @@ public class MapReader implements Direction {
 	public int getStage() {
 		return mStage;
 	}
-	
 
 }

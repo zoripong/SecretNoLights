@@ -56,13 +56,13 @@ public class Monster extends GameObj {
 
 		}
 		if (isRight) {
-			imageFile = "../images/right_monster_" + String.valueOf((int) imageIdx % 3 + 1) + ".png";
+			imageFile = "images/right_monster_" + String.valueOf((int) imageIdx % 3 + 1) + ".png";
 		
 
 		} else {
-			imageFile = "../images/left_monster_" + String.valueOf((int) imageIdx % 3 + 1) + ".png";
+			imageFile = "images/left_monster_" + String.valueOf((int) imageIdx % 3 + 1) + ".png";
 		}
-		setImage(new ImageIcon(SNL.class.getResource(imageFile)));
+		setImage(new ImageIcon(SNL.class.getClassLoader().getResource(imageFile)));
 
 		imageIdx += 0.3;
 

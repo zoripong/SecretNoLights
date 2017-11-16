@@ -36,7 +36,7 @@ public class StoryPanel extends JPanel implements ActionListener, KeyListener {
 
 	private void init() {
 		page = 1;
-		background = new ImageIcon(SNL.class.getResource("../images/story_" + page + ".png")).getImage();
+		background = new ImageIcon(SNL.class.getClassLoader().getResource("images/story_" + page + ".png")).getImage();
 	
 		gameMusic = new Music("Are_You_Sleeping_Instrumental.mp3", true);
 		gameMusic.start();
@@ -85,7 +85,7 @@ public class StoryPanel extends JPanel implements ActionListener, KeyListener {
 
 	public void paint(Graphics g) {
 		super.paint(g);
-		background = new ImageIcon(SNL.class.getResource("../images/story_" + page + ".png")).getImage();
+		background = new ImageIcon(SNL.class.getClassLoader().getResource("images/story_" + page + ".png")).getImage();
 
 		screenImage = createImage(SNL.SCREEN_WIDTH, SNL.SCREEN_HEIGHT);
 		Graphics screenGraphic = screenImage.getGraphics();

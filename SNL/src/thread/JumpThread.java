@@ -2,7 +2,9 @@ package thread;
 
 import java.awt.geom.Rectangle2D;
 import java.beans.IntrospectionException;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -59,7 +61,7 @@ public class JumpThread extends Thread {
 	public void run() {
 		if (player != null && monster == null) {
 			try {
-				AudioInputStream ais = AudioSystem.getAudioInputStream(new File("./src/music/jump_effect.wav"));
+				AudioInputStream ais = AudioSystem.getAudioInputStream(new File(SNL.class.getClassLoader().getResource("music/jump_effect.wav").toURI()));
 				Clip clip = AudioSystem.getClip();
 				clip.stop();
 				clip.open(ais);

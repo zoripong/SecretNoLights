@@ -99,8 +99,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 
 	public void init() {
 
-		background = new ImageIcon(SNL.class.getResource("../images/game_background.png")).getImage();
-		darknessImage = new ImageIcon(SNL.class.getResource("../images/darkness_2.png"));
+		background = new ImageIcon(SNL.class.getClassLoader().getResource("images/game_background.png")).getImage();
+		darknessImage = new ImageIcon(SNL.class.getClassLoader().getResource("images/darkness_2.png"));
 
 		gameMusic = new Music("gameMusic.mp3", true);
 		gameMusic.start();
@@ -118,7 +118,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 
 		// init player
 		ImageIcon character = new ImageIcon(
-				SNL.class.getResource("../images/front_" + String.valueOf(charType) + ".png"));
+				SNL.class.getClassLoader().getResource("images/front_" + String.valueOf(charType) + ".png"));
 		p = new Player(SNL.SCREEN_WIDTH - 200, SNL.SCREEN_HEIGHT - 80, character, charType, mMapReader);
 		player = new Rectangle2D.Double(p.getPosX(), p.getPosY(), p.getWidth(), p.getHeight());
 
@@ -130,11 +130,11 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 		items = new ArrayList<>();
 		itemImages = new ArrayList<>();
 
-		itemImages.add(new ImageIcon(SNL.class.getResource("../images/item_eyesight.png")));
+		itemImages.add(new ImageIcon(SNL.class.getClassLoader().getResource("images/item_eyesight.png")));
 
-		itemImages.add(new ImageIcon(SNL.class.getResource("../images/item_hp.png")));
+		itemImages.add(new ImageIcon(SNL.class.getClassLoader().getResource("images/item_hp.png")));
 
-		itemImages.add(new ImageIcon(SNL.class.getResource("../images/item_speed.png")));
+		itemImages.add(new ImageIcon(SNL.class.getClassLoader().getResource("images/item_speed.png")));
 
 		for (int i = 0; i < monsters.size(); i++) {
 			startCrush.add((long) 0);
@@ -143,7 +143,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 		}
 
 		startStageTime = System.currentTimeMillis();
-		nextStageImage = new ImageIcon(SNL.class.getResource("../images/next_stage.png"));
+		nextStageImage = new ImageIcon(SNL.class.getClassLoader().getResource("images/next_stage.png"));
 
 		darkStart = -1;
 		setDark = false;
@@ -177,7 +177,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 		if (!p.isJumping()) {
 
 			ImageIcon front = new ImageIcon(
-					SNL.class.getResource("../images/front_" + String.valueOf(charType) + ".png"));
+					SNL.class.getClassLoader().getResource("images/front_" + String.valueOf(charType) + ".png"));
 
 			Rectangle2D a = new Rectangle2D.Double(p.getPosX(), p.getPosY() + 3, front.getIconWidth(),
 					front.getIconHeight());
@@ -187,16 +187,16 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 				p.setPosY(p.getPosY() + 2);
 				if (p.isRight()) {
 					p.setImage(new ImageIcon(
-							SNL.class.getResource("../images/jump_right_" + String.valueOf(charType) + ".png")));
+							SNL.class.getClassLoader().getResource("images/jump_right_" + String.valueOf(charType) + ".png")));
 				} else {
 					p.setImage(new ImageIcon(
-							SNL.class.getResource("../images/jump_left_" + String.valueOf(charType) + ".png")));
+							SNL.class.getClassLoader().getResource("images/jump_left_" + String.valueOf(charType) + ".png")));
 				}
 			} else {
 				isJumpable = true;
 				if (!isJumpingMove && !p.isAttack())
 					p.setImage(new ImageIcon(
-							SNL.class.getResource("../images/front_" + String.valueOf(charType) + ".png")));
+							SNL.class.getClassLoader().getResource("images/front_" + String.valueOf(charType) + ".png")));
 			}
 
 		}
@@ -221,8 +221,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 						items.get(i).getWidth(), items.get(i).getHeight());
 				if (mosPlayer.intersects(item)) {
 					try {
-						AudioInputStream ais = AudioSystem
-								.getAudioInputStream(new File("./src/music/item.wav"));
+						AudioInputStream ais = AudioSystem.getAudioInputStream(new File(SNL.class.getClassLoader().getResource("music/item.wav").toURI()));
 						Clip clip = AudioSystem.getClip();
 						clip.stop();
 						clip.open(ais);
@@ -269,8 +268,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 							if (p.getPosX() < monster.getX()) {
 								// ¸ó½ºÅÍ »ç¸Á
 								try {
-									AudioInputStream ais = AudioSystem
-											.getAudioInputStream(new File("./src/music/crush_monster.wav"));
+									
+									AudioInputStream ais = AudioSystem.getAudioInputStream(new File(SNL.class.getClassLoader().getResource("music/crush_monster.wav").toURI()));
+
 									Clip clip = AudioSystem.getClip();
 									clip.stop();
 									clip.open(ais);
@@ -291,8 +291,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 
 								// ¸ó½ºÅÍ »ç¸Á
 								try {
-									AudioInputStream ais = AudioSystem
-											.getAudioInputStream(new File("./src/music/crush_monster.wav"));
+									AudioInputStream ais = AudioSystem.getAudioInputStream(new File(SNL.class.getClassLoader().getResource("music/crush_monster.wav").toURI()));
 									Clip clip = AudioSystem.getClip();
 									clip.stop();
 									clip.open(ais);
@@ -354,14 +353,14 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 
 		// draw the dark
 		if (setDark) {
-			darknessImage = new ImageIcon(SNL.class.getResource("../images/darkness_3.png"));
+			darknessImage = new ImageIcon(SNL.class.getClassLoader().getResource("images/darkness_3.png"));
 			if (darkStart != -1) {
 				if (System.currentTimeMillis() - darkStart > 3000)
 					setDark = false;
 			}
 
 		} else {
-			darknessImage = new ImageIcon(SNL.class.getResource("../images/darkness_2.png"));
+			darknessImage = new ImageIcon(SNL.class.getClassLoader().getResource("images/darkness_2.png"));
 
 		}
 		
@@ -454,9 +453,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 		p.addY(jumpy);
 		ImageIcon icon;
 		if (p.isRight())
-			icon = new ImageIcon(SNL.class.getResource("../images/jump_right_" + String.valueOf(charType) + ".png"));
+			icon = new ImageIcon(SNL.class.getClassLoader().getResource("images/jump_right_" + String.valueOf(charType) + ".png"));
 		else
-			icon = new ImageIcon(SNL.class.getResource("../images/jump_left_" + String.valueOf(charType) + ".png"));
+			icon = new ImageIcon(SNL.class.getClassLoader().getResource("images/jump_left_" + String.valueOf(charType) + ".png"));
 
 		p.setImage(icon);
 
@@ -465,7 +464,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 
 	@Override
 	public void jumpTimeEnded(boolean isStop) {
-		p.setImage(new ImageIcon(SNL.class.getResource("../images/front_" + String.valueOf(charType) + ".png")));
+		p.setImage(new ImageIcon(SNL.class.getClassLoader().getResource("images/front_" + String.valueOf(charType) + ".png")));
 
 		Rectangle2D a = new Rectangle2D.Double(p.getPosX() - p.getDx(), p.getPosY(), p.getWidth(), p.getHeight());
 
@@ -489,7 +488,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 		if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 			p.attackEnd();
 		}
-		p.setImage(new ImageIcon(SNL.class.getResource("../images/front_" + String.valueOf(charType) + ".png")));
+		p.setImage(new ImageIcon(SNL.class.getClassLoader().getResource("images/front_" + String.valueOf(charType) + ".png")));
 		isJumpingMove = false;
 	}
 
@@ -566,7 +565,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Di
 	}
 
 	private void nextStage(Graphics g) {
-		darknessImage = new ImageIcon(SNL.class.getResource("../images/darkness_2.png"));
+		darknessImage = new ImageIcon(SNL.class.getClassLoader().getResource("images/darkness_2.png"));
 		items.clear();
 		removeMonsters();
 		try {

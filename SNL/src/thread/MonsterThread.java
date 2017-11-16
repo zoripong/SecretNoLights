@@ -50,13 +50,13 @@ public class MonsterThread extends Thread implements JumpListener{
 		monster.addY(jumpy);
 		ImageIcon icon;
 		if(monster.isRight())
-			icon = new ImageIcon(SNL.class.getResource("../images/jump_right_monster.png"));
+			icon = new ImageIcon(SNL.class.getClassLoader().getResource("images/jump_right_monster.png"));
 
-			//			icon = new ImageIcon(SNL.class.getResource("../images/jump_right_monster.png"));
+			//			icon = new ImageIcon(SNL.class.getClassLoader().getResource("images/jump_right_monster.png"));
 		else
-			icon = new ImageIcon(SNL.class.getResource("../images/jump_left_monster.png"));			
+			icon = new ImageIcon(SNL.class.getClassLoader().getResource("images/jump_left_monster.png"));			
 
-			//			icon = new ImageIcon(SNL.class.getResource("../images/jump_left_monster.png"));			
+			//			icon = new ImageIcon(SNL.class.getClassLoader().getResource("images/jump_left_monster.png"));			
 		
 		monster.setImage(icon);
 		
@@ -76,7 +76,7 @@ public class MonsterThread extends Thread implements JumpListener{
 
 	@Override
 	public void jumpTimeEnded(boolean isStop) {
-		monster.setImage(new ImageIcon(SNL.class.getResource("../images/front_monster.png")));
+		monster.setImage(new ImageIcon(SNL.class.getClassLoader().getResource("images/front_monster.png")));
 		monster.setJumpIdx(0);
 
 	}

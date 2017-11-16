@@ -1,10 +1,7 @@
-/Images/
-/adapter/
-/customInterface/
 /gui/
+/Images/
 /map/
-/model/
 /music/
-/ranking/
 /thread/
-/Test.class
+/adapter/
+/model/

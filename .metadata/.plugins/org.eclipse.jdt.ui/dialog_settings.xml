@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
-	<item value="G:\2619 JAVA\JLayer1.0.1" key="org.eclipse.jdt.ui.lastextjar"/>
+	<item value="E:\java\workspace\SecretNoLights\JLayer1.0.1" key="org.eclipse.jdt.ui.lastextjar"/>
 	<section name="org.eclipse.jdt.internal.ui.packageview.PackageExplorerPart">
 		<item value="2" key="layout"/>
 		<item value="true" key="group_libraries"/>
@@ -41,6 +41,13 @@
 			<item value="G:\JavaProject.xml"/>
 			<item value=".xml"/>
 		</list>
+	</section>
+	<section name="org.eclipse.jdt.internal.ui.wizards.buildpaths.NewVariableEntryDialog">
+		<item value="671" key="DIALOG_WIDTH"/>
+		<item value="1|맑은 고딕|9.0|0|WINDOWS|1|-15|0|0|0|400|0|0|0|1|0|0|0|0|맑은 고딕" key="DIALOG_FONT_NAME"/>
+		<item value="511" key="DIALOG_HEIGHT"/>
+		<item value="81" key="DIALOG_X_ORIGIN"/>
+		<item value="-26" key="DIALOG_Y_ORIGIN"/>
 	</section>
 	<section name="OverrideMethodDialog">
 		<item value="true" key="showtypes"/>
@@ -121,7 +128,7 @@
 		<item value="10" key="LimitValue"/>
 	</section>
 	<section name="ClasspathContainerSelectionPage">
-		<item value="0" key="index"/>
+		<item value="8" key="index"/>
 	</section>
 	<section name="quick_assist_proposal_size">
 	</section>

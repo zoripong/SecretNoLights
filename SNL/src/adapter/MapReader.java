@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -38,9 +39,9 @@ public class MapReader implements Direction {
 		mStage = stage;
 		rectangleSet = new HashSet<>();
 
-		blockImageIcon = new ImageIcon(SNL.class.getResource("../images/block.png"));
+		blockImageIcon = new ImageIcon(SNL.class.getClassLoader().getResource("images/block.png"));
 
-		doorImageIcon = new ImageIcon(SNL.class.getResource("../images/door_close.png"));
+		doorImageIcon = new ImageIcon(SNL.class.getClassLoader().getResource("images/door_close.png"));
 		monsters = new ArrayList<Monster>();
 		readFile();
 		monsterLocations = new ArrayList<>();
@@ -98,12 +99,13 @@ public class MapReader implements Direction {
 	}
 
 	private void readFile() {
-		String fileName = "./src/map/stage_" + mStage + ".txt";
+		String fileName = "map/stage_" + mStage + ".txt";
 		String line = "";
 		StringBuffer buff = new StringBuffer();
 
 		try {
-			BufferedReader br = new BufferedReader(new FileReader(new File(fileName)));
+			
+			BufferedReader br = new BufferedReader(new FileReader(new File(SNL.class.getClassLoader().getResource(fileName).toURI())));
 
 			while ((line = br.readLine()) != null) {
 				buff.append(line);
@@ -114,6 +116,9 @@ public class MapReader implements Direction {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -164,16 +169,16 @@ public class MapReader implements Direction {
 		Graphics2D g2d = (Graphics2D) g;
 		ImageIcon doorImage;
 		if (isOpen == 1) {
-			doorImage = new ImageIcon(SNL.class.getResource("../images/door_open.png"));
+			doorImage = new ImageIcon(SNL.class.getClassLoader().getResource("images/door_open.png"));
 		} else {
-			doorImage = new ImageIcon(SNL.class.getResource("../images/door_close.png"));
+			doorImage = new ImageIcon(SNL.class.getClassLoader().getResource("images/door_close.png"));
 		}
 		g2d.drawImage(doorImage.getImage(), doorX, doorY, null);
 
 	}
 
 	public ArrayList<Monster> initMonsters() {
-		ImageIcon monster = new ImageIcon(SNL.class.getResource("../images/front_3.png"));
+		ImageIcon monster = new ImageIcon(SNL.class.getClassLoader().getResource("images/front_3.png"));
 		monsters = new ArrayList<Monster>();
 		for (int i = 0; i < monsterLocations.size(); i++) {
 			monsters.add(new Monster(monsterLocations.get(i).getX(), monsterLocations.get(i).getY(), monster, this));

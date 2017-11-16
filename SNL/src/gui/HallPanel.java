@@ -47,7 +47,7 @@ public class HallPanel extends JPanel implements ActionListener, KeyListener {
 	}
 
 	private void init() {
-		background = new ImageIcon(SNL.class.getResource("../images/ranking_background.png")).getImage();
+		background = new ImageIcon(SNL.class.getClassLoader().getResource("images/ranking_background.png")).getImage();
 		rankingReader = new RankingReader(record);
 		myRank = rankingReader.insertRecord();
 

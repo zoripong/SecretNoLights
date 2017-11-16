@@ -60,22 +60,22 @@ public class RegisterPanel extends JPanel implements ActionListener, KeyListener
 	}
 
 	private void init() {
-		background = new ImageIcon(SNL.class.getResource("../images/register_background.png")).getImage();
+		background = new ImageIcon(SNL.class.getClassLoader().getResource("images/register_background.png")).getImage();
 		
 		isWrite = true;
 
 		alphabets = new ArrayList<ImageIcon>();
 		char alpha = 'a';
 		for (int i = 0; i < 26; i++) {
-			String name = "../images/ranking_" + alpha + ".png";
-			alphabets.add(new ImageIcon(SNL.class.getResource(name)));
+			String name = "images/ranking_" + alpha + ".png";
+			alphabets.add(new ImageIcon(SNL.class.getClassLoader().getResource(name)));
 			alpha++;
 		}
 				
 		numbers = new ArrayList<ImageIcon>();
 		for (int i = 0; i < 10; i++) {
-			String name = "../images/ranking_" + String.valueOf(i) + ".png";
-			numbers.add(new ImageIcon(SNL.class.getResource(name)));
+			String name = "images/ranking_" + String.valueOf(i) + ".png";
+			numbers.add(new ImageIcon(SNL.class.getClassLoader().getResource(name)));
 		}
 
 		writeChar = new ArrayList<Character>();
@@ -225,7 +225,7 @@ public class RegisterPanel extends JPanel implements ActionListener, KeyListener
 		}
 		
 		if(writeChar.size() == 3) {
-			g2d.drawImage(new ImageIcon(SNL.class.getResource("../images/press_enter.png")).getImage(), 320, 360, null);
+			g2d.drawImage(new ImageIcon(SNL.class.getClassLoader().getResource("images/press_enter.png")).getImage(), 320, 360, null);
 		}
 				
 

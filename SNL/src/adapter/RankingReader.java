@@ -9,6 +9,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
@@ -26,28 +28,28 @@ public class RankingReader {
 	private Record record;
 	
 	public RankingReader(Record record) {
-		fileName = "./src/ranking/rank.txt";
+		fileName = "ranking/rank.txt";
 		records = new ArrayList<>();
 		readFile();
 
 		alphabets = new ArrayList<ImageIcon>();
 		char alpha = 'a';
 		for (int i = 0; i < 26; i++) {
-			String name = "../images/ranking_" + alpha + ".png";
-			alphabets.add(new ImageIcon(SNL.class.getResource(name)));
+			String name = "images/ranking_" + alpha + ".png";
+			alphabets.add(new ImageIcon(SNL.class.getClassLoader().getResource(name)));
 			alpha++;
 		}
 
 		numbers = new ArrayList<ImageIcon>();
 		for (int i = 0; i < 10; i++) {
-			String name = "../images/ranking_" + String.valueOf(i) + ".png";
-			numbers.add(new ImageIcon(SNL.class.getResource(name)));
+			String name = "images/ranking_" + String.valueOf(i) + ".png";
+			numbers.add(new ImageIcon(SNL.class.getClassLoader().getResource(name)));
 		}
 
 		smallNumbers = new ArrayList<ImageIcon>();
 		for(int i = 0; i<10; i++) {
-			String name = "../images/" + String.valueOf(i) + ".png";
-			smallNumbers.add(new ImageIcon(SNL.class.getResource(name)));
+			String name = "images/" + String.valueOf(i) + ".png";
+			smallNumbers.add(new ImageIcon(SNL.class.getClassLoader().getResource(name)));
 			
 		}
 		this.record = record;
@@ -57,7 +59,9 @@ public class RankingReader {
 		String line = "";
 		String[] user;
 		try {
-			BufferedReader br = new BufferedReader(new FileReader(new File(fileName)));
+
+			BufferedReader br = new BufferedReader(new FileReader(new File(SNL.class.getClassLoader().getResource(fileName).toURI())));
+
 			while ((line = br.readLine()) != null) {
 				user = line.split(" ");
 				records.add(new Record(user[0], user[1]));
@@ -70,13 +74,20 @@ public class RankingReader {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
 	}
 
 	public void writeFile() {
 		try {
-			BufferedWriter bw = new BufferedWriter(new FileWriter(fileName));
+
+			String path = SNL.class.getClassLoader().getResource(fileName).getPath();
+//			String path = Paths.get(".").toAbsolutePath().normalize().toString()+"/"+fileName;
+			System.out.println(path);
+			BufferedWriter bw = new BufferedWriter(new FileWriter(path));
 			for(int i = 0; i<records.size(); i++) {
 				bw.write(records.get(i).getName()+" "+records.get(i).getNumber());
 				bw.newLine();
@@ -114,10 +125,14 @@ public class RankingReader {
 
 		int startX = 145, startY = 190, termY = 103;
 
+		int max;
+		if(records.size() < 5)
+			max = idx+records.size();
+		else max = idx + 5;
 
-		for (int i = idx; i < idx+5; i++) {
+		for (int i = idx; i < max; i++) {
 			System.out.println(i +", "+records.size());
-			char userRank[] = String.valueOf(i).toCharArray();
+			char userRank[] = String.valueOf(i+1).toCharArray();
 			char userName[] = records.get(i).getName().toCharArray();
 			char userScore[] = records.get(i).getNumber().toCharArray();
 			

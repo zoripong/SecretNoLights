@@ -70,14 +70,14 @@ public class Player extends GameObj implements Direction, Attackable {
 		score = 0;
 
 		// life
-		lifeImage = new ImageIcon(SNL.class.getResource("../images/life.png"));
+		lifeImage = new ImageIcon(SNL.class.getClassLoader().getResource("images/life.png"));
 
 		// score
-		scoreImage = new ImageIcon(SNL.class.getResource("../images/score.png"));
+		scoreImage = new ImageIcon(SNL.class.getClassLoader().getResource("images/score.png"));
 
 		scoreNumbers = new ArrayList<>();
 		for (int i = 0; i < 10; i++)
-			scoreNumbers.add(new ImageIcon(SNL.class.getResource("../images/score_" + String.valueOf(i) + ".png")));
+			scoreNumbers.add(new ImageIcon(SNL.class.getClassLoader().getResource("images/score_" + String.valueOf(i) + ".png")));
 
 	}
 
@@ -94,11 +94,11 @@ public class Player extends GameObj implements Direction, Attackable {
 
 		switch (direction) {
 		case LEFT:
-			imageName = "../images/left_" + String.valueOf(charType) + "_" + String.valueOf((int) imageIdx % 3 + 1)
+			imageName = "images/left_" + String.valueOf(charType) + "_" + String.valueOf((int) imageIdx % 3 + 1)
 					+ ".png";
 			// System.out.println(imageFile);
 
-			currentImage = new ImageIcon(SNL.class.getResource(imageName));
+			currentImage = new ImageIcon(SNL.class.getClassLoader().getResource(imageName));
 			setImage(currentImage);
 
 			imageIdx += 0.3;
@@ -120,9 +120,9 @@ public class Player extends GameObj implements Direction, Attackable {
 			break;
 		case RIGHT:
 
-			imageName = "../images/right_" + String.valueOf(charType) + "_" + String.valueOf((int) imageIdx % 3 + 1)
+			imageName = "images/right_" + String.valueOf(charType) + "_" + String.valueOf((int) imageIdx % 3 + 1)
 					+ ".png";
-			currentImage = new ImageIcon(SNL.class.getResource(imageName));
+			currentImage = new ImageIcon(SNL.class.getClassLoader().getResource(imageName));
 			setImage(currentImage);
 
 			imageIdx += 0.3;
@@ -252,7 +252,8 @@ public class Player extends GameObj implements Direction, Attackable {
 		isAttacking = true;
 		
 		try {
-			AudioInputStream ais = AudioSystem.getAudioInputStream(new File("./src/music/attack_effect.wav"));
+			AudioInputStream ais = AudioSystem.getAudioInputStream(new File(SNL.class.getClassLoader().getResource("music/attack_effect.wav").toURI()));
+
 			Clip clip = AudioSystem.getClip();
 			clip.stop();
 			clip.open(ais);
@@ -261,13 +262,13 @@ public class Player extends GameObj implements Direction, Attackable {
 		}
 		
 		if (isRight) {
-			imageName = "../images/attack_right_" + String.valueOf(charType) + ".png";
-			currentImage = new ImageIcon(SNL.class.getResource(imageName));
+			imageName = "images/attack_right_" + String.valueOf(charType) + ".png";
+			currentImage = new ImageIcon(SNL.class.getClassLoader().getResource(imageName));
 			setImage(currentImage);
 		} else {
 			// TODO LEFT ATTACK
-			imageName = "../images/attack_left_" + String.valueOf(charType) + ".png";
-			currentImage = new ImageIcon(SNL.class.getResource(imageName));
+			imageName = "images/attack_left_" + String.valueOf(charType) + ".png";
+			currentImage = new ImageIcon(SNL.class.getClassLoader().getResource(imageName));
 
 			setImage(currentImage);
 
@@ -347,7 +348,7 @@ public class Player extends GameObj implements Direction, Attackable {
 	}
 
 	public Location currentLocation() {
-		ImageIcon blockImageIcon = new ImageIcon(SNL.class.getResource("../images/block.png"));
+		ImageIcon blockImageIcon = new ImageIcon(SNL.class.getClassLoader().getResource("images/block.png"));
 
 		int x = (getPosX() + (currentImage.getIconWidth() / 2)) / blockImageIcon.getIconWidth();
 		int y = (getPosY() + (currentImage.getIconHeight() * 3 / 2)) / blockImageIcon.getIconHeight();
@@ -355,7 +356,7 @@ public class Player extends GameObj implements Direction, Attackable {
 	}
 
 	public String toString() {
-		ImageIcon blockImageIcon = new ImageIcon(SNL.class.getResource("../images/block.png"));
+		ImageIcon blockImageIcon = new ImageIcon(SNL.class.getClassLoader().getResource("images/block.png"));
 
 		int x = (getPosX() + (currentImage.getIconWidth() / 2)) / blockImageIcon.getIconWidth();
 		int y = (getPosY() + (currentImage.getIconHeight() * 3 / 2)) / blockImageIcon.getIconHeight();

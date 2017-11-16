@@ -45,15 +45,17 @@ public class MainPanel extends JPanel implements ActionListener, KeyListener, Di
 
 	private void init() {
 
-		ImageIcon selectImage = new ImageIcon(SNL.class.getResource("../images/selecter.png"));
+		System.out.println(SNL.class.getClassLoader().getResource("images/selecter.png"));
+		ImageIcon selectImage = new ImageIcon(SNL.class.getClassLoader().getResource("images/selecter.png"));
+//		selectImage = new ImageIcon(SNL.class.getResource("../images/selecter.png"));
 		// selecter = new Player(SNL.SCREEN_WIDTH/2 + 200, 490, selectImage, 0, 5,
 		// true);
 		selecter = new Player(SNL.SCREEN_WIDTH / 2 + 220, GAME_START+10, selectImage, -1, 0, EXPLAIN_GAME-GAME_START);
 		
-		background = new ImageIcon(SNL.class.getResource("../images/background.png")).getImage();
+		background = new ImageIcon(SNL.class.getClassLoader().getResource("images/background.png")).getImage();
 
-		startImage = new ImageIcon(SNL.class.getResource("../images/start.png"));
-		explainImage = new ImageIcon(SNL.class.getResource("../images/explain.png"));
+		startImage = new ImageIcon(SNL.class.getClassLoader().getResource("images/start.png"));
+		explainImage = new ImageIcon(SNL.class.getClassLoader().getResource("images/explain.png"));
 
 		
 		gameMusic = new Music("Above_and_Beyond.mp3", true);

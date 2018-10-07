@@ -27,7 +27,6 @@ Secret No Lights ( 줄여서 SNL )은 어둠 속에서 몬스터들을 피하고
 
 ```
 git clone https://github.com/zoripong/SecretNoLights.git
-
 ```
 >  exe 파일 실행
 

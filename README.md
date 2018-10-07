@@ -40,19 +40,19 @@ SNL은 키보드를 이용하여 즐기는 게임입니다.
 ## Screenshot
 > 시작화면  /  게임설명
 
-<img src="https://bit.ly/2NtNkOL" alt="시작화면" style="width: 500px;"/><img src="https://bit.ly/2C1fz59" alt="게임설명" style="width: 500px;"/>
+<img src="https://bit.ly/2NtNkOL" alt="시작화면" width="50%"/><img src="https://bit.ly/2C1fz59" alt="게임설명" width="50%"/>
 
 > 튜토리얼 / 캐릭터 선택
 
-<img src="https://bit.ly/2OG7DwT" alt="튜토리얼" style="width: 500px;"/><img src="https://bit.ly/2QxJXIl" alt="캐릭터 선택" style="width: 500px;"/>
+<img src="https://bit.ly/2OG7DwT" alt="튜토리얼" width="50%"/><img src="https://bit.ly/2QxJXIl" alt="캐릭터 선택" width="50%"/>
 
 > 스테이지 01 / 스테이지 02
 
-<img src="https://bit.ly/2BYWIHQ" alt="스테이지 01" style="width: 500px;"/><img src="https://bit.ly/2Rx3nyv" alt="스테이지 02" style="width: 500px;"/>
+<img src="https://bit.ly/2BYWIHQ" alt="스테이지 01" width="50%"/><img src="https://bit.ly/2Rx3nyv" alt="스테이지 02" width="50%"/>
 
 > 랭킹 등록 / 랭킹 확인
 
-<img src="https://bit.ly/2PjJGsz" alt="랭킹 등록" style="width: 500px;"/><img src="https://bit.ly/2y5rSuD" alt="랭킹 확인" style="width: 500px;"/>
+<img src="https://bit.ly/2PjJGsz" alt="랭킹 등록" width="50%"/><img src="https://bit.ly/2y5rSuD" alt="랭킹 확인" width="50%"/>
 
 
 
